@@ -1,0 +1,7 @@
+[
+  {"id":"deepseek","name":"DeepSeek","base_url":"https://api.deepseek.com","key_env":"DEEPSEEK_API_KEY","model_env":"DEEPSEEK_MODEL","max_tokens_field":"max_tokens"},
+  {"id":"doubao","name":"豆包 · 火山方舟","base_url":"https://ark.cn-beijing.volces.com/api/v3","key_env":"ARK_API_KEY","model_env":"ARK_MODEL","max_tokens_field":"max_tokens"},
+  {"id":"qwen","name":"千问 · 阿里云百炼","base_url":"https://dashscope.aliyuncs.com/compatible-mode/v1","key_env":"DASHSCOPE_API_KEY","model_env":"QWEN_MODEL","max_tokens_field":"max_tokens"},
+  {"id":"hunyuan","name":"混元 · 腾讯云","base_url":"https://tokenhub.tencentmaas.com/v1","key_env":"HUNYUAN_API_KEY","model_env":"HUNYUAN_MODEL","max_tokens_field":"max_tokens"},
+  {"id":"custom","name":"其他兼容接口","base_url":"","key_env":"VILLAGE_API_KEY","model_env":"VILLAGE_MODEL","max_tokens_field":"max_tokens"}
+]

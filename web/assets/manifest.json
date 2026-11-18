@@ -1,0 +1,8 @@
+{
+  "resident_default": {"file": null, "cell": [32, 48], "grid": [4, 4], "rows": ["down", "left", "right", "up"], "anchor": [16, 44]},
+  "hall": {"file": null, "size": [160, 192], "anchor": [80, 176]},
+  "granary": {"file": null, "size": [128, 160], "anchor": [64, 144]},
+  "house": {"file": null, "size": [96, 128], "anchor": [48, 112]},
+  "workshop": {"file": null, "size": [96, 128], "anchor": [48, 112]},
+  "archive": {"file": null, "size": [96, 128], "anchor": [48, 112]}
+}

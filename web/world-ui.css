@@ -1,0 +1,69 @@
+.game-mode #world-button{top:150px}.game-mode #scene-back{top:106px;z-index:3}.game-mode [hidden]{display:none!important}
+html[data-scene=hall] #weather-badge,html[data-scene=hall] #world-button{display:none}
+#hall-tools{position:absolute;z-index:2;left:50%;bottom:115px;transform:translateX(-50%);display:flex;gap:8px;white-space:nowrap}
+#hall-tools button{border:solid transparent;border-width:9px 14px;border-image:var(--skin-paper-normal) 25 28 25 28 fill stretch;background:none;padding:6px 12px;color:#714a26;font-weight:bold;font-size:14px;filter:drop-shadow(1px 2px 2px #38250d60)}
+#hall-tools #hall-new-topic{border-image-source:var(--skin-gold-normal)}
+#hall-speech-layer{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.hall-bubble{position:absolute;pointer-events:auto;width:148px;padding:10px 12px;text-align:left;color:#6e4727;background:#fff0cfed;border:2px solid #b98a48;box-shadow:2px 3px #59391930;border-radius:8px;font-size:11px;line-height:1.6;transform:translateY(-50%);max-height:124px;overflow:hidden}
+.hall-bubble:after{content:'';position:absolute;right:-7px;top:44%;width:10px;height:10px;border-top:2px solid #b98a48;border-right:2px solid #b98a48;background:#fff0cf;transform:rotate(45deg)}
+.hall-bubble.right:after{right:auto;left:-7px;transform:rotate(-135deg)}.hall-bubble strong{display:block;color:#8b602c;margin-bottom:3px}.hall-bubble.quiet{opacity:.74;font-size:10px}
+.hall-bubble span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.hall-bubble{overflow:visible}.hall-bubble strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.world-maps{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0 18px}.world-map-card{padding:0 0 10px;background:#ecd6a6;border:2px solid #b78a49;color:#744a25;font-size:14px;font-weight:bold;text-align:center}.world-map-card img{width:100%;height:120px;object-fit:cover;display:block;margin-bottom:8px;image-rendering:pixelated}.world-map-card:disabled{opacity:.55;cursor:not-allowed}
+.proposal-card{border:1px solid #c39d60;background:#ead4a45e;padding:14px;margin:14px 0;color:#775234}.proposal-card h3{font-size:15px;line-height:1.6;margin:0 0 8px}.proposal-status{font-size:11px;color:#93703c}.proposal-vote{font-size:12px;line-height:1.8;padding-top:6px;border-top:1px dashed #c9a36c;margin-top:6px}.speech-message{margin:12px 0;padding:15px;background:#f3e3bf;border:1px solid #c9a268;border-radius:9px}.speech-message strong{display:block;color:#916330;font-size:12px}.speech-message p{white-space:pre-wrap;font-size:13px;line-height:1.9;overflow-wrap:anywhere;color:#68492f}
+@media(max-width:700px){.game-mode #world-button{top:124px;font-size:10px}.game-mode #scene-back{top:86px}#hall-tools{bottom:140px;gap:3px;max-width:95vw}#hall-tools button{font-size:11px;padding:4px 3px;border-width:8px 9px}.hall-bubble{width:108px;font-size:10px;padding:7px 8px;max-height:100px}.world-maps{gap:7px}.world-map-card{font-size:12px}.world-map-card img{height:90px}}
+.api-fields{margin:0;padding:0;border:0;min-width:0}
+.resident-background{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px;margin:16px 0}
+.resident-background h3{margin:0;font-size:16px;color:#714a26}
+.resident-background p{grid-column:1/-1;margin:0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7}
+#background-form textarea{width:100%;box-sizing:border-box;resize:vertical}
+.background-footer{display:flex;justify-content:space-between;gap:12px;margin:6px 0 15px;color:#735739}
+.background-footer output{white-space:nowrap;font-size:12px}
+#background-error{color:#853b29}
+#resident-actions{position:fixed;z-index:8;display:flex;gap:4px;padding:5px;background:#fff2d5;border:2px solid #976c40;border-radius:8px;box-shadow:0 3px 0 #613f2855}
+#resident-actions button{display:grid;justify-items:center;gap:1px;min-width:46px;min-height:44px;border:0;background:transparent;color:#614123;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer}
+#resident-actions button:hover,#resident-actions button:focus-visible{background:#edd4a2;border-radius:5px}
+.resident-name-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.resident-name-line .outline{min-height:32px;padding:2px 8px;font-size:12px}
+.game-mode .game-window .detail-title{flex-wrap:wrap}
+.game-mode .game-window #edit-role{margin-left:7px;padding:2px 8px;min-height:32px;font-size:12px}
+#rename-form [role=alert]{color:#853b29}
+.wardrobe-options button[aria-pressed=true]{outline:3px solid #886333;outline-offset:-3px;background:#e6cf9b}
+.game-mode [data-interaction=residentChat] .panel{overflow:hidden}
+.resident-chat{display:flex;flex-direction:column;min-height:0}
+.chat-thread{height:clamp(130px,34dvh,350px);overflow:auto;overscroll-behavior:contain;padding:6px 4px;background:#ede4ce;border-block:1px solid #cabea4}
+.chat-row{display:flex;align-items:flex-start;gap:7px;margin:12px 2px}
+.chat-row.mine{justify-content:flex-end}
+.chat-row p{margin:0;max-width:76%;padding:8px 12px;border-radius:2px 10px 10px 10px;background:#fffaf0;color:#423522;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.55;font-size:14px;text-align:left}
+.chat-row.mine p{background:#c3dfa4;border-radius:10px 2px 10px 10px}
+.chat-row.notice p{font-size:12px;color:#755338}
+.chat-self,.chat-row canvas{flex:none;align-self:flex-start}
+.chat-self{padding:5px 8px;border:1px solid #baa77d;border-radius:4px;background:#ddc997;font-size:12px}
+.chat-compose{display:flex;gap:7px;align-items:center;margin-top:9px}
+.chat-compose textarea{flex:1;min-width:0;resize:none}
+.game-mode .chat-compose .primary{flex:none;min-width:64px;padding:4px 7px}
+.chat-status:not(:empty){padding-top:6px;font-size:12px;color:#805339}
+@media(max-height:580px){.game-mode [data-interaction=residentChat] .panel{overflow:auto}.chat-thread{height:128px}}
+#api-config-error{color:#853b29}
+.garden-toolbar,.seed-pouches,.pantry-slots,.exchange-fields{display:flex;align-items:center;gap:10px}
+.garden-toolbar{justify-content:space-between;margin:0 0 12px;color:#574020;font-weight:700}
+.garden-toolbar h3,.farm-work h3{margin:0}
+.farm-beds{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:10px;background:#665233;border:3px ridge #a68553}
+.farm-bed{position:relative;display:grid;grid-template-columns:42px 1fr;grid-template-rows:auto auto auto;align-items:center;text-align:left;padding:6px 9px;color:#fff2cf;background:#885c36;border:2px solid #624426;box-shadow:inset 0 2px #bc8a56}
+.farm-bed small{grid-column:1/-1;color:#f6d8a9;font-size:10px;letter-spacing:.08em}
+.farm-bed img,.bed-furrows{grid-column:1;grid-row:2/4}
+.farm-bed b,.farm-bed span:not(.bed-furrows){grid-column:2}
+.farm-bed span:not(.bed-furrows){font-size:11px}
+.farm-bed.growing{background:#6b5538}.farm-bed.ripe{background:#52603a}
+.farm-bed[aria-pressed=true],.seed-pouch[aria-pressed=true],.pantry-slot[aria-pressed=true]{outline:2px solid #f9c564;outline-offset:-3px}
+.bed-furrows{width:32px;height:18px;background:repeating-linear-gradient(-15deg,transparent 0 4px,#59371e 5px 7px,#ac7845 8px 10px)}
+.crop-icon{width:37px;height:37px;object-fit:contain;image-rendering:pixelated}
+.farm-work,#food-exchange{margin:12px 0;padding:12px;background:#ecdcaf;border:1px solid #b89767;color:#483921}
+.farm-work p,#food-exchange p{margin:6px 0 10px}
+.seed-pouches{gap:6px;margin-bottom:10px}.seed-pouch,.pantry-slot{border:2px solid #9f8054;background:#fff0ce;color:#493820;box-shadow:inset 0 -3px #d6bd86}
+.seed-pouch{display:flex;align-items:center;gap:5px;flex:1;min-width:0;padding:6px;text-align:left}.seed-pouch small{display:block;font-size:10px}
+.pantry-slots{flex-wrap:wrap}.pantry-slot{display:grid;grid-template-columns:40px auto;gap:0 8px;align-items:center;text-align:left;padding:8px;min-width:90px}
+.pantry-slot img,.pantry-slot canvas{grid-row:span 2}.pantry-slot span{grid-column:2;font-variant-numeric:tabular-nums}
+.exchange-fields{align-items:end;margin-bottom:10px}.exchange-fields label{min-width:0;flex:1;margin:0}.exchange-fields input,.exchange-fields select{box-sizing:border-box;width:100%}
+.budget-row .auto-food{display:flex;align-items:center;gap:4px;margin:0;font-size:12px}.auto-food input{width:auto}
+@media(max-width:450px){.farm-bed{padding:5px;grid-template-columns:34px 1fr}.seed-pouch{display:grid;justify-items:center;text-align:center}.farm-beds{padding:6px}.crop-icon{width:32px;height:32px}}

@@ -1,0 +1,344 @@
+{
+  "version": 1,
+  "sheets": {
+    "resource-icons": {
+      "file": "ui/resource-icons.png",
+      "size": [
+        2172,
+        724
+      ]
+    },
+    "tool-icons": {
+      "file": "ui/tool-icons.png",
+      "size": [
+        2172,
+        724
+      ]
+    },
+    "role-icons": {
+      "file": "ui/role-icons.png",
+      "size": [
+        2172,
+        724
+      ]
+    },
+    "emotes": {
+      "file": "ui/emotes.png",
+      "size": [
+        2172,
+        724
+      ]
+    },
+    "cursors": {
+      "file": "ui/cursors.png",
+      "size": [
+        2172,
+        724
+      ]
+    },
+    "selection-ring": {
+      "file": "ui/selection-ring.png",
+      "size": [
+        2172,
+        724
+      ]
+    },
+    "build-dust": {
+      "file": "ui/build-dust.png",
+      "size": [
+        2172,
+        724
+      ]
+    },
+    "harvest-spark": {
+      "file": "ui/harvest-spark.png",
+      "size": [
+        2172,
+        724
+      ]
+    }
+  },
+  "icons": {
+    "wood": {
+      "sheet": "resource-icons",
+      "rect": [
+        10,
+        130,
+        530,
+        465
+      ]
+    },
+    "stone": {
+      "sheet": "resource-icons",
+      "rect": [
+        554,
+        140,
+        520,
+        458
+      ]
+    },
+    "crops": {
+      "sheet": "resource-icons",
+      "rect": [
+        1097,
+        58,
+        522,
+        592
+      ]
+    },
+    "grain": {
+      "sheet": "resource-icons",
+      "rect": [
+        1628,
+        127,
+        538,
+        505
+      ]
+    },
+    "invite": {
+      "sheet": "tool-icons",
+      "rect": [
+        15,
+        90,
+        520,
+        535
+      ]
+    },
+    "meeting": {
+      "sheet": "tool-icons",
+      "rect": [
+        544,
+        55,
+        541,
+        587
+      ]
+    },
+    "journal": {
+      "sheet": "tool-icons",
+      "rect": [
+        1100,
+        100,
+        520,
+        541
+      ]
+    },
+    "settings": {
+      "sheet": "tool-icons",
+      "rect": [
+        1646,
+        90,
+        515,
+        521
+      ]
+    },
+    "role-carpenter": {
+      "sheet": "role-icons",
+      "rect": [
+        6,
+        130,
+        532,
+        485
+      ]
+    },
+    "role-gardener": {
+      "sheet": "role-icons",
+      "rect": [
+        549,
+        142,
+        531,
+        486
+      ]
+    },
+    "role-scholar": {
+      "sheet": "role-icons",
+      "rect": [
+        1090,
+        129,
+        536,
+        479
+      ]
+    },
+    "role-planner": {
+      "sheet": "role-icons",
+      "rect": [
+        1633,
+        133,
+        533,
+        498
+      ]
+    },
+    "think": {
+      "sheet": "emotes",
+      "rect": [
+        6,
+        161,
+        353,
+        382
+      ]
+    },
+    "question": {
+      "sheet": "emotes",
+      "rect": [
+        367,
+        171,
+        348,
+        372
+      ]
+    },
+    "happy": {
+      "sheet": "emotes",
+      "rect": [
+        739,
+        161,
+        329,
+        390
+      ]
+    },
+    "discussion": {
+      "sheet": "emotes",
+      "rect": [
+        1085,
+        173,
+        345,
+        382
+      ]
+    },
+    "hungry": {
+      "sheet": "emotes",
+      "rect": [
+        1448,
+        166,
+        346,
+        384
+      ]
+    },
+    "sleep": {
+      "sheet": "emotes",
+      "rect": [
+        1809,
+        164,
+        349,
+        385
+      ]
+    },
+    "cursor-arrow": {
+      "sheet": "cursors",
+      "rect": [
+        127,
+        40,
+        435,
+        648
+      ]
+    },
+    "cursor-hand": {
+      "sheet": "cursors",
+      "rect": [
+        789,
+        27,
+        527,
+        670
+      ]
+    },
+    "cursor-target": {
+      "sheet": "cursors",
+      "rect": [
+        1490,
+        68,
+        598,
+        587
+      ]
+    }
+  },
+  "effects": {
+    "selection": {
+      "sheet": "selection-ring",
+      "frames": [
+        [
+          15,
+          227,
+          514,
+          250
+        ],
+        [
+          558,
+          227,
+          514,
+          250
+        ],
+        [
+          1101,
+          227,
+          514,
+          250
+        ],
+        [
+          1644,
+          227,
+          514,
+          250
+        ]
+      ],
+      "fps": 7
+    },
+    "dust": {
+      "sheet": "build-dust",
+      "frames": [
+        [
+          0,
+          380,
+          543,
+          330
+        ],
+        [
+          543,
+          380,
+          543,
+          330
+        ],
+        [
+          1086,
+          380,
+          543,
+          330
+        ],
+        [
+          1629,
+          380,
+          543,
+          330
+        ]
+      ],
+      "fps": 8
+    },
+    "spark": {
+      "sheet": "harvest-spark",
+      "frames": [
+        [
+          0,
+          125,
+          543,
+          440
+        ],
+        [
+          543,
+          125,
+          543,
+          440
+        ],
+        [
+          1086,
+          125,
+          543,
+          440
+        ],
+        [
+          1629,
+          125,
+          543,
+          440
+        ]
+      ],
+      "fps": 8
+    }
+  }
+}
