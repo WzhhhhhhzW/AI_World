@@ -1,0 +1,2 @@
+*.sh text eol=lf
+evidence/guest-serial.log binary

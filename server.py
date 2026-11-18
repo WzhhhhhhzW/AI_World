@@ -4,6 +4,7 @@ import hashlib
 import json
 import mimetypes
 import os
+import signal
 import sys
 import threading
 import time
@@ -42,24 +43,29 @@ class StateLock:
         self.file.close()
 
 
-def make_handler(world, allow_shutdown=False):
+def make_handler(world, allow_shutdown=False, qemu_guest=False):
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, fmt, *args):
             pass  # Request bodies and model content are never written to access logs.
 
         def valid_origin(self):
-            expected = f"127.0.0.1:{self.server.server_port}"
             host = self.headers.get("Host", "")
-            return host == expected and self.headers.get("Origin", "http://" + expected) == "http://" + expected
+            port = self.server.server_port
+            valid_hosts = {f"127.0.0.1:{port}"}
+            if qemu_guest:
+                valid_hosts.update((f"10.0.2.2:{port}", f"10.0.2.100:{port}"))
+            return host in valid_hosts and self.headers.get("Origin", "http://" + host) == "http://" + host
 
         def respond(self, value, status=200):
             self.send_bytes(json.dumps(value, ensure_ascii=False).encode("utf-8"), "application/json; charset=utf-8", status)
 
-        def send_bytes(self, body, content_type, status=200):
+        def send_bytes(self, body, content_type, status=200, etag=None):
             self.send_response(status)
             self.send_header("Content-Type", content_type)
             self.send_header("Content-Length", str(len(body)))
-            self.send_header("Cache-Control", "no-store")
+            self.send_header("Cache-Control", "no-cache" if etag else "no-store")
+            if etag:
+                self.send_header("ETag", etag)
             self.send_header("X-Content-Type-Options", "nosniff")
             self.send_header("X-Frame-Options", "DENY")
             self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'")
@@ -75,6 +81,12 @@ def make_handler(world, allow_shutdown=False):
             route = urllib.parse.urlsplit(self.path).path
             if route == "/api/state":
                 return self.respond(world.public())
+            if route == "/api/harness/task":
+                task_id = urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query).get("id", [""])[0]
+                try:
+                    return self.respond(world.harness_task(task_id))
+                except ValueError as exc:
+                    return self.respond({"error": str(exc)}, 404)
             if route == "/api/residents/chat":
                 rid = urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query).get("id", [""])[0]
                 try:
@@ -88,10 +100,19 @@ def make_handler(world, allow_shutdown=False):
                 path = ROOT / "web" / "index.html"
             if not path.is_relative_to(ROOT / "web") or not path.is_file():
                 return self.respond({"error": "页面不存在"}, 404)
+            # Revalidate local artwork without sending multi-megabyte sheets through virtio-net again.
+            info = path.stat()
+            etag = f'W/"{info.st_mtime_ns:x}-{info.st_size:x}"'
+            if self.headers.get("If-None-Match") == etag:
+                self.send_response(304)
+                self.send_header("ETag", etag)
+                self.send_header("Cache-Control", "no-cache")
+                self.end_headers()
+                return
             content_type = mimetypes.guess_type(str(path))[0] or "application/octet-stream"
             if content_type.startswith("text/") or content_type == "application/javascript":
                 content_type += "; charset=utf-8"
-            self.send_bytes(path.read_bytes(), content_type)
+            self.send_bytes(path.read_bytes(), content_type, etag=etag)
 
         def do_POST(self):
             if not self.valid_origin():
@@ -107,7 +128,13 @@ def make_handler(world, allow_shutdown=False):
                     raise ValueError("需要 JSON 对象")
                 route = urllib.parse.urlsplit(self.path).path
                 result = None
-                if route == "/api/residents":
+                if route == "/api/harness/skills":
+                    result = world.forge_skill(data)
+                elif route == "/api/harness/tasks":
+                    result = world.plant_task(data)
+                elif route == "/api/harness/action":
+                    result = world.task_action(data)
+                elif route == "/api/residents":
                     result = world.add_resident(data)
                 elif route == "/api/residents/background":
                     return self.respond({"ok": True, "background": world.set_background(data)})
@@ -184,6 +211,8 @@ def make_handler(world, allow_shutdown=False):
 def main():
     parser = argparse.ArgumentParser(description="谷言 · AI村庄，本地服务")
     parser.add_argument("--port", type=int, default=8766)
+    parser.add_argument("--qemu-guest", action="store_true",
+                        help="允许同机 QEMU 客体经 10.0.2.2 或配置的 10.0.2.100 端口转发同源访问")
     parser.add_argument("--data", type=Path, default=ROOT / "data" / "village.json")
     parser.add_argument("--providers", type=Path, default=ROOT / "providers.local.json")
     parser.add_argument("--duration", type=int, default=0, help="用于有界验证的自动退出秒数；0为手动退出")
@@ -207,7 +236,10 @@ def main():
     try:
         configs = json.loads(args.providers.read_text(encoding="utf-8-sig")) if args.providers.exists() else None
         world = Village(args.data, Provider(configs))
-        server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(world, args.allow_shutdown))
+        server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(world, args.allow_shutdown, args.qemu_guest))
+        if os.name == "posix":
+            # Let the launcher close its gateway after outstanding jobs have settled.
+            signal.signal(signal.SIGTERM, lambda *_: threading.Thread(target=server.shutdown, daemon=True).start())
         thread = threading.Thread(target=world.loop, name="village-clock", daemon=True)
         thread.start()
         if args.duration > 0:

@@ -1,0 +1,153 @@
+[boot] entered primary switched cpu=0 mpidr=0x0 dtb=0x48000000 kimage_voffset=0xffff7fffbfe00000
+[boot] boot linear RAM map extended from DT
+[boot] handoff to kruntime boot_info=0xffff800000820640
+[boot] kruntime primary start cpu=0 boot_info=0xffff800000820640
+[boot] firmware: DTB at 0x48000000
+[boot] firmware: chosen stdout-path=/pl011@9000000
+[boot] firmware: chosen bootargs=<none>
+[boot] firmware: hwdesc source=device tree
+[boot] firmware: memory source=device tree
+[boot] firmware: no cmdline
+[boot] kruntime memory regions ready
+[boot] kruntime allocator ready
+[boot] memory space map ready
+[boot] NMI mode: Pseudo (PMR)
+
+                 ++
+             *  ***
+           *******
+         *******++
+      ********+===
+    ******#*+======
+   *******#***++===
+   *********+**===
+  ##*********##==                  ====+
+%##****++==+****#                ***+=**
+#****++=====++****##            ********
+####*+=======+******===-     ***#*##****
+ #%#******+**+==++**=======+*+*#%
+ %#****+******=====+====+++==**
+  #*********##***###********##%
+   ***##%#%%%%*****#*###*****#%
+   *#%%%#%%%%%****   %%*******#%
+   #%%%%%%          %%%##***###%%
+    **#%           %%%%#% **#**##
+   ###%%         %%%%%   %%%***
+ %%%%%%        %%%%%%%  %%%%#*
+ %%%%%%                %%%%%%+=
+
+Boot at 2026-11-18 14:04:32.003616656 UTC
+
+[37m[  0.318057 knet:185] [33m  No vsock device found![m
+[march = aarch64
+platform = kplat-aarch64
+target = aarch64-unknown-none-softfloat
+build_mode = release
+build_machine = admin150714@LAPTOP-OU596R3G
+build_time = 2026-11-18T13:59:40.142375477Z
+log_level = warn
+backtrace = false
+nr_cpus_max = 4
+vmm = off
+config_sha256 = 128e17a1045d6b541ebf71c0f031f4a1d879f0622e3334ea343df486dded6a83
+git_commit = unknown
+git_dirty = unknown
+build_id = 00b5e4904da6562b9b576eaefb9561a397dfd4ef50fffa2f65456e4db5057fa2
+smp = 4
+Welcome to [96m[1mKylin X[0m!
+SHLVL=1
+HOME=/root
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+PWD=/
+
+Use [1m[3mapt[0m to install packages.
+
+kylin-x:~# [6nVILLAGE_DEVICE /dev/dri/card0 226:0 
+VILLAGE_DEVICE /dev/input/event0 13:64 ID_INPUT_KEYBOARD
+VILLAGE_DEVICE /dev/input/event1 13:65 ID_INPUT_MOUSE
+VILLAGE_WESTON_READY
+VILLAGE_BROWSER_URL http://10.0.2.100:18967/?render=tcg
+could not load cursor 'dnd-move'
+could not load cursor 'dnd-copy'
+could not load cursor 'dnd-move'
+could not load cursor 'dnd-none'
+could not load cursor 'dnd-copy'
+could not load cursor 'dnd-none'
+[37m[ 12.731570 2:4 ksyscall::dispatch:865] [33mUnimplemented syscall: landlock_create_ruleset (tid=4)[m
+[m[37m[ 25.275407 0:58 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[mtail -12 /tmp/village-chromium.log
+[4:4:1118/140446.175799:ERROR:ui/ozone/platform/wayland/common/drm_render_node_path_finder.cc:45] drmGetDevices2() has not found any devices: No such file or directory (2)
+[4:37:1118/140446.698360:ERROR:base/files/file_path_watcher_inotify.cc:923] Failed to read /proc/sys/fs/inotify/max_user_watches
+[4:38:1118/140446.820185:ERROR:dbus/bus.cc:408] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[4:38:1118/140451.221441:ERROR:dbus/bus.cc:408] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[4:38:1118/140451.242171:ERROR:dbus/bus.cc:408] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[4:48:1118/140451.257934:ERROR:net/base/address_tracker_linux.cc:242] Could not bind NETLINK socket: Not supported (95)
+[4:38:1118/140451.272756:ERROR:dbus/bus.cc:408] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+[4:38:1118/140457.303808:ERROR:dbus/bus.cc:408] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+[55:55:1118/140457.921282:ERROR:ui/ozone/platform/wayland/common/drm_render_node_path_finder.cc:45] drmGetDevices2() has not found any devices: No such file or directory (2)
+kylin-x:~# [6n[37m[ 48.206013 0:41 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[mwget -T 3 -qO- http://10.0.2.100:18967/api/health; echo RC=$?
+{"ok": true, "pid": 663, "mode": "local-village", "workspace_id": "5485bd840679a8c7"}RC=0
+kylin-x:~# [6n[37m[ 55.078685 0:93 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[ 78.149226 0:20 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[mps -o pid,comm | tail -35; tail -5 /tmp/village-chromium.log
+PID   COMMAND
+    1 busybox
+    4 chromium
+   18 seatd
+   20 weston
+   22 weston-keyboard
+   23 weston-desktop-
+   28 chrome_crashpad
+   30 chrome_crashpad
+   55 chromium
+   57 chromium
+   58 chromium
+   82 chromium
+   83 chromium
+  124 busybox
+  125 busybox
+[57:71:1118/140538.645434:ERROR:net/socket/tcp_socket_posix.cc:88] Failed to set TCP_KEEPIDLE on fd: 47: Protocol not available (92)
+[57:71:1118/140538.865121:ERROR:net/socket/tcp_socket_posix.cc:88] Failed to set TCP_KEEPIDLE on fd: 42: Protocol not available (92)
+[57:71:1118/140538.957097:ERROR:net/socket/tcp_socket_posix.cc:88] Failed to set TCP_KEEPIDLE on fd: 45: Protocol not available (92)
+[57:71:1118/140541.923312:ERROR:net/socket/tcp_socket_posix.cc:88] Failed to set TCP_KEEPIDLE on fd: 27: Protocol not available (92)
+[57:71:1118/140550.271958:ERROR:net/socket/tcp_socket_posix.cc:88] Failed to set TCP_KEEPIDLE on fd: 22: Protocol not available (92)
+kylin-x:~# [6n[37m[175.882044 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[192.872962 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[225.713941 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[241.754727 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[257.259109 0:65 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[272.895391 0:98 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[288.251568 0:67 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[305.756397 0:18446462599821269008 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[323.755088 0:98 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[342.627668 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[359.610955 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[393.798724 0:71 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[411.297198 0:20 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[464.130903 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[481.346751 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[498.262770 0:65 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[531.777587 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[549.356235 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[567.045583 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[583.711269 0:4 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[649.442968 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[666.194159 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[684.370200 0:67 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[711.857032 0:96 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[730.740910 0:98 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[756.167035 0:67 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[776.011981 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[793.706881 0:98 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[807.868947 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[825.275592 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[841.888430 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[877.095423 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[894.602570 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[912.207883 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[939.821035 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[969.365736 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[994.710454 0:97 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m[37m[1048.626157 0:67 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m

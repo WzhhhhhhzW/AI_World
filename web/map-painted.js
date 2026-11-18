@@ -7,7 +7,7 @@ const VillageMap=(()=>{
     plate=await new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>{if(im.naturalWidth!==layout.background_size[0]||im.naturalHeight!==layout.background_size[1])return reject(Error('Map artwork size mismatch'));resolve(im);};im.onerror=reject;im.src='assets/'+layout.background;});
     await VillageProps.ready;
     plate=VillageProps.cleanPlate(plate);
-    weather=VillageWeather.create(plate,layout);
+    if(document.documentElement.dataset.renderProfile!=='tcg')weather=VillageWeather.create(plate,layout);
     loaded=true;document.documentElement.dataset.mapStyle=layout.version;
     document.dispatchEvent(new Event('village-map-ready'));
   });
@@ -52,11 +52,11 @@ const VillageMap=(()=>{
     c.drawImage(plate,x*1.6,y*1.6,w*1.6,h*1.6,(canvas.width-dw)/2,(canvas.height-dh)/2,dw,dh);
   }
   function groundMotion(c,time,climate){
-    if(loaded)weather.ground(c,time,climate);
+    if(weather)weather.ground(c,time,climate);
   }
   function atmosphere(c,time,state,climate){
     if(!loaded)return;
-    weather.petals(c,time,climate);
+    if(weather)weather.petals(c,time,climate);
     if(state.clock%1440>360&&state.clock%1440<1140&&(!climate||climate.rain<.25&&climate.fog<.6)){
       for(let i=0;i<3;i++){const x=329+Math.sin(time/1900+i*3)*19+i*86,y=355+Math.cos(time/1500+i)*13+i*30,wing=Math.sin(time/80)>0?3:1;c.fillStyle=i%2?'#f1d59d':'#e3c8f3';c.fillRect(x-wing,y,wing,2);c.fillRect(x+1,y,wing,2);}
     }

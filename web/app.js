@@ -178,8 +178,8 @@ function bindResidentApi(form,r){
 
 function renderBuilding(){
   const b=state.buildings.find(b=>b.id===selected);if(!b)return renderVillage();
-  const descriptions={hall:'敲响钟声，召集居民讨论问题。不同模型各自提案，再共同形成结论。',granary:'查看每位居民的思考口粮、预留额度与实际消耗，也能在这里分配预算。',home:'欢迎新的邻居。村庄最多可容纳12位居民，外观与模型伙伴可分别选择。',workshop:'木材与石料在这里变成新的建设，居民会一同完成工地。',archive:'保存会议记录与居民记忆，查看村庄里的模型伙伴。',farm:'园丁照料作物，采收后送入粮仓。本地耕作和搬运不会消耗Token。'};
-  const action={hall:'进入议事厅',granary:'打开粮仓',home:'邀请新居民',archive:'打开档案',farm:'打理菜田',workshop:'返回工坊'}[b.id];
+  const descriptions={hall:'敲响钟声，召集居民讨论问题。不同模型各自提案，再共同形成结论。',granary:'查看每位居民的思考口粮、预留额度与实际消耗，也能在这里分配预算。',home:'欢迎新的邻居。村庄最多可容纳12位居民，外观与模型伙伴可分别选择。',workshop:'居民用木材和石料搭建工坊。落成后，铁匠铺可将工作方法锻成可复用的 Skill。',archive:'保存会议记录与居民记忆，查看村庄里的模型伙伴。',farm:'园丁照料作物，采收后送入粮仓。本地耕作和搬运不会消耗Token。'};
+  const action={hall:'进入议事厅',granary:'打开粮仓',home:'邀请新居民',archive:'打开档案',farm:'打理菜田',workshop:'进入铁匠铺'}[b.id];
   const farmer=state.residents.find(r=>r.task==='farm');
   const facts={farm:[['照料居民',farmer?.name||'等待园丁'],['当前活动',farmer?.activity||'暂无居民照料'],['村庄作物',number(state.resources.crops)]],home:[['村庄邻居',state.residents.length+' / 12'],['入住名额',Math.max(0,12-state.residents.length)]],hall:[['待讨论议题',state.meetings.filter(m=>m.status==='draft').length],['已完成会议',state.meetings.filter(m=>m.status==='complete').length]],granary:[['可用口粮',number(state.residents.reduce((n,r)=>n+r.remaining,0))],['待核对调用',state.ledger.filter(e=>e.status==='unknown').length]],archive:[['归档会议',state.meetings.filter(m=>m.status==='complete').length],['居民记忆',state.residents.reduce((n,r)=>n+r.memory.length,0)]],workshop:[['建设进度',b.built?'已落成':b.constructing?Math.floor(b.progress/45*100)+'%':'未开工']]}[b.id]||[];
   return `<canvas class="building-art" width="300" height="200" data-building-art="${esc(b.id)}" aria-label="${esc(b.name)}的场景"></canvas><div class="building-desc"><p class="section-label">${b.built?'已落成':b.constructing?'施工中':'等待建设'}</p><p class="detail-desc">${descriptions[b.id]}</p><div class="building-facts">${facts.map(([k,v])=>`<div><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('')}</div></div><div class="building-body">${!b.built?`<div class="stat-grid"><div class="stat-box"><small>${VillageUI.icon('wood',22)} 所需木材</small><strong>${b.cost.wood}</strong></div><div class="stat-box"><small>${VillageUI.icon('stone',22)} 所需石料</small><strong>${b.cost.stone}</strong></div></div>${b.constructing?`<div class="building-progress"><i style="width:${b.progress/45*100}%"></i></div><p class="fine-print">居民正合力施工 · ${Math.floor(b.progress/45*100)}%</p>`:`<button class="primary full" id="build">开始建设</button>`}`:`<button class="primary full" id="enter-building">${action}</button>`}<p class="fine-print">建设与日常劳动使用村庄材料，模型思考才会消耗口粮。</p></div>`;
@@ -235,6 +235,10 @@ function renderPanel(){
   if(!state||$('#game-window').hidden)return;
   const resident=state.residents.find(r=>r.id===selected);
   $('#game-window').dataset.interaction=view;
+  if(VillageHarness.handles(view)){
+    VillageHarness.show(view,selected);
+    return;
+  }
   const openChat=$('.resident-chat');
   if(view==='residentChat'&&openChat?.dataset.owner===selected&&openChat.sync){openChat.sync();return;}
   const renameForm=$('#rename-form');
@@ -271,6 +275,11 @@ function renderPanel(){
   if(view==='residentChat')VillageInteractions.bindChat(resident);
   if(view==='wardrobe')VillageInteractions.bindWardrobe(resident);
   if(view==='farm'||view==='granary')VillageFarm.bind();
+  if(view==='farm')$('#panel').insertAdjacentHTML('afterbegin','<div class="field-entry"><button class="outline" data-go="taskBoard">打开委托田</button><span>给村民布置工作、收获成果</span></div>');
+  if(view==='building'&&selected==='workshop'){
+    const shop=state.buildings.find(b=>b.id==='workshop');
+    if(!shop.built)$('#panel .building-body').insertAdjacentHTML('afterbegin','<button class="outline full" data-go="forge">翻看铁匠铺技艺册</button>');
+  }
   const backgroundForm=$('#background-form');
   if(view==='residentBackground'&&backgroundForm)bindBackgroundForm(backgroundForm,state.residents.find(r=>r.id===selected));
   if(view==='residentApi'&&apiForm)bindResidentApi(apiForm,state.residents.find(r=>r.id===selected));
@@ -281,6 +290,7 @@ function renderPanel(){
   document.querySelectorAll('[data-weather-icon]').forEach(el=>VillageClimate.icon(el,el.dataset.weatherIcon));
   document.querySelectorAll('[data-building-art]').forEach(el=>VillageMap.paintBuildingPortrait(el,state.buildings.find(b=>b.id===el.dataset.buildingArt)));
   if(view==='archive'){
+    $('#panel').insertAdjacentHTML('afterbegin','<button class="outline full" data-go="workArchive">查阅已收获与封存的委托</button>');
     $('#panel').insertAdjacentHTML('beforeend','<p class="section-label">本机村庄</p><button class="outline full" id="quit-village">保存并退出村庄</button>');
     $('#quit-village').addEventListener('click',async()=>{try{await request('quit',{});exiting=true;document.dispatchEvent(new Event('village-service-stopped'));}catch(error){toast(error.message);}});
   }
@@ -296,7 +306,7 @@ function renderPanel(){
   $('#save-resident')?.addEventListener('click',()=>mutate('residents/update',{id:selected,task:$('#resident-job').value,appearance:$('#resident-appearance').value},'新的安排已保存'));
   $('#think')?.addEventListener('click',()=>mutate('plan',{id:selected},'TA 开始认真思考了'));
   $('#build')?.addEventListener('click',()=>mutate('buildings',{id:selected},'建设开始，居民会共同完成它'));
-  $('#enter-building')?.addEventListener('click',()=>{const id=selected;if(id==='home')openInvite();else navigate(({hall:'meeting',granary:'granary',archive:'archive',farm:'farm'})[id]||'village');});
+  $('#enter-building')?.addEventListener('click',()=>{const id=selected;if(id==='home')openInvite();else navigate(({hall:'meeting',granary:'granary',archive:'archive',farm:'farm',workshop:'forge'})[id]||'village');});
 }
 function openInvite(){if(!state)return;$('#create-provider').innerHTML=providerOptions('deepseek');$('#appearance-options').innerHTML=state.appearances.map((a,i)=>`<label class="appearance-choice"><input type="radio" name="appearance" value="${esc(a.id)}" ${i===0?'checked':''} required><span class="appearance-art"><canvas width="96" height="112" data-avatar="${esc(a.id)}" aria-hidden="true"></canvas><span>${esc(a.name)}</span></span></label>`).join('');VillageAvatars.paintChoices($('#resident-dialog'));$('#resident-dialog').showModal();}
 async function refresh(force=false){
@@ -487,10 +497,11 @@ function drawVillager(c,e,now){
   const emote=r.meeting?'discussion':calling?'think':r.remaining===0?'hungry':null;
   if(emote)VillageUI.renderIcon(c,emote,x+8,y-98,24,24);
 }
+const frameInterval = document.documentElement.dataset.renderProfile === 'tcg' ? 125 : 50;
 function draw(now){
   requestAnimationFrame(draw);
-  if(document.hidden||now-lastFrame<50)return;
-  const elapsed=lastFrame?now-lastFrame:50;lastFrame=now;if(!state?.paused)visualTime+=Math.min(100,elapsed);
+  if(document.hidden||now-lastFrame<frameInterval)return;
+  const elapsed=lastFrame?now-lastFrame:frameInterval;lastFrame=now;if(!state?.paused)visualTime+=Math.min(Math.max(100,frameInterval),elapsed);
   canvas.dataset.motionTick=String(Math.floor(visualTime/100));
   const width=Math.max(1,Math.round(canvas.clientWidth)),height=Math.max(1,Math.round(canvas.clientHeight));
   if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;}

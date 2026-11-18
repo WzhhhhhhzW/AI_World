@@ -158,6 +158,8 @@ const VillageTiles = (() => {
     }
     loaded=['grass','dirt','water','hall','house','granary'].every(key=>sprites.has(key));
     document.documentElement.dataset.sceneSheets=String(sheets.size);document.documentElement.dataset.sceneSprites=String(sprites.size);
+    // Gameplay draws from the cropped sprites once the large source atlases have been decoded.
+    sheets.clear();
     if(results.some(result=>result.status==='rejected'))console.warn('Some scene artwork could not be loaded.');
     document.dispatchEvent(new Event('village-map-ready'));
   }).catch(()=>{document.documentElement.dataset.sceneSprites='0';});

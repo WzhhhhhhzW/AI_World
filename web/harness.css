@@ -1,0 +1,89 @@
+.game-mode .field-entry,
+.game-mode .harness-toolbar,
+.game-mode .field-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+.game-mode .field-entry { padding: 8px 0; color: #755533; font-size: 13px; }
+.game-mode .harness-page { color: #604223; line-height: 1.65; overflow-wrap: anywhere; }
+.game-mode .harness-toolbar { margin: 4px 0 12px; }
+.game-mode .harness-toolbar .outline, .game-mode .field-entry .outline { margin: 0; }
+.game-mode .field-actions {
+  justify-content: space-between;
+  border-top: 1px dashed #c59958;
+  border-bottom: 1px dashed #c59958;
+  padding: 12px 0;
+}
+.game-mode .field-actions p { flex: 1 1 230px; margin: 0; font-size: 14px; }
+.game-mode .field-actions small { flex-basis: 100%; }
+.game-mode .work-heading, .game-mode .order-head h3 {
+  color: #644326;
+  font: bold 20px/1.5 SimSun, serif;
+  margin: 14px 0 8px;
+}
+.game-mode .work-heading small { color: #755a3c; font: 12px/1.6 sans-serif; }
+.game-mode .work-order {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  background: #efdba62e;
+  color: #684a2b;
+  padding: 12px 8px;
+  border-bottom: 1px dashed #b99464;
+}
+.game-mode .work-order:hover { background: #ddbe7f55; }
+.game-mode .work-order strong, .game-mode .work-order small { display: block; }
+.game-mode .work-order strong { font-size: 15px; }
+.game-mode .work-order small, .game-mode .order-head p { color: #755333; font-size: 12px; }
+.game-mode .order-status {
+  display: inline-block;
+  background: #ead5ac;
+  border: 1px solid #c59b5a;
+  color: #69431e;
+  padding: 2px 8px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.game-mode .order-status[data-stage=ready],
+.game-mode .order-status[data-stage=harvested] { background: #e0e0ae; color: #40552b; border-color: #989851; }
+.game-mode .order-status[data-stage=blocked], .game-mode .order-status[data-stage=failed] {
+  background: #eed2aa; color: #883d26; border-color: #ab714d;
+}
+.game-mode .order-head h3 { display: inline; margin-left: 8px; }
+.game-mode .order-head p { margin: 5px 0; }
+.game-mode .work-text { white-space: pre-wrap; margin: 7px 0; line-height: 1.8; }
+.game-mode .harness-pair { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+.game-mode .work-roles { margin: 12px 0; }
+.game-mode .work-roles small { margin-right: 8px; color: #79542f; }
+.game-mode .work-sheet, .game-mode .work-trace, .game-mode .skill-leaf {
+  border: 1px solid #c7a776; background: #efdba638; padding: 10px 13px; margin: 10px 0;
+}
+.game-mode .work-sheet h4, .game-mode .work-trace h4 { margin: 0; font-size: 14px; color: #644023; }
+.game-mode .skill-leaf summary, .game-mode .work-trace summary { cursor: pointer; font-size: 14px; color: #603f20; }
+.game-mode .skill-leaf summary span { display: block; padding-left: 15px; color: #755533; font-size: 12px; }
+.game-mode .work-trace ol { margin: 8px 0 0; padding-left: 22px; font-size: 13px; }
+.game-mode .work-trace ol li + li { margin-top: 4px; }
+.game-mode .work-form { margin: 10px 0 6px; }
+.game-mode .work-form select { min-width: 0; }
+.game-mode .work-form .fine-print { margin: 4px 0; }
+.game-mode .work-form .fine-print:empty { display: none; }
+.game-mode .work-form button[type=submit] { margin-top: 12px; }
+.game-mode .source-checks, .game-mode .hint-checks { margin: 12px 0; padding: 6px 10px 10px; border: 1px solid #c4a16e; }
+.game-mode .source-checks label { display: inline-flex; gap: 4px; align-items: center; margin: 4px 12px 0 0; }
+.game-mode .hint-checks label { display: flex; gap: 7px; align-items: start; margin: 7px 0 0; }
+.game-mode .source-checks input, .game-mode .hint-checks input { flex: none; margin: 2px 0 0; }
+@media(max-width: 460px) {
+  .game-mode .field-actions p { flex-basis: 100%; }
+  .game-mode .harness-page .harness-toolbar { gap: 5px; }
+  .game-mode .harness-page .harness-toolbar button { flex: 1; }
+  .game-mode .work-order { gap: 5px; padding: 9px 3px; }
+  .game-mode .work-sheet, .game-mode .work-trace, .game-mode .skill-leaf { padding: 8px; }
+}
+@media(max-width: 330px) {
+  .game-mode .game-tools .tool-button { width: 51px; }
+}
