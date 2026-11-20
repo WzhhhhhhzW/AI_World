@@ -241,14 +241,14 @@ class Village(WorldGovernance, KitchenGarden, VillageHarness):
 
     def public(self):
         with self.lock:
-            data = copy.deepcopy({k: v for k, v in self.s.items() if k not in ("conversations", "harness")})
+            data = copy.deepcopy({k: v for k, v in self.s.items() if k not in ("conversations", "harness", "ledger")})
             data["harness"] = self.harness_index()
             data["resident_api_settings"] = True
             data["resident_interactions"] = True
             data["farm"]["catalog"] = copy.deepcopy(CROPS)
             data["providers"] = self.provider.public()
             data["appearances"] = copy.deepcopy(APPEARANCES)
-            data["ledger"] = data["ledger"][-100:][::-1]
+            data["ledger"] = copy.deepcopy(self.s["ledger"][-100:][::-1])
             for r in data["residents"]:
                 turns = self.s["conversations"].get(r["id"])
                 if turns:

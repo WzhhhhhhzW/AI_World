@@ -1,5 +1,6 @@
 """Launch the village on a graphical AArch64 QEMU guest, or capture its display."""
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -10,37 +11,87 @@ import socket
 import subprocess
 import sys
 import tempfile
+import time
 from urllib.request import Request, build_opener, ProxyHandler
 
 
-def prepare_session_disk(rootfs, work, url):
-    """Install a login hook on a private raw image; preserve the original filesystem."""
-    disk = work / "session.img"
-    subprocess.run(["cp", "--reflink=auto", "--sparse=always", "--", rootfs, disk], check=True)
-    disk.chmod(0o600)
-    # debugfs may report a missing inode while exiting successfully.
-    def debugfs(command, write=False):
-        mode = ["-w"] if write else []
-        return subprocess.check_output(["debugfs", *mode, "-R", command, disk],
-                                       cwd=work, stderr=subprocess.STDOUT, text=True)
+GUEST_HOST = "10.0.2.100:8766"
+GUEST_URL = f"http://{GUEST_HOST}/?render=tcg"
 
-    shutil.copyfile(Path(__file__).with_name("guest-session.sh"), work / "session.sh")
-    (work / "login.sh").write_text(
-        f"if [ ! -e /tmp/village-started ]; then\n"
+
+def cached_boot_disk(rootfs):
+    """Build an immutable native Linux disk once per source and guest hook revision."""
+    import fcntl
+
+    session_script = Path(__file__).with_name("guest-session.sh").read_bytes()
+    login = (
+        "if [ ! -e /tmp/village-started ]; then\n"
         "  touch /tmp/village-started\n"
-        f"  sh /opt/village-session.sh '{url}' </dev/null >/dev/console 2>&1 &\nfi\n",
-        encoding="ascii",
-    )
-    for local, remote in [("session.sh", "/opt/village-session.sh"),
-                          ("login.sh", "/etc/profile.d/99-village-demo.sh")]:
-        debugfs(f"write {local} {remote}", write=True)
-        content = (work / local).read_text(encoding="utf-8")
-        if content not in debugfs(f"cat {remote}"):
-            raise RuntimeError(f"临时镜像中未读回 {remote}")
-    return disk
+        f"  sh /opt/village-session.sh '{GUEST_URL}' </dev/null >/dev/console 2>&1 &\nfi\n"
+    ).encode("ascii")
+
+    def source_identity():
+        stat = rootfs.stat()
+        return (str(rootfs), stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns, stat.st_ino)
+
+    identity = source_identity()
+    fingerprint = json.dumps(identity).encode() + session_script + login
+    key = hashlib.sha256(fingerprint).hexdigest()
+    cache_root = Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache").resolve()
+    cache = cache_root / "qilin-village" / "disks"
+    cache.mkdir(mode=0o700, parents=True, exist_ok=True)
+    disk = cache / (key + ".img")
+    with (cache / (key + ".lock")).open("a+b") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        if disk.is_file() and disk.stat().st_size == rootfs.stat().st_size:
+            return disk, "disk-cache-hit"
+        print("首次准备客体启动盘，后续启动将复用此盘。", flush=True)
+        with tempfile.TemporaryDirectory(dir=cache) as tmp:
+            work = Path(tmp)
+            candidate = work / "disk.img"
+            subprocess.run(["cp", "--reflink=auto", "--sparse=always", "--", rootfs, candidate], check=True)
+            candidate.chmod(0o600)
+            for local, remote, data in [
+                ("session.sh", "/opt/village-session.sh", session_script),
+                ("login.sh", "/etc/profile.d/99-village-demo.sh", login),
+            ]:
+                (work / local).write_bytes(data)
+                subprocess.run(["debugfs", "-w", "-R", f"write {local} {remote}", candidate],
+                               cwd=work, stdout=subprocess.DEVNULL, check=True)
+                # debugfs can return success for a missing target. Read actual bytes.
+                result = subprocess.check_output(["debugfs", "-R", f"cat {remote}", candidate],
+                                                 stderr=subprocess.DEVNULL)
+                if result != data:
+                    raise RuntimeError(f"启动盘脚本回读失败：{remote}")
+            if source_identity() != identity:
+                raise RuntimeError("准备期间原镜像已更改，请重新启动")
+            candidate.chmod(0o400)
+            candidate.replace(disk)
+    return disk, "disk-cache-built"
+
+
+def report_guest_stages(emulator, serial_log, started):
+    markers = iter([(b"platform = kplat-aarch64", "kernel-boot"),
+                    (b"VILLAGE_WESTON_READY", "weston-ready"),
+                    (b"VILLAGE_BROWSER_URL", "chromium-launch")])
+    marker, label = next(markers)
+    deadline = time.monotonic() + 120
+    while emulator.poll() is None and time.monotonic() < deadline:
+        if serial_log.exists():
+            contents = serial_log.read_bytes()
+            while marker in contents:
+                print(f"VILLAGE_STAGE {time.monotonic() - started:.2f}s {label}", flush=True)
+                following = next(markers, None)
+                if following is None:
+                    return
+                marker, label = following
+        time.sleep(.15)
+    if emulator.poll() is None:
+        print(f"仍在等待 {label}，详情见 {serial_log}", flush=True)
 
 
 def launch(args):
+    started = time.monotonic()
     kernel = args.kernel.resolve(strict=True)
     rootfs = args.rootfs.resolve(strict=True)
     version = subprocess.check_output(["qemu-system-aarch64", "--version"], text=True).splitlines()[0]
@@ -52,9 +103,7 @@ def launch(args):
     nc = shutil.which("nc")
     if not nc:
         raise ValueError("需要宿主机安装 netcat-openbsd (nc)")
-    host = f"10.0.2.100:{args.port}"
-    url = f"http://{host}/?render=tcg"
-    request = Request(f"http://127.0.0.1:{args.port}/api/health", headers={"Host": host})
+    request = Request(f"http://127.0.0.1:{args.port}/api/health", headers={"Host": GUEST_HOST})
     with build_opener(ProxyHandler({})).open(request, timeout=5) as response:
         health = json.load(response)
     if health.get("mode") != "local-village" or not health.get("ok"):
@@ -62,7 +111,8 @@ def launch(args):
 
     with tempfile.TemporaryDirectory(prefix="village-qemu-") as directory:
         work = Path(directory).resolve()
-        disk = prepare_session_disk(rootfs, work, url)
+        disk, cache_stage = cached_boot_disk(rootfs)
+        print(f"VILLAGE_STAGE {time.monotonic() - started:.2f}s {cache_stage}", flush=True)
         monitor = work / "monitor.sock"
         serial = work / "serial.sock"
         # Double commas encode literal commas in QEMU option strings.
@@ -71,7 +121,7 @@ def launch(args):
             "qemu-system-aarch64", "-machine", "virt,gic-version=3", "-cpu", "cortex-a76",
             "-accel", "tcg,tb-size=160", "-m", str(args.memory), "-smp", str(args.cpus),
             "-kernel", str(kernel), "-drive", drive, "-device", "virtio-blk-pci,drive=disk0",
-            "-netdev", f"user,id=net0,restrict=on,guestfwd=tcp:{host}-cmd:{nc} 127.0.0.1 {args.port}",
+            "-netdev", f"user,id=net0,restrict=on,guestfwd=tcp:{GUEST_HOST}-cmd:{nc} 127.0.0.1 {args.port}",
             "-device", "virtio-net-pci,netdev=net0,romfile=",
             "-device", "virtio-gpu-pci", "-device", "virtio-keyboard-pci",
             "-device", "virtio-mouse-pci", "-device", "virtio-rng-pci",
@@ -83,8 +133,15 @@ def launch(args):
             command.extend(["-append", args.append])
         command.extend(["-display", "none" if args.headless else "gtk,gl=off"])
         print(version, "\n" + shlex.join(command), flush=True)
-        print(f"客体 Chromium 地址 {url}\nQMP 监视器 {monitor}\n串口记录 {work}/serial.log", flush=True)
-        return subprocess.call(command)
+        print(f"客体 Chromium 地址 {GUEST_URL}\nQMP 监视器 {monitor}\n串口记录 {work}/serial.log", flush=True)
+        with subprocess.Popen(command) as emulator:
+            print(f"VILLAGE_STAGE {time.monotonic() - started:.2f}s qemu-start", flush=True)
+            try:
+                report_guest_stages(emulator, work / "serial.log", started)
+                return emulator.wait()
+            finally:
+                if emulator.poll() is None:
+                    emulator.terminate()
 
 
 def capture(args):

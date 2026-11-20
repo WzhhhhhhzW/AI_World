@@ -1,5 +1,23 @@
 'use strict';
 const VillageSkin=(()=>{
+  if (document.documentElement.dataset.renderProfile === 'tcg') {
+    const css = new Promise((resolve,reject) => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'assets/tcg/skin.css';
+      link.onload = resolve;
+      link.onerror = () => reject(Error('UI skin unavailable'));
+      document.head.append(link);
+    });
+    const manifest = fetch('assets/tcg/skin.json').then(response => {
+      if (!response.ok) throw Error('UI skin unavailable');
+      return response.json();
+    });
+    return {ready:Promise.all([css,manifest]).then(([, skin]) => {
+      document.documentElement.dataset.uiSkin = skin.version;
+      document.documentElement.dataset.uiSkinRegions = String(skin.regions);
+    })};
+  }
   const ready=fetch('assets/ui-skin-v2.json').then(r=>{if(!r.ok)throw Error('UI skin unavailable');return r.json();}).then(async atlas=>{
     const image=await new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=reject;im.src='assets/'+atlas.file;});
     if(image.naturalWidth!==atlas.size[0]||image.naturalHeight!==atlas.size[1])throw Error('UI skin dimensions mismatch');

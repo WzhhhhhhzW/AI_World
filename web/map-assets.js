@@ -142,7 +142,8 @@ const VillageTiles = (() => {
       if(point.x>=item.x-ax*item.scale&&point.x<=item.x+(w-ax)*item.scale&&point.y>=item.y-ay*item.scale&&point.y<=item.y+(h-ay)*item.scale)return{view:item.action,id:null,name:item.name};
     }return null;
   }
-  const ready=fetch('assets/scenery.json').then(response=>{if(!response.ok)throw new Error('Scene atlas unavailable');return response.json();}).then(async data=>{
+  const compact = typeof document !== 'undefined' && document.documentElement.dataset.renderProfile === 'tcg';
+  const ready=fetch(compact?'assets/tcg/scenery.json':'assets/scenery.json').then(response=>{if(!response.ok)throw new Error('Scene atlas unavailable');return response.json();}).then(async data=>{
     manifest=data;
     const results=await Promise.allSettled(Object.entries(data.sheets).map(([key,spec])=>new Promise((resolve,reject)=>{
       const image=new Image();image.onload=()=>{if(image.naturalWidth!==spec.size[0]||image.naturalHeight!==spec.size[1])return reject(new Error('Unexpected scene sheet size'));sheets.set(key,image);resolve();};image.onerror=()=>reject(new Error('Scene sheet unavailable'));image.src='assets/'+spec.file;
@@ -152,7 +153,7 @@ const VillageTiles = (() => {
       const [sx,sy,sw,sh]=spec.rect,[width,height]=spec.size;
       const sprite=document.createElement('canvas');sprite.width=width;sprite.height=height;
       const context=sprite.getContext('2d');context.imageSmoothingEnabled=false;
-      if(spec.anchor){const scale=Math.min((width-2)/sw,(spec.anchor[1]-1)/sh);const dw=Math.round(sw*scale),dh=Math.round(sh*scale);context.drawImage(image,sx,sy,sw,sh,Math.round((width-dw)/2),spec.anchor[1]-dh,dw,dh);}
+      if(spec.anchor&&!data.prerendered){const scale=Math.min((width-2)/sw,(spec.anchor[1]-1)/sh);const dw=Math.round(sw*scale),dh=Math.round(sh*scale);context.drawImage(image,sx,sy,sw,sh,Math.round((width-dw)/2),spec.anchor[1]-dh,dw,dh);}
       else context.drawImage(image,sx,sy,sw,sh,0,0,width,height);
       sprites.set(key,sprite);
     }

@@ -1,7 +1,8 @@
 #!/bin/sh
-# Sourced by the login shell only on the temporary demo disk.
+# Executed by the x-kernel login shell in the disposable guest snapshot.
 set -eu
 url=$1
+printf '\nVILLAGE_SESSION_START\n'
 export XDG_RUNTIME_DIR=/run/user/0 WAYLAND_DISPLAY=ict-wayland
 export WESTON_DISABLE_ATOMIC=1 SEATD_VTBOUND=0 LIBSEAT_BACKEND=seatd
 mkdir -p "$XDG_RUNTIME_DIR" /run/udev/data /dev/input /dev/dri
@@ -38,16 +39,16 @@ fi
 seatd -g root >/tmp/village-seat.log 2>&1 &
 i=0
 while [ ! -S /run/seatd.sock ]; do
-    i=$((i+1)); [ "$i" -lt 60 ] || { cat /tmp/village-seat.log; exit 1; }
-    sleep 1
+    i=$((i+1)); [ "$i" -lt 600 ] || { cat /tmp/village-seat.log; exit 1; }
+    sleep .1
 done
 weston --backend=drm-backend.so --renderer=pixman --drm-device=card0 \
     --seat=seat0 --continue-without-input --idle-time=0 --socket="$WAYLAND_DISPLAY" \
     --log=/tmp/village-weston.log &
 i=0
 while [ ! -S "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" ]; do
-    i=$((i+1)); [ "$i" -lt 60 ] || { cat /tmp/village-weston.log; exit 1; }
-    sleep 1
+    i=$((i+1)); [ "$i" -lt 600 ] || { cat /tmp/village-weston.log; exit 1; }
+    sleep .1
 done
 printf 'VILLAGE_WESTON_READY\n'
 printf 'VILLAGE_BROWSER_URL %s\n' "$url"

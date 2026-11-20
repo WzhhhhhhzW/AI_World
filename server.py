@@ -45,6 +45,10 @@ class StateLock:
 
 def make_handler(world, allow_shutdown=False, qemu_guest=False):
     class Handler(BaseHTTPRequestHandler):
+        protocol_version = "HTTP/1.1"
+        disable_nagle_algorithm = True
+        timeout = 30
+
         def log_message(self, fmt, *args):
             pass  # Request bodies and model content are never written to access logs.
 
@@ -53,7 +57,7 @@ def make_handler(world, allow_shutdown=False, qemu_guest=False):
             port = self.server.server_port
             valid_hosts = {f"127.0.0.1:{port}"}
             if qemu_guest:
-                valid_hosts.update((f"10.0.2.2:{port}", f"10.0.2.100:{port}"))
+                valid_hosts.update((f"10.0.2.2:{port}", f"10.0.2.100:{port}", "10.0.2.100:8766"))
             return host in valid_hosts and self.headers.get("Origin", "http://" + host) == "http://" + host
 
         def respond(self, value, status=200):
@@ -61,6 +65,9 @@ def make_handler(world, allow_shutdown=False, qemu_guest=False):
 
         def send_bytes(self, body, content_type, status=200, etag=None):
             self.send_response(status)
+            if status >= 400:
+                self.close_connection = True
+                self.send_header("Connection", "close")
             self.send_header("Content-Type", content_type)
             self.send_header("Content-Length", str(len(body)))
             self.send_header("Cache-Control", "no-cache" if etag else "no-store")

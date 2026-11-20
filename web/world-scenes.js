@@ -1,11 +1,38 @@
 'use strict';
 const VillageScenes=(()=>{
   const images={};
-  const ready=Promise.all(['council-hall-v1','eastwood-v1'].map(name=>new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>{images[name]=im;resolve();};im.onerror=()=>reject(Error('新地图加载失败'));im.src='assets/maps/'+name+'.png';})));
+  const compact = typeof document !== 'undefined' && document.documentElement.dataset.renderProfile === 'tcg';
+  const pending = new Map();
+  function load(name) {
+    if (!pending.has(name)) {
+      pending.set(name, new Promise((resolve,reject)=>{
+        const image = new Image();
+        image.onload=()=>{
+          images[name]=image;
+          if (compact) document.dispatchEvent(new Event('village-scene-ready'));
+          resolve();
+        };
+        image.onerror=()=>reject(Error('新地图加载失败'));
+        image.src=compact?'assets/tcg/'+name+'.webp':'assets/maps/'+name+'.png';
+      }));
+    }
+    return pending.get(name);
+  }
+  const ready=compact ? Promise.resolve() : Promise.all(['council-hall-v1','eastwood-v1'].map(load));
+  function drawBackground(c, name) {
+    if (images[name]) {
+      c.drawImage(images[name],0,0,960,640);
+      return true;
+    }
+    if (!pending.has(name)) load(name).catch(()=>{});
+    c.fillStyle='#5d6346';
+    c.fillRect(0,0,960,640);
+    return false;
+  }
   const seats=[[286,202],[674,202],[260,257],[700,257],[246,316],[714,316],[245,377],[715,377],[268,445],[692,445],[332,478],[628,478]];
   function drawHall(c,state,time){
-    c.drawImage(images['council-hall-v1'],0,0,960,640);
-    if(state.residents.length>10){
+    const painted=drawBackground(c,'council-hall-v1');
+    if(painted&&state.residents.length>10){
       c.drawImage(images['council-hall-v1'],352,595,138,170,298,431,68,85);
       c.drawImage(images['council-hall-v1'],1047,595,140,170,594,431,68,85);
     }
@@ -19,7 +46,7 @@ const VillageScenes=(()=>{
     for(const [x,y] of [[398,95],[415,92],[884,355],[906,358]]){const f=.5+Math.sin(time/160+x)*.15;c.fillStyle=`rgba(255,218,126,${f})`;c.fillRect(x,y,2,4);}
   }
   function drawRegion(c,state,time,drawResident){
-    c.drawImage(images['eastwood-v1'],0,0,960,640);
+    drawBackground(c,'eastwood-v1');
     const structures=state.world?.structures||[],entities=structures.map(s=>({y:s.rect[1]+s.rect[3],s}));
     state.residents.filter(r=>r.region==='eastwood').forEach(r=>entities.push({y:(r.y+1)*32,r}));
     entities.sort((a,b)=>a.y-b.y);

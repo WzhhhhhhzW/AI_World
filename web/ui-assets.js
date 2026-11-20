@@ -57,7 +57,8 @@ const VillageUI = (() => {
       }
     }
   }
-  const ready = fetch('assets/ui-atlas.json').then(response => {
+  const compact = typeof document !== 'undefined' && document.documentElement.dataset.renderProfile === 'tcg';
+  const ready = fetch(compact ? 'assets/tcg/ui-atlas.json' : 'assets/ui-atlas.json').then(response => {
     if (!response.ok) throw new Error('UI atlas unavailable');
     return response.json();
   }).then(async data => {

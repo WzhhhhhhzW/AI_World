@@ -50,14 +50,18 @@ const VillageCamera=(()=>{
       if(anchor){
         cx=anchor.world.x-(anchor.x-width/2)/scale;
         cy=anchor.world.y-(anchor.y-height/2)/scale;
-      }else{cx+=(tx-cx)*blend;cy+=(ty-cy)*blend;}
+      }else{cx+=(tx-cx)*blend;cy+=(ty-cy)*blend;
+        if(Math.abs(tx-cx)<.002)cx=tx;
+        if(Math.abs(ty-cy)<.002)cy=ty;
+      }
       constrain();
       if(scale===targetScale)anchor=null;
       return pose();
     }
     function pose(){return{scale,x:width/2-cx*scale,y:height/2-cy*scale,
       zoom:scale/minScale,minScale,canZoomOut:targetScale>minScale+.00001,canZoomIn:targetScale<maxScale-.00001};}
-    return {resize,zoomAt,panBy,gesture,reset,step,worldAt,pose};
+    function moving(){return scale!==targetScale || Math.abs(tx-cx)>.002 || Math.abs(ty-cy)>.002;}
+    return {resize,zoomAt,panBy,gesture,reset,step,worldAt,pose,moving};
   }
   return {create};
 })();

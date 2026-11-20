@@ -17,7 +17,8 @@ const VillageAvatars = (() => {
       if(draw(context,element.dataset.avatar,element.width/2,element.height-6,element.height-12))element.dataset.artReady='true';
     });
   }
-  const ready=fetch('assets/avatars.json').then(response=>{
+  const compact = typeof document !== 'undefined' && document.documentElement.dataset.renderProfile === 'tcg';
+  const ready=fetch(compact?'assets/tcg/avatars.json':'assets/avatars.json').then(response=>{
     if(!response.ok)throw new Error('Avatar manifest unavailable');
     return response.json();
   }).then(data=>new Promise((resolve,reject)=>{

@@ -1,0 +1,58 @@
+{
+  "clock": "host monotonic; seconds from launcher start",
+  "stages": {
+    "qemu_socket": 0.15,
+    "kernel_identified": 0.57,
+    "weston_ready": 3.02,
+    "chromium_launch": 3.02,
+    "map_visible": 72.08,
+    "browser_report_received": 78.97
+  },
+  "profile": {
+    "ready_ms": 39078,
+    "profile": "tcg",
+    "asset_count": 15,
+    "asset_body_bytes": 2285499,
+    "asset_wire_bytes": 2289999,
+    "last_assets": [
+      {
+        "path": "/assets/tcg/scenery.webp",
+        "start_ms": 33199,
+        "end_ms": 34004,
+        "protocol": "http/1.1"
+      },
+      {
+        "path": "/assets/tcg/ui-atlas.webp",
+        "start_ms": 33131,
+        "end_ms": 33953,
+        "protocol": "http/1.1"
+      },
+      {
+        "path": "/assets/tcg/avatars.webp",
+        "start_ms": 33100,
+        "end_ms": 33873,
+        "protocol": "http/1.1"
+      },
+      {
+        "path": "/assets/tcg/valley-painted-v1.webp",
+        "start_ms": 30813,
+        "end_ms": 31845,
+        "protocol": "http/1.1"
+      },
+      {
+        "path": "/assets/props/cabbage.png",
+        "start_ms": 30780,
+        "end_ms": 31228,
+        "protocol": "http/1.1"
+      }
+    ],
+    "viewport": [
+      1280,
+      629
+    ],
+    "sample_ms": 8077,
+    "paints": 42,
+    "draw_calls": 2725,
+    "frame_callback_p95_ms": 154
+  }
+}

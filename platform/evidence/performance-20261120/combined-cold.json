@@ -1,0 +1,58 @@
+{
+  "clock": "host monotonic; seconds from launcher start",
+  "stages": {
+    "qemu_socket": 12.8,
+    "kernel_identified": 13.14,
+    "weston_ready": 15.9,
+    "chromium_launch": 15.9,
+    "map_visible": 84.79,
+    "browser_report_received": 91.22
+  },
+  "profile": {
+    "ready_ms": 37863,
+    "profile": "tcg",
+    "asset_count": 15,
+    "asset_body_bytes": 2285499,
+    "asset_wire_bytes": 2289999,
+    "last_assets": [
+      {
+        "path": "/assets/tcg/scenery.webp",
+        "start_ms": 32553,
+        "end_ms": 33346,
+        "protocol": "http/1.1"
+      },
+      {
+        "path": "/assets/tcg/avatars.webp",
+        "start_ms": 32520,
+        "end_ms": 33307,
+        "protocol": "http/1.1"
+      },
+      {
+        "path": "/assets/tcg/ui-atlas.webp",
+        "start_ms": 32464,
+        "end_ms": 33187,
+        "protocol": "http/1.1"
+      },
+      {
+        "path": "/assets/tcg/valley-painted-v1.webp",
+        "start_ms": 30298,
+        "end_ms": 31278,
+        "protocol": "http/1.1"
+      },
+      {
+        "path": "/assets/tcg/waterwheel-front-v1.webp",
+        "start_ms": 30235,
+        "end_ms": 30826,
+        "protocol": "http/1.1"
+      }
+    ],
+    "viewport": [
+      1280,
+      629
+    ],
+    "sample_ms": 8057,
+    "paints": 43,
+    "draw_calls": 2754,
+    "frame_callback_p95_ms": 83
+  }
+}

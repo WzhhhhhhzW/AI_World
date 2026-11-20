@@ -28,8 +28,7 @@ class GuestHTTPTests(unittest.TestCase):
     def test_qemu_guest_requires_opt_in_and_matching_origin(self):
         for guest in (False, True):
             port = self.serve(guest)
-            for addr in ("10.0.2.2", "10.0.2.100"):
-                host = f"{addr}:{port}"
+            for host in (f"10.0.2.2:{port}", f"10.0.2.100:{port}", "10.0.2.100:8766"):
                 headers = {"Host": host, "Origin": "http://" + host}
                 self.assertEqual(self.fetch(port, "/api/health", headers)[0], 200 if guest else 403)
                 for origin in (f"http://127.0.0.1:{port}", "http://elsewhere.invalid", "null"):
@@ -44,3 +43,22 @@ class GuestHTTPTests(unittest.TestCase):
         repeated, _, body = self.fetch(port, asset, {"If-None-Match": headers["ETag"]})
         self.assertEqual((repeated, body), (304, b""))
         self.assertEqual(self.fetch(port, "/api/health", {})[1]["Cache-Control"], "no-store")
+
+    def test_revalidated_asset_and_health_share_a_connection(self):
+        port = self.serve()
+        conn = http.client.HTTPConnection("127.0.0.1", port, timeout=3)
+        self.addCleanup(conn.close)
+        asset = "/assets/maps/valley-layout-v1.json"
+        conn.request("GET", asset)
+        response = conn.getresponse()
+        original = conn.sock
+        etag = response.getheader("ETag")
+        response.read()
+        conn.request("GET", asset, headers={"If-None-Match": etag})
+        response = conn.getresponse()
+        self.assertEqual((response.status, response.read()), (304, b""))
+        conn.request("GET", "/api/health")
+        response = conn.getresponse()
+        self.assertEqual(response.status, 200)
+        self.assertIs(conn.sock, original)
+        self.assertTrue(response.read())

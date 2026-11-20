@@ -1,0 +1,107 @@
+{
+  "clock": "host monotonic; seconds from launcher start",
+  "stages": {
+    "qemu_socket": 0.31,
+    "kernel_identified": 0.97,
+    "weston_ready": 3.57,
+    "chromium_launch": 3.57,
+    "map_visible": 84.27,
+    "browser_report_received": 89.79
+  },
+  "profile": {
+    "ready_ms": 44821,
+    "navigation": {
+      "requestStart": 17320,
+      "responseStart": 17349,
+      "responseEnd": 17988,
+      "domInteractive": 31204,
+      "domContentLoadedEventEnd": 31667
+    },
+    "first_resources": [
+      [
+        "/assets/tcg/valley-painted-v1.webp",
+        24554,
+        26857
+      ],
+      [
+        "/assets/tcg/scenery.webp",
+        24662,
+        26264
+      ],
+      [
+        "/assets/tcg/avatars.webp",
+        24719,
+        28522
+      ],
+      [
+        "/assets/tcg/ui-atlas.webp",
+        24726,
+        28495
+      ],
+      [
+        "/style.css",
+        25045,
+        25940
+      ],
+      [
+        "/wood-ui.css",
+        25051,
+        26007
+      ],
+      [
+        "/world-ui.css",
+        25058,
+        26043
+      ],
+      [
+        "/harness.css",
+        25070,
+        26065
+      ]
+    ],
+    "profile": "tcg",
+    "asset_count": 15,
+    "asset_body_bytes": 2285499,
+    "asset_wire_bytes": 2289999,
+    "last_assets": [
+      {
+        "path": "/assets/manifest.json",
+        "start_ms": 37739,
+        "end_ms": 37857,
+        "protocol": "http/1.1"
+      },
+      {
+        "path": "/assets/props/cabbage.png",
+        "start_ms": 37259,
+        "end_ms": 37530,
+        "protocol": "http/1.1"
+      },
+      {
+        "path": "/assets/maps/valley-layout-v1.json",
+        "start_ms": 37315,
+        "end_ms": 37520,
+        "protocol": "http/1.1"
+      },
+      {
+        "path": "/assets/props/radish.png",
+        "start_ms": 37244,
+        "end_ms": 37493,
+        "protocol": "http/1.1"
+      },
+      {
+        "path": "/assets/tcg/waterwheel-front-v1.webp",
+        "start_ms": 36657,
+        "end_ms": 36949,
+        "protocol": "http/1.1"
+      }
+    ],
+    "viewport": [
+      1280,
+      629
+    ],
+    "sample_ms": 8116,
+    "paints": 31,
+    "draw_calls": 2003,
+    "frame_callback_p95_ms": 83
+  }
+}

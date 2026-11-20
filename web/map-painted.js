@@ -2,12 +2,23 @@
 // Art is a clean background plate; live residents, crops and construction stay separate.
 const VillageMap=(()=>{
   let layout=null,plate=null,loaded=false,glow=null,weather=null;
-  const ready=Promise.all([VillageTiles.ready,fetch('assets/maps/valley-layout-v1.json').then(r=>{if(!r.ok)throw Error('Map layout unavailable');return r.json();})]).then(async results=>{
-    layout=results[1];
-    plate=await new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>{if(im.naturalWidth!==layout.background_size[0]||im.naturalHeight!==layout.background_size[1])return reject(Error('Map artwork size mismatch'));resolve(im);};im.onerror=reject;im.src='assets/'+layout.background;});
-    await VillageProps.ready;
+  const compact = document.documentElement.dataset.renderProfile === 'tcg';
+  const readLayout = fetch('assets/maps/valley-layout-v1.json').then(r=>{if(!r.ok)throw Error('Map layout unavailable');return r.json();});
+  function loadPlate(url) {
+    return new Promise((resolve,reject)=>{
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = reject;
+      image.src = url;
+    });
+  }
+  const image = compact ? loadPlate('assets/tcg/valley-painted-v1.webp') : readLayout.then(data=>loadPlate('assets/'+data.background));
+  const ready=Promise.all([readLayout,image,VillageProps.ready]).then(([data,art])=>{
+    layout=data;
+    if(art.naturalWidth!==layout.background_size[0]||art.naturalHeight!==layout.background_size[1])throw Error('Map artwork size mismatch');
+    plate=art;
     plate=VillageProps.cleanPlate(plate);
-    if(document.documentElement.dataset.renderProfile!=='tcg')weather=VillageWeather.create(plate,layout);
+    if(!compact)weather=VillageWeather.create(plate,layout);
     loaded=true;document.documentElement.dataset.mapStyle=layout.version;
     document.dispatchEvent(new Event('village-map-ready'));
   });

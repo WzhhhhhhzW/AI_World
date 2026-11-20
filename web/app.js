@@ -6,6 +6,7 @@ const statusName = {draft:'待讨论',gathering:'正在召集',discussing:'独�
 let state, view = 'village', selected = null, toastTimer, pending = false, loading = false, previousSignature = '',exiting=false;
 let scene='village',roomMeeting=null,speechResident=null,speechSignature='';
 const canvas = $('#village'), ctx = canvas.getContext('2d', {alpha:false});
+const tcg = document.documentElement.dataset.renderProfile === 'tcg';
 const positions = new Map(), assets = {};
 const worldEffects = [];
 let weatherStorage=null;try{weatherStorage=localStorage;}catch{}
@@ -44,7 +45,8 @@ function setScene(next, updateAddress=true){
   $('#map-tooltip').hidden=true;
   view='village';selected=null;$('#game-window').hidden=true;$('#hall-tools').hidden=next!=='hall';$('#scene-back').hidden=next==='village';$('#hall-speech-layer').hidden=next!=='hall';
   $('#world-hint').textContent=next==='hall'?'点击村民查看发言 · 会议记录保留完整讨论':next==='eastwood'?'东林开拓地 · 建筑须经居民表决后施工':'拖动探索村庄 · 点击居民或建筑 · 滚轮缩放';
-  worldCamera.reset();speechSignature='';
+  worldCamera.reset();speechSignature='';bubbleLayout='';
+  wakeMap(true);
 }
 function navigate(next,id=null){
   VillageInteractions.closeMenu();
@@ -55,6 +57,8 @@ function navigate(next,id=null){
     if(state?.meetings.some(m=>m.id===id))roomMeeting=id;
   }
   view=next;selected=id;previousSignature='';$('#game-window').hidden=next==='village';if(next!=='village')renderPanel();document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.view===next));
+  const bubbles=$('#hall-speech-layer');bubbles.hidden=scene!=='hall'||next!=='village';
+  wakeMap(true);
 }
 function providerOptions(chosen){return state.providers.map(p=>`<option value="${esc(p.id)}" ${chosen===p.id?'selected':''}>${esc(p.name)}${p.configured?'':' · 待配置'}</option>`).join('');}
 function residentIcon(r,large=false){return `<canvas class="${large?'detail-portrait':'portrait'}" width="96" height="112" data-portrait="${esc(r.id)}" aria-label="${esc(r.name)}的头像"></canvas>`;}
@@ -201,11 +205,17 @@ function renderSpeech(){
   const r=state.residents.find(r=>r.id===speechResident),m=currentRoomMeeting();
   return `<p class="panel-intro">${esc(m?.question||'圆桌还在等待新的议题')}</p>${m?.messages.filter(v=>v.resident_id===speechResident).map(v=>`<div class="speech-message"><strong>${esc(v.name)} · ${esc(providerLabel(v.provider))} · 真实发言</strong><p>${esc(v.text)}</p></div>`).join('')||`<p class="empty">${esc(r?.name||'这位居民')}还没有在这个议题发言。</p>`}${m?`<button class="outline full" data-meeting="${m.id}">查看完整会议记录</button>`:''}`;
 }
+let bubbleLayout='';
 function drawRoomBubbles(){
-  const layer=$('#hall-speech-layer');layer.hidden=scene!=='hall'||!$('#game-window').hidden;if(layer.hidden)return;
+  const layer=$('#hall-speech-layer');if(layer.hidden)return;
   const m=currentRoomMeeting(),sig=JSON.stringify([state.residents.map(r=>[r.id,r.name]),m?.id,m?.status,m?.messages]);
   if(sig!==speechSignature){speechSignature=sig;layer.innerHTML=state.residents.map((r,i)=>{const message=m?.messages.filter(v=>v.resident_id===r.id).at(-1);return `<button class="hall-bubble ${i%2?'right':''} ${message?'':'quiet'}" data-speech="${r.id}" aria-label="查看${esc(r.name)}的发言"><strong>${esc(r.name)}</strong><span>${esc(message?.text.slice(0,85)||(['discussing','synthesizing'].includes(m?.status)?'等候这一轮发言…':'候会 · 点击查看发言'))}</span></button>`;}).join('');}
-  [...layer.children].forEach((el,i)=>{const [x]=VillageScenes.seats[i],right=i%2;const width=el.offsetWidth;el.style.left=(camera.x+x*camera.scale+(right?34:-34)*camera.scale-(right?0:width))+'px';el.style.top=(camera.y+(159+60*Math.floor(i/2))*camera.scale)+'px';});
+  const pose=[sig,camera.x,camera.y,camera.scale].join('/');
+  if(pose!==bubbleLayout){
+    bubbleLayout=pose;
+    const widths=[...layer.children].map(el=>el.offsetWidth);
+    [...layer.children].forEach((el,i)=>{const [x]=VillageScenes.seats[i],right=i%2;el.style.left=(camera.x+x*camera.scale+(right?34:-34)*camera.scale-(right?0:widths[i]))+'px';el.style.top=(camera.y+(159+60*Math.floor(i/2))*camera.scale)+'px';});
+  }
 }
 const proposalStatus={proposed:'待表决',waiting:'等待更多模型连接',voting:'独立投票中',approved:'多数通过',executed:'已执行',rejected:'未通过',interrupted:'已中止',blocked:'校验未通过'};
 function worldOptions(){
@@ -217,24 +227,28 @@ function worldOptions(){
 function renderWorld(){
   const w=state.world;if(!w)return '<p class="empty">世界状态尚未载入。</p>';
   const ready=state.residents.filter(r=>r.connected).length>state.residents.length/2;
-  return `<div class="world-maps"><button class="world-map-card" data-scene="village"><img src="assets/maps/valley-painted-v1.png" alt="溪谷村地图">溪谷村</button><button class="world-map-card" data-scene="eastwood" ${!w.regions.length?'disabled':''}><img src="assets/maps/eastwood-v1.png" alt="东林开拓地地图">东林${w.regions.length?' · 已开拓':' · 等待开拓提案'}</button></div><p class="section-label">世界版本 ${w.revision} · ${w.structures.length} 处新增建筑</p><p class="fine-print">劳动周期 ${w.rules.work_ticks} / 每次收获 ${w.rules.harvest_amount} / 休息时长 ${w.rules.rest_ticks}。AI自主思考开启后可以提出改变，由全体居民独立表决，过半数同意才执行。</p><form id="world-proposal-form"><label>向居民提出世界变化<select name="action">${worldOptions().map(([id,name])=>`<option value="${id}">${name}</option>`).join('')}</select></label><label>规则数值（仅规则提案使用）<input name="value" type="number" value="20" min="2" max="40"></label><label>提案理由<textarea name="reason" rows="2" maxlength="300" required placeholder="为什么值得投入资源？可能有什么风险？"></textarea></label><button class="primary full" type="submit">${ready?'提交并发起表决':'保存待议提案'}</button></form><p class="fine-print">${ready?'表决会实际调用每位已连接居民的模型，按服务商usage扣粮。':'尚未连接足够的模型，提案可保存，不能代替AI投票。'}</p><button class="outline full" id="audit-world">检查建筑重叠与入口通行</button>${w.proposals.map(p=>`<div class="proposal-card"><h3>${esc(p.title)}</h3><span class="proposal-status">${esc(proposalStatus[p.status]||p.status)}${p.applied_revision?' · 世界版本 '+p.applied_revision:''}</span><p>${esc(p.reason)}</p>${p.votes.map(v=>`<div class="proposal-vote"><strong>${esc(v.name)} · ${{yes:'同意',no:'反对',abstain:'弃权'}[v.vote]}</strong><br>${esc(v.reason)}</div>`).join('')}<p class="fine-print">${esc(p.note||'等待居民独立评估')}</p>${['proposed','waiting'].includes(p.status)?`<button class="outline" data-vote="${p.id}" ${!ready||state.busy?'disabled':''}>召集表决</button>`:''}</div>`).join('')}<p class="section-label">世界变更记录</p>${w.audit.map(a=>`<div class="note">v${a.revision} · ${esc(a.title)}<br><small>变更前存档 ${esc(a.backup)}</small></div>`).join('')||'<p class="fine-print">尚无通过表决的世界改动。</p>'}`;
+  return `<div class="world-maps"><button class="world-map-card" data-scene="village"><img src="${tcg?'assets/tcg/valley-painted-v1.webp':'assets/maps/valley-painted-v1.png'}" alt="溪谷村地图">溪谷村</button><button class="world-map-card" data-scene="eastwood" ${!w.regions.length?'disabled':''}><img src="${tcg?'assets/tcg/eastwood-v1.webp':'assets/maps/eastwood-v1.png'}" alt="东林开拓地地图">东林${w.regions.length?' · 已开拓':' · 等待开拓提案'}</button></div><p class="section-label">世界版本 ${w.revision} · ${w.structures.length} 处新增建筑</p><p class="fine-print">劳动周期 ${w.rules.work_ticks} / 每次收获 ${w.rules.harvest_amount} / 休息时长 ${w.rules.rest_ticks}。AI自主思考开启后可以提出改变，由全体居民独立表决，过半数同意才执行。</p><form id="world-proposal-form"><label>向居民提出世界变化<select name="action">${worldOptions().map(([id,name])=>`<option value="${id}">${name}</option>`).join('')}</select></label><label>规则数值（仅规则提案使用）<input name="value" type="number" value="20" min="2" max="40"></label><label>提案理由<textarea name="reason" rows="2" maxlength="300" required placeholder="为什么值得投入资源？可能有什么风险？"></textarea></label><button class="primary full" type="submit">${ready?'提交并发起表决':'保存待议提案'}</button></form><p class="fine-print">${ready?'表决会实际调用每位已连接居民的模型，按服务商usage扣粮。':'尚未连接足够的模型，提案可保存，不能代替AI投票。'}</p><button class="outline full" id="audit-world">检查建筑重叠与入口通行</button>${w.proposals.map(p=>`<div class="proposal-card"><h3>${esc(p.title)}</h3><span class="proposal-status">${esc(proposalStatus[p.status]||p.status)}${p.applied_revision?' · 世界版本 '+p.applied_revision:''}</span><p>${esc(p.reason)}</p>${p.votes.map(v=>`<div class="proposal-vote"><strong>${esc(v.name)} · ${{yes:'同意',no:'反对',abstain:'弃权'}[v.vote]}</strong><br>${esc(v.reason)}</div>`).join('')}<p class="fine-print">${esc(p.note||'等待居民独立评估')}</p>${['proposed','waiting'].includes(p.status)?`<button class="outline" data-vote="${p.id}" ${!ready||state.busy?'disabled':''}>召集表决</button>`:''}</div>`).join('')}<p class="section-label">世界变更记录</p>${w.audit.map(a=>`<div class="note">v${a.revision} · ${esc(a.title)}<br><small>变更前存档 ${esc(a.backup)}</small></div>`).join('')||'<p class="fine-print">尚无通过表决的世界改动。</p>'}`;
 }
 function renderWeather(){
   const now=VillageClimate.sample(state.clock,climate.mode);
   return `<p class="panel-intro" id="weather-description">${esc(now.note)}</p><div class="weather-choices" role="group" aria-label="天气选择">${VillageClimate.modes.map(id=>`<button class="weather-choice" data-weather="${id}" aria-pressed="${climate.mode===id}"><canvas width="32" height="32" data-weather-icon="${id}" aria-hidden="true"></canvas><strong>${id==='auto'?'随村庄变化':VillageClimate.types[id].label}</strong><small>${id==='auto'?'跟随村庄时间':{sunny:'暖阳与轻风',cloudy:'移动云影',rain:'斜雨与涟漪',mist:'流动的溪谷雾气'}[id]}</small></button>`).join('')}</div><p class="fine-print">自动天气每4个村庄小时进入下一时段，交替时会渐变。暂停村庄会同时暂停天气与粒子。手动选择记在这个浏览器中，选择“随村庄变化”即可恢复自动天气。</p><p class="fine-print">天气暂时影响场景表现，村民仍照常生活；不会改变口粮账本或调用模型。</p>`;
 }
+let weatherReportAt=-Infinity;
 function paintWeather(weather){
   const label=$('#weather-label'),mode=$('#weather-mode');
   if(label.textContent!==weather.label)label.textContent=weather.label;
   const modeText=weather.mode==='auto'?'自动':'固定';if(mode.textContent!==modeText)mode.textContent=modeText;
   if(weatherIconId!==weather.id){VillageClimate.icon($('#weather-icon'),weather.id);weatherIconId=weather.id;}
-  canvas.dataset.weather=JSON.stringify({id:weather.id,mode:weather.mode,rain:weather.rain,fog:weather.fog,cloud:weather.cloud,wind:weather.wind,time:visualTime});
-  canvas.dataset.weatherSettled=String(weather.settled);
+  if(visualTime-weatherReportAt>=500 || canvas.dataset.weatherSettled!==String(weather.settled)){
+    weatherReportAt=visualTime;
+    canvas.dataset.weather=JSON.stringify({id:weather.id,mode:weather.mode,rain:weather.rain,fog:weather.fog,cloud:weather.cloud,wind:weather.wind,time:visualTime});
+    canvas.dataset.weatherSettled=String(weather.settled);
+  }
 }
 function renderPanel(){
   if(!state||$('#game-window').hidden)return;
   const resident=state.residents.find(r=>r.id===selected);
-  $('#game-window').dataset.interaction=view;
+  if($('#game-window').dataset.interaction!==view)$('#game-window').dataset.interaction=view;
   if(VillageHarness.handles(view)){
     VillageHarness.show(view,selected);
     return;
@@ -309,6 +323,10 @@ function renderPanel(){
   $('#enter-building')?.addEventListener('click',()=>{const id=selected;if(id==='home')openInvite();else navigate(({hall:'meeting',granary:'granary',archive:'archive',farm:'farm',workshop:'forge'})[id]||'village');});
 }
 function openInvite(){if(!state)return;$('#create-provider').innerHTML=providerOptions('deepseek');$('#appearance-options').innerHTML=state.appearances.map((a,i)=>`<label class="appearance-choice"><input type="radio" name="appearance" value="${esc(a.id)}" ${i===0?'checked':''} required><span class="appearance-art"><canvas width="96" height="112" data-avatar="${esc(a.id)}" aria-hidden="true"></canvas><span>${esc(a.name)}</span></span></label>`).join('');VillageAvatars.paintChoices($('#resident-dialog'));$('#resident-dialog').showModal();}
+function setText(selector,value){
+  const el=$(selector);
+  if(el.textContent!==value)el.textContent=value;
+}
 async function refresh(force=false){
   if(loading||exiting)return;loading=true;
   try{
@@ -322,19 +340,30 @@ async function refresh(force=false){
       }
       if(next.resources.crops>state.resources.crops)worldEffects.push({kind:'spark',x:240,y:440,start:now});
     }
+    if(tcg){
+      const art=JSON.stringify([next.buildings,next.farm?.plots]);
+      const pausedView=next.paused?JSON.stringify([next.residents,next.meetings,next.world,next.ledger]):'';
+      if(!state || state.paused!==next.paused || art!==mapArt || pausedView!==pausedMap || force)wakeMap(true);
+      mapArt=art;pausedMap=pausedView;
+    }
     state=next;
     document.dispatchEvent(new Event('village-state-ready'));
     if(force)previousSignature='';
-    $('#clock').textContent=`第 ${Math.floor(state.clock/1440)+1} 天 ${String(Math.floor(state.clock%1440/60)).padStart(2,'0')}:${String(state.clock%60).padStart(2,'0')}`;
-    for(const k of ['wood','stone','crops'])$('#'+k).textContent=number(state.resources[k]);
-    $('#total-grain').textContent=number(state.residents.reduce((sum,r)=>sum+r.remaining,0));
+    setText('#clock',`第 ${Math.floor(state.clock/1440)+1} 天 ${String(Math.floor(state.clock%1440/60)).padStart(2,'0')}:${String(state.clock%60).padStart(2,'0')}`);
+    for(const k of ['wood','stone','crops'])setText('#'+k,number(state.resources[k]));
+    setText('#total-grain',number(state.residents.reduce((sum,r)=>sum+r.remaining,0)));
     const connected=state.residents.filter(r=>r.connected).length;
-    $('#connection').textContent=connected?`${connected} 位居民已配置模型`:'本地生活 · 模型待连接';
-    $('#simulation-status').innerHTML=VillageUI.icon(state.busy?'think':state.paused?'sleep':'happy',16,'status-icon')+esc(state.busy || (state.paused?'村庄时间已暂停':'本地生活模拟'));
-    $('#autonomy').textContent='自主思考：'+(state.autonomy?'每 120 秒轮流':'关闭');
-    $('#pause').textContent=state.paused?'▶':'Ⅱ';$('#pause').setAttribute('aria-label',state.paused?'继续村庄':'暂停村庄');
+    setText('#connection',connected?`${connected} 位居民已配置模型`:'本地生活 · 模型待连接');
+    const status=state.busy || (state.paused?'村庄时间已暂停':'本地生活模拟');
+    if($('#simulation-status').textContent!==status){
+      $('#simulation-status').innerHTML=VillageUI.icon(state.busy?'think':state.paused?'sleep':'happy',16,'status-icon')+esc(status);
+      VillageUI.paintAll($('.world-status'));
+    }
+    setText('#autonomy','自主思考：'+(state.autonomy?'每 120 秒轮流':'关闭'));
+    setText('#pause',state.paused?'▶':'Ⅱ');
+    const pauseLabel=state.paused?'继续村庄':'暂停村庄';
+    if($('#pause').getAttribute('aria-label')!==pauseLabel)$('#pause').setAttribute('aria-label',pauseLabel);
     renderPanel();
-    VillageUI.paintAll($('.world-status'));
   }catch(error){$('#connection').textContent='村庄服务已离线';if(force)toast(error.message);}finally{loading=false;}
 }
 $('#panel').addEventListener('click',event=>{const r=event.target.closest('[data-resident]'),b=event.target.closest('[data-building]'),m=event.target.closest('[data-meeting]'),g=event.target.closest('[data-go]');if(r)navigate('resident',r.dataset.resident);if(b)navigate('building',b.dataset.building);if(m)navigate('meeting',m.dataset.meeting);if(g)navigate(g.dataset.go);});
@@ -434,10 +463,10 @@ const worldCamera=VillageCamera.create(),camera={scale:1,x:0,y:0};
 const mapPointers=new Map();
 let mapDrag=null,ignoreMapClick=false;
 function cameraViewport(){worldCamera.resize(canvas.clientWidth,canvas.clientHeight);}
-function zoomMap(factor,x,y){cameraViewport();worldCamera.zoomAt(factor,x,y);}
+function zoomMap(factor,x,y){cameraViewport();worldCamera.zoomAt(factor,x,y);wakeMap();}
 $('#zoom-in').addEventListener('click',()=>zoomMap(1.25));
 $('#zoom-out').addEventListener('click',()=>zoomMap(.8));
-$('#zoom-reset').addEventListener('click',()=>{cameraViewport();worldCamera.reset();});
+$('#zoom-reset').addEventListener('click',()=>{cameraViewport();worldCamera.reset();wakeMap();});
 canvas.addEventListener('wheel',event=>{event.preventDefault();const box=canvas.getBoundingClientRect();zoomMap(Math.exp(-Math.max(-120,Math.min(120,event.deltaY))*.0018),event.clientX-box.left,event.clientY-box.top);},{passive:false});
 function pointerPoint(event){const box=canvas.getBoundingClientRect();return{x:event.clientX-box.left,y:event.clientY-box.top};}
 function pinch(points){const [a,b]=points;return{mid:{x:(a.x+b.x)/2,y:(a.y+b.y)/2},distance:Math.hypot(a.x-b.x,a.y-b.y)};}
@@ -461,7 +490,7 @@ canvas.addEventListener('pointermove',event=>{
     if(ignoreMapClick)worldCamera.panBy(p.x-mapDrag.last.x,p.y-mapDrag.last.y);
     mapDrag.last=p;
   }
-  if(ignoreMapClick){canvas.style.cursor='grabbing';$('#map-tooltip').hidden=true;}
+  if(ignoreMapClick){canvas.style.cursor='grabbing';$('#map-tooltip').hidden=true;wakeMap();}
 });
 function releaseMapPointer(event){
   mapPointers.delete(event.pointerId);const next=mapPointers.values().next().value;
@@ -473,8 +502,8 @@ canvas.addEventListener('pointercancel',event=>{releaseMapPointer(event);ignoreM
 canvas.addEventListener('lostpointercapture',releaseMapPointer);
 canvas.addEventListener('keydown',event=>{
   const moves={ArrowLeft:[70,0],ArrowRight:[-70,0],ArrowUp:[0,70],ArrowDown:[0,-70]};
-  if(moves[event.key]){event.preventDefault();worldCamera.panBy(...moves[event.key]);}
-  else if(event.key==='Home'){event.preventDefault();worldCamera.reset();}
+  if(moves[event.key]){event.preventDefault();worldCamera.panBy(...moves[event.key]);wakeMap();}
+  else if(event.key==='Home'){event.preventDefault();worldCamera.reset();wakeMap();}
 });
 function drawVillager(c,e,now){
   const {r,p}=e,x=Math.round((p.x+.5)*32),y=Math.round((p.y+1)*32);
@@ -497,21 +526,150 @@ function drawVillager(c,e,now){
   const emote=r.meeting?'discussion':calling?'think':r.remaining===0?'hungry':null;
   if(emote)VillageUI.renderIcon(c,emote,x+8,y-98,24,24);
 }
-const frameInterval = document.documentElement.dataset.renderProfile === 'tcg' ? 125 : 50;
+const frameInterval = tcg ? 125 : 50;
+let mapArt='', pausedMap='', repaintAll=true, timer=0, frameRequest=0;
+let scenePlate=null, projectedPlate=null, plateKey='', lastActorRects=[], lastMapPose='';
+let paintedShowers=false;
+let lastDiagnostic=-Infinity,lastExportedPose='';
+function wakeMap(invalidate=false){
+  if(!tcg)return;
+  if(invalidate)repaintAll=true;
+  if(timer){clearTimeout(timer);timer=0;}
+  if(!document.hidden&&!frameRequest)frameRequest=requestAnimationFrame(draw);
+}
+function mapCovered(){return !$('#game-window').hidden || $('#resident-dialog').open;}
+function nextMapFrame(){
+  if(!document.hidden && !mapCovered() && state && (!state.paused || worldCamera.moving())){
+    timer=setTimeout(()=>{timer=0;wakeMap();},frameInterval);
+  }
+}
+function actorRect(r,p){
+  const x=Math.round((p.x+.5)*32),y=Math.round((p.y+1)*32);
+  const half=Math.max(40,r.name.length*6+7);
+  return [x-half,y-102,half*2,114];
+}
+// Keep the previous positions too so moving or departing residents erase their footprints.
+function dirtyAreas(current,previous){
+  const areas=[];
+  for(const rect of [...current,...previous]){
+    let [x,y,w,h]=rect;
+    for(let i=areas.length-1;i>=0;i--){
+      const [ax,ay,aw,ah]=areas[i];
+      if(x+w<ax||ax+aw<x||y+h<ay||ay+ah<y)continue;
+      // Distant diagonal marks remain separate instead of copying the empty space between them.
+      const left=Math.min(x,ax),top=Math.min(y,ay),right=Math.max(x+w,ax+aw),bottom=Math.max(y+h,ay+ah);
+      if((right-left)*(bottom-top)>w*h+aw*ah)continue;
+      areas.splice(i,1);x=left;y=top;w=right-left;h=bottom-top;
+    }
+    const sx=Math.max(0,x),sy=Math.max(0,y),ex=Math.min(960,x+w),ey=Math.min(640,y+h);
+    if(ex>sx && ey>sy)areas.push([sx,sy,ex-sx,ey-sy]);
+  }
+  return areas;
+}
+const showers=[[185,235,150,90],[420,350,150,90],[677,270,150,90]];
+function drawShowers(c,time,weather){
+  c.save();c.strokeStyle='#dfeced';c.globalAlpha=.45*weather.rain;c.lineWidth=1;c.beginPath();
+  for(const [x,y,w,h] of showers)for(let i=0;i<10;i++){
+    const t=(time/(660+i*27)+i*.263)%1;
+    const px=x+10+(i*37)%(w-44)+t*20*weather.wind,py=y+9+t*(h-11);
+    c.moveTo(px,py);c.lineTo(px-4*weather.wind,py-7);
+  }
+  c.stroke();c.restore();
+}
+function paintFastVillage(now,sky,pose){
+  if(!scenePlate){
+    scenePlate=document.createElement('canvas');scenePlate.width=960;scenePlate.height=640;
+  }
+  const key=[Math.floor(state.clock/30),sky.id,Math.round(sky.cloud*6),Math.round(sky.fog*4),Math.round(sky.rain*6)].join('/');
+  const full=repaintAll||pose!==lastMapPose||key!==plateKey;
+  if(repaintAll||key!==plateKey){
+    const plate=scenePlate.getContext('2d');
+    plate.drawImage(background,0,0);
+    climate.ground(plate,visualTime,sky);
+    VillageMap.lighting(plate,visualTime,state,{x:0,y:0,scale:1},960,640);
+    climate.screen(plate,visualTime,sky,{x:0,y:0,scale:1},960,640,state.clock,false);
+    plateKey=key;
+  }
+  const entities=state.buildings.map(b=>({b,y:VillageMap.anchor(b)[1]})), current=[];
+  for(const r of state.residents){
+    if((r.region||'village')!=='village')continue;
+    const p=positions.get(r.id),t=Math.max(0,Math.min(1,(now-p.at)/550));
+    p.x=p.fromX+(p.toX-p.fromX)*t;p.y=p.fromY+(p.toY-p.fromY)*t;
+    current.push(actorRect(r,p));entities.push({r,p,y:(p.y+1)*32});
+  }
+  for(const fx of worldEffects)current.push([Math.floor(fx.x)-28,Math.floor(fx.y)-38,56,55]);
+  // Wheel, two flags, smoke and the three butterfly paths use world-space coordinates.
+  const areas=dirtyAreas(current,lastActorRects).concat([[111,87,58,75],[391,106,30,31],[510,106,31,31],[601,208,60,61],[302,338,225,95]]);
+  if(sky.rain>.025 || paintedShowers)areas.push(...showers);
+  paintedShowers=sky.rain>.025;
+  if(state.farm?.plots.some(p=>p.crop))areas.push([126,318,141,102]);
+  for(const b of state.buildings)if(b.constructing){
+    const [x,y]=VillageMap.anchor(b);areas.push([x-65,y-50,130,67]);
+  }
+  lastActorRects=current;lastMapPose=pose;repaintAll=false;
+  // Project once per camera pose. Copying integral screen pixels keeps partial
+  // updates on exactly the same sampling grid as the original scaled image.
+  if(full){
+    if(!projectedPlate)projectedPlate=document.createElement('canvas');
+    if(projectedPlate.width!==canvas.width)projectedPlate.width=canvas.width;
+    if(projectedPlate.height!==canvas.height)projectedPlate.height=canvas.height;
+    const projected=projectedPlate.getContext('2d');
+    projected.imageSmoothingEnabled=false;projected.setTransform(camera.scale,0,0,camera.scale,camera.x,camera.y);
+    projected.drawImage(scenePlate,0,0);
+  }
+  ctx.save();
+  if(full)ctx.drawImage(projectedPlate,0,0);
+  else{
+    ctx.beginPath();
+    for(const [x,y,w,h] of areas){
+      const left=Math.max(0,Math.floor(camera.x+x*camera.scale)),top=Math.max(0,Math.floor(camera.y+y*camera.scale));
+      const width=Math.min(canvas.width,Math.ceil(camera.x+(x+w)*camera.scale))-left;
+      const height=Math.min(canvas.height,Math.ceil(camera.y+(y+h)*camera.scale))-top;
+      if(width<=0||height<=0)continue;
+      ctx.drawImage(projectedPlate,left,top,width,height,left,top,width,height);ctx.rect(left,top,width,height);
+    }
+    ctx.clip();
+  }
+  ctx.translate(camera.x,camera.y);ctx.scale(camera.scale,camera.scale);
+  VillageProps.draw(ctx,visualTime);VillageProps.rooftops(ctx,visualTime,sky,8);
+  entities.sort((a,b)=>a.y-b.y);
+  for(const entity of entities){
+    if(entity.b){building(ctx,entity.b,visualTime);if(selected===entity.b.id)VillageMap.selection(ctx,entity.b,visualTime);}
+    else drawVillager(ctx,entity,now);
+  }
+  for(let i=worldEffects.length-1;i>=0;i--){
+    const fx=worldEffects[i];
+    if(now-fx.start>700)worldEffects.splice(i,1);
+    else VillageUI.effect(ctx,fx.kind,now-fx.start,fx.x,fx.y,44,36);
+  }
+  VillageMap.atmosphere(ctx,visualTime,state,sky);
+  if(sky.rain>.025)drawShowers(ctx,visualTime,sky);
+  ctx.restore();
+}
 function draw(now){
-  requestAnimationFrame(draw);
-  if(document.hidden||now-lastFrame<frameInterval)return;
+  frameRequest=0;
+  if(!tcg)requestAnimationFrame(draw);
+  if(document.hidden || (tcg ? !state||mapCovered() : now-lastFrame<frameInterval))return;
+  if(tcg)nextMapFrame();
   const elapsed=lastFrame?now-lastFrame:frameInterval;lastFrame=now;if(!state?.paused)visualTime+=Math.min(Math.max(100,frameInterval),elapsed);
-  canvas.dataset.motionTick=String(Math.floor(visualTime/100));
+  const diagnostics=!tcg||now-lastDiagnostic>=500;
+  if(diagnostics){lastDiagnostic=now;canvas.dataset.motionTick=String(Math.floor(visualTime/100));}
   const width=Math.max(1,Math.round(canvas.clientWidth)),height=Math.max(1,Math.round(canvas.clientHeight));
   if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;}
   worldCamera.resize(width,height);Object.assign(camera,worldCamera.step(elapsed));
   VillageInteractions.positionMenu();
-  $('#zoom-out').disabled=!camera.canZoomOut;$('#zoom-in').disabled=!camera.canZoomIn;
-  canvas.dataset.cameraView=JSON.stringify({x:camera.x,y:camera.y,scale:camera.scale,width,height,worldWidth:960,worldHeight:640,zoom:camera.zoom});
+  if($('#zoom-out').disabled===camera.canZoomOut)$('#zoom-out').disabled=!camera.canZoomOut;
+  if($('#zoom-in').disabled===camera.canZoomIn)$('#zoom-in').disabled=!camera.canZoomIn;
+  const pose=[camera.x,camera.y,camera.scale,width,height].join('/');
+  if(pose!==lastExportedPose){
+    lastExportedPose=pose;
+    canvas.dataset.cameraView=JSON.stringify({x:camera.x,y:camera.y,scale:camera.scale,width,height,worldWidth:960,worldHeight:640,zoom:camera.zoom});
+  }
   const sky=climate.advance(state?.clock??480,visualTime);paintWeather(sky);
-  ctx.imageSmoothingEnabled=false;rect(ctx,0,0,width,height,'#a9bd83');
-  $('#hall-speech-layer').hidden=scene!=='hall'||!$('#game-window').hidden;
+  ctx.imageSmoothingEnabled=false;
+  if(diagnostics && scene==='village')canvas.dataset.waterwheelAngle=String(VillageProps.frameAt(visualTime).angle);
+  if(tcg && scene==='village'){paintFastVillage(now,sky,pose);return;}
+  rect(ctx,0,0,width,height,'#a9bd83');
   if(state&&scene==='hall'){
     ctx.save();ctx.translate(camera.x,camera.y);ctx.scale(camera.scale,camera.scale);VillageScenes.drawHall(ctx,state,visualTime);ctx.restore();drawRoomBubbles();return;
   }
@@ -521,7 +679,7 @@ function draw(now){
   }
   ctx.save();ctx.translate(camera.x,camera.y);ctx.scale(camera.scale,camera.scale);ctx.drawImage(background,0,0);
   VillageMap.groundMotion(ctx,visualTime,sky);climate.ground(ctx,visualTime,sky);
-  VillageProps.draw(ctx,visualTime);VillageProps.rooftops(ctx,visualTime,sky);canvas.dataset.waterwheelAngle=String(VillageProps.frameAt(visualTime).angle);
+  VillageProps.draw(ctx,visualTime);VillageProps.rooftops(ctx,visualTime,sky);
   if(!state){ctx.restore();return;}
   const entities=state.buildings.map(b=>({type:'building',y:VillageMap.anchor(b)[1],b}));
   entities.push(...VillageMap.scenery());
@@ -544,4 +702,13 @@ function canvasPoint(event){const box=canvas.getBoundingClientRect();return{x:(e
 function hit(point){if(!state)return null;if(scene==='hall'){const r=VillageScenes.hitSeat(point,state);if(r){speechResident=r.id;return{view:'speech',id:r.id,name:r.name};}return null;}if(scene==='eastwood'){for(const r of state.residents.filter(r=>r.region==='eastwood')){const p=positions.get(r.id);if(Math.abs(point.x-(p.x+.5)*32)<23&&point.y>(p.y+1)*32-60&&point.y<(p.y+1)*32+5)return{view:'resident',id:r.id,name:r.name};}return state.world.structures.some(s=>point.x>=s.rect[0]&&point.x<=s.rect[0]+s.rect[2]&&point.y>=s.rect[1]&&point.y<=s.rect[1]+s.rect[3])?{view:'world',id:null,name:'东林建设'}:null;}for(const r of [...state.residents].filter(r=>(r.region||'village')==='village').reverse()){const p=positions.get(r.id);if(Math.abs(point.x-(p.x+.5)*32)<23&&point.y>(p.y+1)*32-60&&point.y<(p.y+1)*32+5)return{view:'resident',id:r.id,name:r.name};}const plot=state.farm?VillageMap.plotAt(point):-1;if(plot>=0)return{view:'farm',id:plot,name:(plot+1)+' 号田'};for(const b of [...state.buildings].reverse()){if(b.id==='farm'&&b.built&&VillageMap.hitBuilding(point,b))return{view:'farm',id:null,name:b.name};if(VillageMap.hitBuilding(point,b))return{view:'building',id:b.id,name:b.name};}return VillageMap.hit(point);}
 canvas.addEventListener('click',event=>{if(ignoreMapClick){ignoreMapClick=false;return;}const target=hit(canvasPoint(event));if(target?.view==='resident'||(scene==='hall'&&target?.view==='speech'))VillageInteractions.openMenu(target.id);else if(target?.view==='building'&&target.id==='hall')setScene('hall');else if(target)navigate(target.view,target.id);else navigate('village');});
 canvas.addEventListener('mousemove',event=>{if(mapPointers.size){$('#map-tooltip').hidden=true;return;}const target=hit(canvasPoint(event));$('#map-tooltip').hidden=!target;if(target)$('#map-tooltip').textContent=target.name+' ↗';const plot=target?.view==='building'&&!state.buildings.find(b=>b.id===target.id)?.built;canvas.style.cursor=VillageUI.cursor(plot?'target':target?'hand':'default');});canvas.addEventListener('mouseleave',()=>{$('#map-tooltip').hidden=true;canvas.style.cursor=VillageUI.cursor('default');});
-refresh();setInterval(()=>{if(!document.hidden)refresh();},1000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh();});requestAnimationFrame(draw);
+if(tcg){
+  for(const event of ['village-map-ready','village-game-ready','village-scene-ready','village-art-ready','village-avatars-ready']){
+    document.addEventListener(event,()=>wakeMap(true));
+  }
+  window.addEventListener('resize',()=>wakeMap(true));
+  $('#resident-dialog').addEventListener('close',()=>wakeMap(true));
+}
+refresh();setInterval(()=>{if(!document.hidden)refresh();},1000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){refresh();wakeMap(true);}});
+if(tcg)wakeMap(true);else requestAnimationFrame(draw);

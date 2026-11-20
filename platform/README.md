@@ -17,11 +17,15 @@ Windows 双击仓库根目录的 **启动赛题村庄.cmd**。在带桌面的 Ub
 
 队友分支为 `codex/perf-sparse-protect-20261118`，本次固定提交 `0b6c59600a8782762a6112eb02cfd96347e496e6`。展开的 `.config` SHA-256 为 `42e8d16450352712d78813b5f78b7ca221dfb88fadc796f57ecf317d7e33f669`，与分支记录相同。队友的 11 月历史实测使用 `ff0376b1…` 内核和 `3be0a923…` 运行盘。本机采用同一源码重建内核，搭配队伍此前已归档的 `2817c7e2…` Wayland 派生盘。运行盘和生成的内核未随上游 Git 发布；转移到另一台机器时要一并复制本表两份文件并核对哈希。[候选源码与实测](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/0b6c59600a8782762a6112eb02cfd96347e496e6/work/performance-20261117-r1) · [团队 Wayland 镜像恢复配方](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/0b6c59600a8782762a6112eb02cfd96347e496e6/work/cloud-runtime-recovery-20261006-r5/runtime/wayland_reconstruction_default_shell)
 
-每次启动会在临时 raw 镜像中加入桌面会话脚本，再以快照模式启动客体。原运行盘保持上述哈希。持久村庄存档位于宿主机的 `${XDG_DATA_HOME:-$HOME/.local/share}/qilin-village/village.json`。
+首次启动会在 Linux 用户缓存中准备可复用的只读启动盘，注入并回读校验桌面会话脚本。本机的 2 GiB raw 盘在 ext4 上实际占用约 945 MiB。再次启动会复用这份盘，原盘或会话脚本变更时会重新准备。每个 QEMU 实例使用独立的临时写入层。客体固定访问 `10.0.2.100:8766`，宿主端口继续按实例分配。
+
+启动盘保存在 `${XDG_CACHE_HOME:-$HOME/.cache}/qilin-village/disks`。退出所有演示后可以清除此缓存，下一次将自动重建。持久村庄存档位于 `${XDG_DATA_HOME:-$HOME/.local/share}/qilin-village/village.json`。
+
+本机新旧启动耗时和进村后的慢帧数据见 [启动与画面性能](performance.md)。
 
 ## 运行与取证
 
-无桌面测试可用两个终端运行下列命令。第一个终端启动宿主机服务。第二个终端启动 VM，打印实际 QEMU 命令、监视器位置及串口日志位置。请在 VM 退出前复制需要的串口日志。
+无桌面测试可用两个终端运行下列命令。第一个终端启动宿主机服务。第二个终端启动 VM，打印实际 QEMU 命令、监视器位置及串口日志位置。`VILLAGE_STAGE` 行给出自启动器开始运行的秒数，依次记录启动盘创建或复用、QEMU 进程启动、内核启动、Weston 就绪和 Chromium 启动命令。页面真正显示须以客体浏览器或 QMP 截图核对。请在 VM 退出前复制需要的串口日志。
 
 ```sh
 # 终端一

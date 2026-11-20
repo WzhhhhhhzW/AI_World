@@ -69,7 +69,7 @@ const VillageClimate=(()=>{
       }
       c.restore();
     }
-    function screen(c,time,weather,camera,w,h,clock){
+    function screen(c,time,weather,camera,w,h,clock,drawRain=true){
       const hour=clock%1440/60,day=Math.max(0,Math.min(1,(hour-5)/2,(20-hour)/2));
       c.save();c.fillStyle='#314b60';c.globalAlpha=weather.cloud*.1;c.fillRect(0,0,w,h);
       if(weather.id==='sunny'){c.fillStyle='#ffe6aa';c.globalAlpha=day*.026;c.fillRect(0,0,w,h);}
@@ -80,7 +80,7 @@ const VillageClimate=(()=>{
         const x=frac(time/(95000/(weather.wind+.2))+i*.271)*1600-380,y=70+i*142;
         c.beginPath();c.ellipse(x,y,130,42,-.25,0,Math.PI*2);c.ellipse(x+100,y+15,100,32,-.25,0,Math.PI*2);c.fill();
       }
-      if(weather.rain>.025){
+      if(drawRain && weather.rain>.025){
         c.strokeStyle='#dbebeb';c.lineWidth=.7;
         for(let i=0;i<Math.round(190*weather.rain);i++){
           const p=drop(i,time,weather.wind);c.globalAlpha=p.alpha*weather.rain;

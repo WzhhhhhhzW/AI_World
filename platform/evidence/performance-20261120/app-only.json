@@ -1,0 +1,26 @@
+{
+  "clock": "host monotonic; seconds from launcher start",
+  "stages": {
+    "qemu_socket": 10.8,
+    "kernel_identified": 11.19,
+    "weston_ready": 13.64,
+    "chromium_launch": 13.64,
+    "map_visible": 80.67,
+    "browser_report_received": 87.25
+  },
+  "profile": {
+    "ready_ms": 37583,
+    "profile": "tcg",
+    "asset_count": 15,
+    "asset_body_bytes": 2285499,
+    "asset_wire_bytes": 2289999,
+    "viewport": [
+      1280,
+      629
+    ],
+    "sample_ms": 8046,
+    "paints": 43,
+    "draw_calls": 2747,
+    "frame_callback_p95_ms": 92
+  }
+}

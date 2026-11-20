@@ -1,0 +1,107 @@
+{
+  "clock": "host monotonic; seconds from launcher start",
+  "stages": {
+    "qemu_socket": 0.31,
+    "kernel_identified": 0.91,
+    "weston_ready": 3.21,
+    "chromium_launch": 3.21,
+    "map_visible": 74.39,
+    "browser_report_received": 80.84
+  },
+  "profile": {
+    "ready_ms": 39737,
+    "navigation": {
+      "requestStart": 14175,
+      "responseStart": 14223,
+      "responseEnd": 14709,
+      "domInteractive": 25758,
+      "domContentLoadedEventEnd": 26350
+    },
+    "first_resources": [
+      [
+        "/style.css",
+        20496,
+        22035
+      ],
+      [
+        "/wood-ui.css",
+        20689,
+        22017
+      ],
+      [
+        "/world-ui.css",
+        20734,
+        22044
+      ],
+      [
+        "/harness.css",
+        20757,
+        22060
+      ],
+      [
+        "/boot.js",
+        20807,
+        23585
+      ],
+      [
+        "/__village_profile.js",
+        20812,
+        23554
+      ],
+      [
+        "/ui-assets.js",
+        26026,
+        26905
+      ],
+      [
+        "/ui-skin.js",
+        26034,
+        26870
+      ]
+    ],
+    "profile": "tcg",
+    "asset_count": 15,
+    "asset_body_bytes": 2285499,
+    "asset_wire_bytes": 2289999,
+    "last_assets": [
+      {
+        "path": "/assets/tcg/scenery.webp",
+        "start_ms": 33578,
+        "end_ms": 34490,
+        "protocol": "http/1.1"
+      },
+      {
+        "path": "/assets/tcg/avatars.webp",
+        "start_ms": 33545,
+        "end_ms": 34467,
+        "protocol": "http/1.1"
+      },
+      {
+        "path": "/assets/tcg/ui-atlas.webp",
+        "start_ms": 33518,
+        "end_ms": 34422,
+        "protocol": "http/1.1"
+      },
+      {
+        "path": "/assets/tcg/valley-painted-v1.webp",
+        "start_ms": 30962,
+        "end_ms": 32066,
+        "protocol": "http/1.1"
+      },
+      {
+        "path": "/assets/tcg/waterwheel-front-v1.webp",
+        "start_ms": 30794,
+        "end_ms": 31470,
+        "protocol": "http/1.1"
+      }
+    ],
+    "viewport": [
+      1280,
+      629
+    ],
+    "sample_ms": 8080,
+    "paints": 44,
+    "draw_calls": 2870,
+    "frame_callback_p95_ms": 133
+  }
+}

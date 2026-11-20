@@ -3,7 +3,7 @@ const VillageProps=(()=>{
   const wheel={x:140.5,y:120.5,radius:27.2,period:18000};let front=null;
   let rooftop;
   const flags=[{x:630,width:35,tile:0,phase:0},{x:821,width:37,tile:40,phase:1.6}];
-  function load(file){return new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=()=>reject(Error('场景部件加载失败'));im.src='assets/props/'+file;});}
+  function load(file){return new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=()=>reject(Error('场景部件加载失败'));im.src=file==='waterwheel-front-v1.png'&&document.documentElement.dataset.renderProfile==='tcg'?'assets/tcg/waterwheel-front-v1.webp':'assets/props/'+file;});}
   const ready=typeof Image==='undefined'?Promise.resolve():Promise.all([load('waterwheel-front-v1.png'),load('rooftop-motion.png')]).then(([wheelImage,sheet])=>{
     front=wheelImage;rooftop=sheet;document.documentElement.dataset.wheelArt='timber-front-v1';
   });
@@ -18,11 +18,11 @@ const VillageProps=(()=>{
     const wave=time/310+phase-u*5;
     return Math.round(u*(2.7+wind*4.7)*(Math.sin(wave)+.22*Math.sin(2*wave)));
   }
-  function rooftops(c,time,sky){
+  function rooftops(c,time,sky,strip=2){
     if(!rooftop)return;
     c.save();c.scale(1/1.6,1/1.6);
-    for(const f of flags)for(let x=0;x<f.width;x+=2){
-      const width=Math.min(2,f.width-x);
+    for(const f of flags)for(let x=0;x<f.width;x+=strip){
+      const width=Math.min(strip,f.width-x);
       c.drawImage(rooftop,f.tile+x,0,width,28,f.x+x,180+flutter(x/(f.width-1),time,sky.wind,f.phase),width,28);
     }
     // Oldest first; the small new puff covers the mouth as the preceding curl lifts.
