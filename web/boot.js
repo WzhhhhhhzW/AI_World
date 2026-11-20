@@ -8,20 +8,34 @@
   }
   const tcg = new URLSearchParams(location.search).get('render') === 'tcg';
   document.documentElement.dataset.renderProfile = tcg ? 'tcg' : 'full';
-  cover.innerHTML='<div class="launch-card"><div class="launch-mark">谷</div><h1>村庄正在苏醒</h1><p id="launch-status">正在准备地图与居民…</p></div>';
+  cover.innerHTML='<div class="launch-card"><div class="launch-mark">谷</div><h1>村庄正在苏醒</h1><p id="launch-status" role="status">正在启动村庄程序…</p></div>';
   document.addEventListener('village-service-stopped',()=>{cover.innerHTML='<div class="launch-card"><div class="launch-mark">谷</div><h1>村庄已保存</h1><p>下次双击「启动游戏.cmd」，即可继续这里的生活。</p></div>';document.body.append(cover);});
   try{
     const stateReady=new Promise(resolve=>document.addEventListener('village-state-ready',resolve,{once:true}));
-    const files = ['ui-assets.js','ui-skin.js','avatars.js','map-assets.js','river-weather.js','climate.js','living-props.js','farm-ui.js','harness-ui.js','world-scenes.js','map-painted.js','map-camera.js','resident-actions.js','app.js'];
-    await Promise.all(files.map(file => new Promise((resolve,reject) => {
-      const script=document.createElement('script');
-      script.async=false;
-      script.src=file;
-      script.onload=resolve;
-      script.onerror=()=>reject(new Error('加载游戏文件失败'));
-      document.head.append(script);
-    })));
-    await Promise.race([Promise.all([VillageUI.ready,VillageSkin.ready,VillageAvatars.ready,VillageTiles.ready,VillageMap.ready,VillageProps.ready,VillageFarm.ready,VillageScenes.ready,stateReady]),new Promise((_,reject)=>setTimeout(()=>reject(new Error('村庄服务或素材加载超时')),tcg ? 120000 : 15000))]);
+    const runtime = new Promise((resolve,reject) => {
+      let script = document.querySelector('#village-runtime');
+      if (script) {
+        script.addEventListener('load',resolve,{once:true});
+        script.addEventListener('error',()=>reject(new Error('加载游戏文件失败')),{once:true});
+      } else {
+        script = document.createElement('script');
+        script.src='/village-runtime.js';
+        script.onload=resolve;
+        script.onerror=()=>reject(new Error('加载游戏文件失败'));
+        document.head.append(script);
+      }
+    });
+    const ready = runtime.then(()=>{
+      const status = cover.querySelector('#launch-status');
+      if(status)status.textContent='正在读取村庄存档和地图…';
+      return Promise.all([VillageUI.ready,VillageSkin.ready,VillageAvatars.ready,VillageTiles.ready,VillageMap.ready,VillageProps.ready,VillageFarm.ready,VillageScenes.ready,stateReady]);
+    });
+    let timeout;
+    try {
+      await Promise.race([ready,new Promise((_,reject)=>{timeout=setTimeout(()=>reject(new Error('村庄服务或素材加载超时')),tcg ? 120000 : 15000);})]);
+    } finally {
+      clearTimeout(timeout);
+    }
     if(document.documentElement.dataset.sceneSprites!=='48'||document.documentElement.dataset.avatarCount!=='6'||document.documentElement.dataset.uiSheetsLoaded!==(tcg?'1':'8')||document.documentElement.dataset.uiSkin!=='village-wood-v2'||document.documentElement.dataset.mapStyle!=='painted-valley-v1')throw new Error('部分素材没有加载完成');
     document.documentElement.dataset.gameReady='true';
     document.dispatchEvent(new Event('village-game-ready'));

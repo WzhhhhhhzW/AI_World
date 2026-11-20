@@ -1,0 +1,105 @@
+{
+  "host": "http://127.0.0.1:52408",
+  "summary": {
+    "open": {
+      "n": 5,
+      "firstMedian": 23,
+      "settledMedian": 23,
+      "settledMax": 35,
+      "samples": [
+        {
+          "label": "open",
+          "first": 25,
+          "settled": 25
+        },
+        {
+          "label": "open",
+          "first": 35,
+          "settled": 35
+        },
+        {
+          "label": "open",
+          "first": 23,
+          "settled": 23
+        },
+        {
+          "label": "open",
+          "first": 22,
+          "settled": 22
+        },
+        {
+          "label": "open",
+          "first": 23,
+          "settled": 23
+        }
+      ]
+    },
+    "close": {
+      "n": 5,
+      "firstMedian": 34,
+      "settledMedian": 34,
+      "settledMax": 48,
+      "samples": [
+        {
+          "label": "close",
+          "first": 34,
+          "settled": 34
+        },
+        {
+          "label": "close",
+          "first": 31,
+          "settled": 31
+        },
+        {
+          "label": "close",
+          "first": 41,
+          "settled": 41
+        },
+        {
+          "label": "close",
+          "first": 32,
+          "settled": 32
+        },
+        {
+          "label": "close",
+          "first": 48,
+          "settled": 48
+        }
+      ]
+    },
+    "zoom": {
+      "n": 5,
+      "firstMedian": 35,
+      "settledMedian": 35,
+      "settledMax": 41,
+      "samples": [
+        {
+          "label": "zoom",
+          "first": 40,
+          "settled": 40
+        },
+        {
+          "label": "zoom",
+          "first": 35,
+          "settled": 35
+        },
+        {
+          "label": "zoom",
+          "first": 32,
+          "settled": 32
+        },
+        {
+          "label": "zoom",
+          "first": 41,
+          "settled": 41
+        },
+        {
+          "label": "zoom",
+          "first": 30,
+          "settled": 30
+        }
+      ]
+    }
+  },
+  "errors": []
+}

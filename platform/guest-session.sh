@@ -52,7 +52,8 @@ while [ ! -S "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" ]; do
 done
 printf 'VILLAGE_WESTON_READY\n'
 printf 'VILLAGE_BROWSER_URL %s\n' "$url"
-exec chromium --no-sandbox --no-zygote --ozone-platform=wayland --disable-gpu \
+# The guest's Chromium zygote shares its initialized image with child processes.
+exec chromium --no-sandbox --ozone-platform=wayland --disable-gpu \
     --disable-software-rasterizer --disable-dev-shm-usage --no-first-run \
     --disable-background-networking --disable-component-update --disable-extensions \
     --ipc-connection-timeout=120 --start-maximized --user-data-dir=/tmp/village-profile \

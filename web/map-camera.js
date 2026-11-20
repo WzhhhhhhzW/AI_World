@@ -25,12 +25,13 @@ const VillageCamera=(()=>{
       anchor=null;initialized=true;constrain();
     }
     function worldAt(x=width/2,y=height/2){return{x:cx+(x-width/2)/scale,y:cy+(y-height/2)/scale};}
-    function zoomAt(factor,x=width/2,y=height/2){
+    function zoomAt(factor,x=width/2,y=height/2,instant=false){
       const next=clamp(targetScale*factor,minScale,maxScale);
       if(next===targetScale)return;
       const world=worldAt(x,y);
       anchor={world,x,y};targetScale=next;
       tx=world.x-(x-width/2)/next;ty=world.y-(y-height/2)/next;constrain();
+      if(instant){scale=targetScale;cx=tx;cy=ty;anchor=null;}
     }
     function panBy(dx,dy){
       anchor=null;targetScale=scale;cx-=dx/scale;cy-=dy/scale;
@@ -42,7 +43,10 @@ const VillageCamera=(()=>{
       cx=world.x-(to.x-width/2)/scale;cy=world.y-(to.y-height/2)/scale;
       anchor=null;({x:cx,y:cy}=bound(cx,cy,scale));tx=cx;ty=cy;
     }
-    function reset(){targetScale=minScale;tx=worldWidth/2;ty=worldHeight/2;anchor=null;constrain();}
+    function reset(instant=false){
+      targetScale=minScale;tx=worldWidth/2;ty=worldHeight/2;anchor=null;constrain();
+      if(instant){scale=targetScale;cx=tx;cy=ty;}
+    }
     function step(elapsed){
       const blend=1-Math.exp(-Math.min(100,Math.max(0,elapsed))/85);
       scale+=(targetScale-scale)*blend;

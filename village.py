@@ -143,6 +143,10 @@ class Village(WorldGovernance, KitchenGarden, VillageHarness):
         self.path = Path(path)
         self.api_keys = ResidentKeys(self.path)
         self.lock = threading.RLock()
+        # Client cache tokens are scoped to one loaded save, including across server restarts.
+        self.poll_epoch = uid()
+        self.history_revision = 0
+        self._recent_poll_archives = {}
         self.job_lock = threading.Lock()
         self.provider = provider or Provider()
         self.stop = threading.Event()
@@ -206,11 +210,13 @@ class Village(WorldGovernance, KitchenGarden, VillageHarness):
                 "task": ROLES.get(role, "wood"), "activity": "刚刚来到村庄", "progress": 0,
                 "color": color, "memory": [], "meeting": None, "last_thought": "还没有模型决策", "thought_source": "none"}
 
-    def save(self):
+    def save(self, *, clock_only=False):
         with self.lock:
+            if not clock_only:
+                self.history_revision += 1
             self.path.parent.mkdir(parents=True, exist_ok=True)
             temp = self.path.with_suffix(".tmp")
-            temp.write_text(json.dumps(self.s, ensure_ascii=False, indent=2), encoding="utf-8")
+            temp.write_bytes(json.dumps(self.s, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
             # On Windows a reader can temporarily hold a handle without delete sharing.
             for attempt in range(6):
                 try:
@@ -222,6 +228,7 @@ class Village(WorldGovernance, KitchenGarden, VillageHarness):
                     time.sleep(.01 * (2 ** attempt))
 
     def event(self, title, text, source="world"):
+        self.history_revision += 1
         self.s["events"].insert(0, {"id": uid(), "time": time.time(), "clock": self.s["clock"], "title": title, "text": text, "source": source})
         del self.s["events"][100:]
 
@@ -238,6 +245,42 @@ class Village(WorldGovernance, KitchenGarden, VillageHarness):
 
     def model_ready(self, r):
         return self.provider_for(r).ready(r["provider"])
+
+    def poll(self, since):
+        """Send full history once, then just fields that can change on a clock tick."""
+        with self.lock:
+            token = f"{self.poll_epoch}.{self.history_revision}"
+            if since != token:
+                data = self.public()
+                archives = {key: data[key] for key in ("harness", "meetings", "ledger")}
+                previous = self._recent_poll_archives.get(since)
+                if previous:
+                    # e.g. watering a plot must not re-send years of unmodified meeting transcripts.
+                    unchanged = [key for key in archives if previous[key] == archives[key]]
+                    for key in unchanged:
+                        del data[key]
+                    data["unchanged_archives"] = unchanged
+                if token not in self._recent_poll_archives:
+                    if len(self._recent_poll_archives) == 2:
+                        del self._recent_poll_archives[next(iter(self._recent_poll_archives))]
+                    self._recent_poll_archives[token] = archives
+                data["history_revision"] = token
+                return data
+            residents = []
+            for r in self.s["residents"]:
+                motion = {key: r[key] for key in ("id", "x", "y", "path", "task", "progress", "activity",
+                          "phase", "cargo", "rest_ticks", "region", "world_job", "meeting") if key in r}
+                motion["connected"] = self.model_ready(r)
+                if profile := r.get("api_profile"):
+                    motion["api_profile"] = {"model": profile["model"], "base_url": profile["base_url"],
+                                             "has_key": self.api_keys.path(profile["key_ref"]).is_file()}
+                residents.append(motion)
+            # The recipient merges resident records by ID and retains farm.catalog and world history.
+            return copy.deepcopy({"history_revision": token, "partial": True, "clock": self.s["clock"],
+                                  "busy": self.s["busy"], "paused": self.s["paused"], "residents": residents,
+                                  "resources": self.s["resources"], "buildings": self.s["buildings"],
+                                  "farm": self.s["farm"], "world": {"structures": self.s["world"]["structures"]},
+                                  "providers": self.provider.public()})
 
     def public(self):
         with self.lock:
@@ -462,7 +505,7 @@ class Village(WorldGovernance, KitchenGarden, VillageHarness):
                         else:
                             r.update(cargo={"kind":r["task"],"amount":self.s['world']['rules']['harvest_amount']}, phase="deliver", activity="收好这一趟的成果", path=[])
             if self.s["clock"] % 20 == 0:
-                self.save()
+                self.save(clock_only=True)
 
     def reserve(self, rid, purpose, messages, cap=700):
         # UTF-8 bytes + overhead is a conservative heuristic, not provider tokenization.
@@ -587,6 +630,17 @@ class Village(WorldGovernance, KitchenGarden, VillageHarness):
             self.resident(rid)
             return copy.deepcopy(self.s["conversations"].get(rid, []))
 
+    def conversation_page(self, rid, limit, before=None):
+        if not 1 <= limit <= 100 or (before is not None and before < 0):
+            raise ValueError("对话页码不正确")
+        with self.lock:
+            self.resident(rid)
+            turns = self.s["conversations"].get(rid, [])
+            end = len(turns) if before is None else min(before, len(turns))
+            start = max(0, end - limit)
+            return {"turns": copy.deepcopy(turns[start:end]), "start": start, "end": end, "total": len(turns),
+                    "waiting": bool(turns and turns[-1]["status"] == "pending")}
+
     def send_chat(self, data):
         rid, request_id = data.get("id"), data.get("request_id")
         text = clean_text(data.get("text"), 1200, "消息")
@@ -683,6 +737,7 @@ class Village(WorldGovernance, KitchenGarden, VillageHarness):
                     raise ValueError("服务正在退出，会议已停止")
             with self.lock:
                 m["status"] = "discussing"
+                self.history_revision += 1
             # Independent contributions: early speakers cannot anchor later speakers.
             for rid in ids:
                 if self.stop.is_set():
@@ -696,6 +751,7 @@ class Village(WorldGovernance, KitchenGarden, VillageHarness):
                     self.save()
             with self.lock:
                 m["status"] = "synthesizing"
+                self.history_revision += 1
             transcript = "\n\n".join(v["name"] + "：" + v["text"][:1200] for v in m["messages"])
             if self.stop.is_set():
                 raise ValueError("服务退出，停止后续调用")

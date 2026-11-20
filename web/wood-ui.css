@@ -41,3 +41,21 @@
 .game-mode .weather-badge{position:absolute;z-index:2;top:106px;left:24px;display:flex;align-items:center;gap:7px;border:solid transparent;border-width:8px 14px;border-image:var(--skin-paper-normal) 25 28 25 28 fill stretch;background:none;color:#71512e;padding:0 3px;min-height:39px;font-size:12px;text-shadow:0 1px #fff1cf;filter:drop-shadow(1px 2px 1px #38291444)}.game-mode .weather-badge canvas{width:24px;height:24px;image-rendering:pixelated;pointer-events:none}.game-mode .weather-badge small{font-size:9px;color:#99784c;padding-left:7px;border-left:1px solid #c6a878}.game-mode .weather-badge:hover{border-image-source:var(--skin-paper-hover)}
 .game-mode .weather-choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}.game-mode .weather-choice{display:grid;grid-template-columns:36px 1fr;column-gap:10px;align-items:center;text-align:left;border:solid transparent;border-width:9px 11px;border-image:var(--skin-paper-normal) 25 28 25 28 fill stretch;background:none;padding:8px;color:#75522f;min-height:78px}.game-mode .weather-choice:first-child{grid-column:1/-1}.game-mode .weather-choice canvas{grid-row:1/3;width:32px;height:32px;image-rendering:pixelated;pointer-events:none}.game-mode .weather-choice strong{font-size:15px}.game-mode .weather-choice small{font-size:11px;margin-top:4px;color:#997448}.game-mode .weather-choice:hover{border-image-source:var(--skin-paper-hover)}.game-mode .weather-choice[aria-pressed=true]{border-image-source:var(--skin-gold-normal);color:#693f1c}.game-mode .weather-choice[aria-pressed=true] strong:after{content:' ✓';color:#5d7838}
 @media(max-width:700px){.game-mode .weather-badge{top:86px;left:9px;gap:4px;border-width:6px 10px;font-size:11px;min-height:34px}.game-mode .weather-badge canvas{width:21px;height:21px}.game-mode .weather-badge small{font-size:8px;padding-left:4px}.game-mode .weather-choices{gap:7px}.game-mode .weather-choice{grid-template-columns:27px 1fr;column-gap:5px;padding:5px 1px;border-width:8px;min-height:72px}.game-mode .weather-choice canvas{width:26px;height:26px}.game-mode .weather-choice strong{font-size:13px}.game-mode .weather-choice small{font-size:10px}}
+
+/* The software-rendered guest presents interactive windows in their final position. */
+[data-render-profile=tcg] .game-window { animation: none; }
+[data-render-profile=tcg] .game-mode .game-window { filter: none; }
+[data-render-profile=tcg] #resident-dialog::backdrop { backdrop-filter: none; }
+
+/* A flat paper surface keeps the case file legible when the guest opens it. */
+[data-render-profile=tcg] .game-mode .game-window {
+  border: 8px solid #8d623d;
+  border-image: none;
+  border-radius: 6px;
+  background: #f8e7c5;
+  box-shadow: inset 0 0 0 2px #d2ae77, 0 0 0 2px #563c29;
+}
+[data-render-profile=tcg] .game-window .side-top { padding: 7px 49px 12px; }
+[data-render-profile=tcg] .game-window .side-top>.square { right: 2px; top: 7px; }
+[data-render-profile=tcg] .game-window .side-heading h2 { min-width: 0; }
+[data-render-profile=tcg] .game-window .panel { max-height: calc(100dvh - 140px); }

@@ -106,12 +106,13 @@ test('chat renders escaped bubbles, preserves typing and sends to the selected r
   const root=element('.resident-chat'), status=element('status'), thread=element('thread');
   const fields={textarea:element('message'),button:element('send')};
   const form=Object.assign(element('composer'),{querySelector:key=>fields[key]});
-  const parts={'.chat-thread':thread,form,'[role=status]':status,'.chat-config':element('configure')};
+  const parts={'.chat-thread':thread,form,'[role=status]':status,'.chat-config':element('configure'),
+    '.chat-earlier':element('earlier'),'.chat-newer':element('newer')};
   Object.assign(root,{isConnected:true,querySelector:key=>parts[key]});
   Object.assign(thread,{scrollHeight:100,scrollTop:0,clientHeight:50});
   const resident={id:'r1',name:'星河',appearance:'doubao',connected:true};
   const calls=[],turns=[{id:'one',text:'你好',reply:'<星河>',status:'complete'}];
-  Object.assign(context,{resident,VillageAvatars:{paintChoices(){}},crypto:{randomUUID:()=> 'unit-chat-request-0001'},
+  Object.assign(context,{resident,VillageAvatars:{paintChoices(){}},crypto:{getRandomValues:bytes=>bytes.fill(33)},
     fakeRequest:async(path,body)=>{
       calls.push({path,body});
       if(body){turns.push({id:body.request_id,text:body.text,status:'pending'});return {ok:true};}
@@ -129,6 +130,7 @@ test('chat renders escaped bubbles, preserves typing and sends to the selected r
   const send=calls.find(c=>c.body);
   assert.equal(send.path,'residents/chat');
   assert.equal(send.body.id,'r1');
+  assert.equal(send.body.request_id,'21'.repeat(16));
   assert.equal(send.body.text,'今天在忙什么？');
   assert.match(thread.innerHTML,/正在回复/);
 });

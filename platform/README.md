@@ -8,6 +8,8 @@ Windows 双击仓库根目录的 **启动赛题村庄.cmd**。在带桌面的 Ub
 
 启动器使用 QEMU 8.0 或更新版本、Cortex-A76、4 vCPU、2 GiB 和纯 TCG（tb-size=160），启用 virtio-blk、virtio-gpu、virtio-mouse、virtio-keyboard、virtio-net 和 virtio-rng。页面地址参数 `?render=tcg` 使用本项目为软件模拟设计的显示模式。Chromium 沿用队伍开发环境的 `--no-sandbox` 和 Wayland 软件渲染参数，这一演示会话只用于村庄应用。宿主机需有 Python 3.10+、`qemu-system-aarch64`、QEMU GTK 显示模块、`debugfs` 和 `nc`（Ubuntu 的 `netcat-openbsd`）。
 
+村庄启动 Chromium 时启用 Linux 版自带的 zygote，让子进程继承已初始化的浏览器代码。固定网页、使用全新客体配置各测一次，启动至首次页面请求从 50.93 秒缩短到 43.57 秒，至 QMP 首次截到地图从 80.82 秒缩短到 68.03 秒。两次均从已准备的启动盘开始计时。本版 x-kernel 的 procfs 对 fork 后的子进程可能仍显示 zygote 的参数，按命令行识别 renderer 的赛题工具应配合队伍的正式启动脚本使用。[四组启动配置和实测值](evidence/performance-20261120/chromium-startup.json)
+
 ## 本机复现输入
 
 | 文件（仓库根目录下） | 来源 | 本机 SHA-256 |

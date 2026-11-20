@@ -40,8 +40,8 @@ test('TCG stops painting behind a panel and when paused, and coalesces redraw re
   assert.equal(f.ctx.painted,1);
   assert.equal(f.timers.size,1);
   f.element('#game-window').hidden=false;
-  f.step(f.timers);f.step(f.frames,500);
-  assert.equal(f.timers.size,0);
+  f.step(f.timers);
+  assert.equal(f.timers.size+f.frames.size,0);
   assert.equal(f.ctx.painted,1);
   f.element('#game-window').hidden=true;
   vm.runInContext("state.paused=true; wakeMap(true); wakeMap(true);",f.ctx);
@@ -58,4 +58,17 @@ test('dirty areas restore both old and new positions without repainting the gap'
   const f=fixture();
   const result=vm.runInContext('dirtyAreas([[800,220,60,110],[-20,100,42,20]],[[40,350,60,110]])',f.ctx);
   assert.deepEqual(JSON.parse(JSON.stringify(result)),[[800,220,60,110],[0,100,22,20],[40,350,60,110]]);
+});
+
+test('the TCG raster cap preserves the viewport aspect and leaves small or full-quality canvases alone',()=>{
+  const f=fixture();
+  for(const [width,height,tcg,expected] of [
+    [1280,629,true,{width:960,height:472}],
+    [900,800,true,{width:720,height:640}],
+    [390,600,true,{width:390,height:600}],
+    [1280,629,false,{width:1280,height:629}]
+  ]){
+    const result=vm.runInContext(`backingViewport(${width},${height},${tcg})`,f.ctx);
+    assert.deepEqual(JSON.parse(JSON.stringify(result)),expected);
+  }
 });

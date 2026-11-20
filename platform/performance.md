@@ -1,5 +1,7 @@
 # 赛题村庄启动与画面性能
 
+当前版本的启动及交互结果见 [第二轮交互优化](#第二轮交互优化)。
+
 2026-11-20 在同一台 Windows 主机的 WSL Ubuntu 中测试。各次使用相同 x-kernel 内核、Wayland 原始盘、Chromium、QEMU 8.2.2 和 AArch64 Cortex-A76，保持 4 vCPU、2 GiB、纯 TCG。基线是本仓库提交 `07afcb8`。各轮创建新的客体 Chromium 配置和独立测试存档。暖缓存指宿主机复用已准备的只读启动盘。
 
 | 指标 | 原版 | 只换网页与服务 | 完整优化，首次建盘 | 完整优化，复用启动盘 |
@@ -27,3 +29,14 @@ QMP 每秒采样一次画面，首帧数字包含这部分观测粒度。帧回�
 启动入口见 [赛题平台说明](README.md)。应用测速可以临时用 `python3 platform/profile_village.py --port 18769` 代替常规宿主服务，再从另一个终端运行 `python3 platform/qemu_demo.py launch --port 18769 --headless`。探针输出 `VILLAGE_PROFILE`，包含导航、素材、帧回调和画布测量，并使用临时存档。可用 `--source` 指向旧版本的工作目录读取旧版资源。素材用 `python platform/build_tcg_assets.py` 从原图重建，需要 Pillow，玩家运行时无需安装 Pillow。
 
 原始数据见 [原版](evidence/performance-20261120/baseline.json)、[仅应用优化](evidence/performance-20261120/app-only.json)、[组合冷缓存](evidence/performance-20261120/combined-cold.json)、[组合暖缓存](evidence/performance-20261120/combined-warm.json)、[GTK 图形窗口复测](evidence/performance-20261120/combined-gui.json) 和 [图片预取试跑](evidence/performance-20261120/preload-gui.json)。
+
+## 第二轮交互优化
+
+- 同一冻结网页的客体冷启对照中，启用 Chromium 的 Linux zygote 后，首个页面请求从 50.93 秒降到 43.57 秒，地图可见从 80.82 秒降到 68.03 秒。扩大 QEMU 翻译缓存的试验中，整缓存清空从 14 次降至 1 次，地图可见耗时为 82.92 秒。当前启动器沿用 160 MiB 翻译缓存。[四组配置原始记录](evidence/performance-20261120/chromium-startup.json)
+- 客体入口将有依赖顺序的脚本和样式各合为一份，并缓存 Gzip 响应。村庄按需加载后续场景和窗口资源。地图按显示大小限制绘制像素，界面文字仍按原尺寸绘制。
+- 地图缩放直接落在鼠标所指位置。取消 TCG 窗口入场动画，关闭时优先呈现已有地图。4 倍 CPU 节流的软件 Chromium 上，在居民持续活动时，每项执行 5 次。打开委托田的稳定画面延迟中位从 203 ms 降到 23 ms，关闭从 63 ms 降到 34 ms，一级缩放从 768 ms 降到 35 ms。相同条件下拖动地图，指针事件至镜头变化后一帧的中位从 24 ms 降到 19 ms。[交互逐次样本](evidence/performance-20261120/input-before.json) · [优化后样本](evidence/performance-20261120/input-after.json) · [拖动样本](evidence/performance-20261120/input-drag.json)
+- 宿主实测的模拟老存档含 100 份委托、100 场会议、5,000 条账本及 1,000 轮私聊。无变化时的状态轮询正文从约 409 KB 降到约 2.9 KB，Gzip 后约 1.1 KB。原子保存中位从约 47.5 ms 降到 13.1 ms。私聊默认显示最近 24 轮，旧记录可向前或向后翻页，1,000 轮历史的首屏气泡从 2,000 条降到 48 条。
+
+最终 1280×800 GTK 客体实测，复用启动盘、新建 Chromium 配置，65.87 秒可见地图，页面导航到可玩 28.71 秒。1280×629 页面中的地图画布以 960×472 绘制，源像素数减少约 44%。客体内测试脚本依次触发 3 次委托田开关和一级缩放，以 DOM 状态变更后的动画帧计时。首次打开约 746 ms，随后 260、154 ms。首次关闭约 767 ms，随后 145、243 ms。3 次缩放为 743、166、336 ms。刚进村 8 秒的帧回调间隔 P95 仍约 317 ms，启动阶段的明显停顿仍可见。
+
+1024×768 输出在一次对照中地图可见 64.78 秒，首次关闭委托田耗时 1,275 ms。当前启动器沿用 1280×800。TCG 的委托窗口使用简洁纸面与木框，避免把按钮贴图拉伸到整窗。提前解码控件在一次对照中使刚进村的慢帧更明显，最终采用按需解码。宿主 Chrome 已在 1280×629、390×844 及桌面全画质下走通播下委托、开工、收获并回读存档。[组合阶段原始数据](evidence/performance-20261120/experience-before-raster-cap.json) · [默认分辨率上限试跑](evidence/performance-20261120/experience-raster-cap.json) · [1024×768 比较](evidence/performance-20261120/experience-display1024.json) · [提前解码试跑](evidence/performance-20261120/experience-control-predecode.json) · [最终组合](evidence/performance-20261120/experience-final.json)

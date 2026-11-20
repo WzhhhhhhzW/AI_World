@@ -1,3 +1,4 @@
+import gzip
 import http.client
 import threading
 import unittest
@@ -62,3 +63,21 @@ class GuestHTTPTests(unittest.TestCase):
         self.assertEqual(response.status, 200)
         self.assertIs(conn.sock, original)
         self.assertTrue(response.read())
+
+    def test_tcg_index_loads_runtime_in_order_and_bundles_styles(self):
+        port = self.serve()
+        _, _, desktop = self.fetch(port, "/", {})
+        self.assertIn(b'href="style.css"', desktop)
+        status, _, page = self.fetch(port, "/?render=tcg", {})
+        self.assertEqual(status, 200)
+        self.assertIn(b'href="/village-style.css"', page)
+        self.assertLess(page.index(b'src="boot.js"'), page.index(b'src="/village-runtime.js"'))
+        status, headers, js = self.fetch(port, "/village-runtime.js", {})
+        self.assertEqual(status, 200)
+        self.assertEqual(headers["Content-Type"], "text/javascript; charset=utf-8")
+        self.assertLess(js.index(b"const VillageMap="), js.index(b"const canvas ="))
+        _, headers, zipped = self.fetch(port, "/village-runtime.js", {"Accept-Encoding": "gzip"})
+        self.assertEqual(headers["Content-Encoding"], "gzip")
+        self.assertEqual(gzip.decompress(zipped), js)
+        status, _, _ = self.fetch(port, "/village-runtime.js", {"If-None-Match": headers["ETag"]})
+        self.assertEqual(status, 304)

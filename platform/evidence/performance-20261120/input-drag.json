@@ -1,0 +1,27 @@
+{
+  "method": "Chromium software rendering, 4x CPU throttling, 1024x768, real CDP pointer drag after zoom",
+  "metric": "pointermove delivery to changed camera and following animation frame",
+  "before": [
+    29,
+    24,
+    20,
+    22,
+    25
+  ],
+  "after": [
+    16,
+    18,
+    21,
+    19,
+    26
+  ],
+  "displacements_css_pixels": [
+    65,
+    -65,
+    65,
+    -65,
+    65
+  ],
+  "javascript_errors_before": [],
+  "javascript_errors_after": []
+}

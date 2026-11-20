@@ -1,5 +1,6 @@
 """Buildless localhost app. Python standard library only; secrets stay in environment."""
 import argparse
+import gzip
 import hashlib
 import json
 import mimetypes
@@ -15,6 +16,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from village import Provider, Village
+from village_web import BUNDLES, bundle, etag_for, tcg_index
 
 ROOT = Path(__file__).resolve().parent
 WORKSPACE_ID = hashlib.sha256(str(ROOT).encode('utf-8')).hexdigest()[:16]
@@ -60,16 +62,36 @@ def make_handler(world, allow_shutdown=False, qemu_guest=False):
                 valid_hosts.update((f"10.0.2.2:{port}", f"10.0.2.100:{port}", "10.0.2.100:8766"))
             return host in valid_hosts and self.headers.get("Origin", "http://" + host) == "http://" + host
 
-        def respond(self, value, status=200):
-            self.send_bytes(json.dumps(value, ensure_ascii=False).encode("utf-8"), "application/json; charset=utf-8", status)
+        def accepts_gzip(self):
+            for candidate in self.headers.get("Accept-Encoding", "").lower().split(","):
+                name, _, weight = candidate.strip().partition(";")
+                if name != "gzip":
+                    continue
+                try:
+                    return not weight or 0 < float(weight.strip().removeprefix("q=")) <= 1
+                except ValueError:
+                    return False
+            return False
 
-        def send_bytes(self, body, content_type, status=200, etag=None):
+        def respond(self, value, status=200):
+            body = json.dumps(value, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+            encoding = None
+            if len(body) >= 2048 and self.accepts_gzip():
+                body = gzip.compress(body, compresslevel=1, mtime=0)
+                encoding = "gzip"
+            self.send_bytes(body, "application/json; charset=utf-8", status, encoding=encoding)
+
+        def send_bytes(self, body, content_type, status=200, etag=None, encoding=None):
             self.send_response(status)
             if status >= 400:
                 self.close_connection = True
                 self.send_header("Connection", "close")
             self.send_header("Content-Type", content_type)
             self.send_header("Content-Length", str(len(body)))
+            if encoding:
+                self.send_header("Content-Encoding", encoding)
+            if encoding or self.path.split("?", 1)[0] in BUNDLES:
+                self.send_header("Vary", "Accept-Encoding")
             self.send_header("Cache-Control", "no-cache" if etag else "no-store")
             if etag:
                 self.send_header("ETag", etag)
@@ -85,9 +107,11 @@ def make_handler(world, allow_shutdown=False, qemu_guest=False):
         def do_GET(self):
             if not self.valid_origin():
                 return self.respond({"error": "只接受本机同源请求"}, 403)
-            route = urllib.parse.urlsplit(self.path).path
+            url = urllib.parse.urlsplit(self.path)
+            route = url.path
             if route == "/api/state":
-                return self.respond(world.public())
+                query = urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query, keep_blank_values=True)
+                return self.respond(world.poll(query["since"][0]) if "since" in query else world.public())
             if route == "/api/harness/task":
                 task_id = urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query).get("id", [""])[0]
                 try:
@@ -95,14 +119,25 @@ def make_handler(world, allow_shutdown=False, qemu_guest=False):
                 except ValueError as exc:
                     return self.respond({"error": str(exc)}, 404)
             if route == "/api/residents/chat":
-                rid = urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query).get("id", [""])[0]
+                query = urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query)
+                rid = query.get("id", [""])[0]
                 try:
+                    if "limit" in query:
+                        before = int(query["before"][0]) if "before" in query else None
+                        return self.respond(world.conversation_page(rid, int(query["limit"][0]), before))
                     return self.respond({"turns": world.conversation(rid)})
                 except ValueError as exc:
                     return self.respond({"error": str(exc)}, 400)
             if route == "/api/health":
                 return self.respond({"ok": True, "pid": os.getpid(), "mode": "local-village", "workspace_id": WORKSPACE_ID})
-            path = (ROOT / "web" / urllib.parse.unquote(route).lstrip("/")).resolve()
+            web = ROOT / "web"
+            if route in BUNDLES:
+                body, content_type, etag, encoding = bundle(web, route, self.accepts_gzip())
+                return self.send_static(body, content_type, etag, encoding)
+            if route in ("/", "/index.html") and urllib.parse.parse_qs(url.query).get("render") == ["tcg"]:
+                body = tcg_index((web / "index.html").read_bytes())
+                return self.send_static(body, "text/html; charset=utf-8", etag_for(body))
+            path = (web / urllib.parse.unquote(route).lstrip("/")).resolve()
             if route == "/":
                 path = ROOT / "web" / "index.html"
             if not path.is_relative_to(ROOT / "web") or not path.is_file():
@@ -110,16 +145,27 @@ def make_handler(world, allow_shutdown=False, qemu_guest=False):
             # Revalidate local artwork without sending multi-megabyte sheets through virtio-net again.
             info = path.stat()
             etag = f'W/"{info.st_mtime_ns:x}-{info.st_size:x}"'
-            if self.headers.get("If-None-Match") == etag:
-                self.send_response(304)
-                self.send_header("ETag", etag)
-                self.send_header("Cache-Control", "no-cache")
-                self.end_headers()
+            if self.not_modified(etag):
                 return
             content_type = mimetypes.guess_type(str(path))[0] or "application/octet-stream"
             if content_type.startswith("text/") or content_type == "application/javascript":
                 content_type += "; charset=utf-8"
             self.send_bytes(path.read_bytes(), content_type, etag=etag)
+
+        def send_static(self, body, content_type, etag, encoding=None):
+            if not self.not_modified(etag):
+                self.send_bytes(body, content_type, etag=etag, encoding=encoding)
+
+        def not_modified(self, etag):
+            if self.headers.get("If-None-Match") == etag:
+                self.send_response(304)
+                self.send_header("ETag", etag)
+                self.send_header("Cache-Control", "no-cache")
+                if self.path.split("?", 1)[0] in BUNDLES:
+                    self.send_header("Vary", "Accept-Encoding")
+                self.end_headers()
+                return True
+            return False
 
         def do_POST(self):
             if not self.valid_origin():

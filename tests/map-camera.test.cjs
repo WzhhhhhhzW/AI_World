@@ -15,6 +15,21 @@ function covered(c,w,h){
 }
 function settle(c,w,h){for(let i=0;i<50;i++){c.step(50);covered(c,w,h);}}
 
+test('a software-rendered zoom or reset lands on one bounded pose without extra frames',()=>{
+  const c=create();c.resize(1024,768);
+  const a=c.worldAt(320,270);
+  c.zoomAt(1.25,320,270,true);
+  const b=c.worldAt(320,270);
+  assert.ok(Math.abs(a.x-b.x)<1e-8&&Math.abs(a.y-b.y)<1e-8);
+  assert.equal(c.pose().zoom,1.25);
+  assert.equal(c.moving(),false);
+  c.zoomAt(1e6,0,0,true);covered(c,1024,768);
+  assert.equal(c.pose().canZoomIn,false);
+  c.reset(true);covered(c,1024,768);
+  assert.equal(c.pose().zoom,1);
+  assert.equal(c.moving(),false);
+});
+
 test('minimum zoom fills landscape, portrait and ultrawide screens without letterboxing',()=>{
   for(const [w,h] of [[1092,871],[1920,1080],[2560,1080],[390,844],[844,390]]){
     const c=create();c.resize(w,h);covered(c,w,h);

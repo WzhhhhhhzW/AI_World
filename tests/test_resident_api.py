@@ -1,3 +1,4 @@
+import gzip
 import http.client
 import json
 import os
@@ -46,6 +47,66 @@ class ResidentApiTests(unittest.TestCase):
         data = {"id": rid, "provider": "fixture", "api": {
             "base_url": base or self.base, "model": model, "api_key": key}}
         return self.post("/api/residents/api", data)[0]
+
+    def test_poll_reuses_history_across_ticks_and_unrelated_actions(self):
+        # Full records remain available to old clients and newly opened tabs.
+        w = self.world
+        initial = w.poll("")
+        token = initial["history_revision"]
+        w.stock_change("radish", 1)
+        for _ in range(10):
+            w.tick()  # Includes the regular clock save.
+        delta = w.poll(token)
+        self.assertTrue(delta["partial"])
+        self.assertNotIn("meetings", delta)
+        self.assertNotIn("memory", delta["residents"][0])
+        self.assertEqual(delta["farm"]["inventory"]["radish"], 1)
+        self.assertEqual(delta["residents"][0]["x"], w.public()["residents"][0]["x"])
+        w.set_background({"id": self.rid, "background": "新经历"})
+        change = w.poll(token)
+        self.assertEqual(set(change["unchanged_archives"]), {"ledger", "harness", "meetings"})
+        self.assertEqual(change["residents"][0]["background"], "新经历")
+        meeting_id = w.draft({"question":"何时播种？"})
+        fresh = w.poll(change["history_revision"])
+        self.assertEqual(fresh["meetings"][0]["id"], meeting_id)
+        self.assertEqual(set(fresh["unchanged_archives"]), {"ledger", "harness"})
+        restarted = Village(self.path, self.provider)
+        try:
+            resynced = restarted.poll(fresh["history_revision"])
+            self.assertNotIn("partial", resynced)
+            self.assertNotIn("unchanged_archives", resynced)
+            self.assertEqual(resynced["meetings"], w.public()["meetings"])
+        finally:
+            restarted.close()
+
+    def test_large_json_negotiates_gzip_with_identity_fallback(self):
+        conn = http.client.HTTPConnection("127.0.0.1", self.port, timeout=3)
+        try:
+            def read_state(encoding):
+                conn.request("GET", "/api/state", headers={"Accept-Encoding": encoding})
+                response = conn.getresponse()
+                return response.getheader("Content-Encoding"), response.read()
+            enc, packed = read_state("br, gzip")
+            plain_enc, plain = read_state("gzip;q=0, identity")
+            self.assertIsNone(plain_enc)
+            self.assertEqual(enc, "gzip")
+            self.assertEqual(gzip.decompress(packed), plain)
+            self.assertLess(len(packed), len(plain))
+            self.assertEqual(json.loads(plain), self.world.public())
+        finally:
+            conn.close()
+
+    def test_chat_pages_remain_contiguous_when_another_turn_arrives(self):
+        turns = [{"id": str(i), "text": str(i), "status": "complete", "reply": "回复"} for i in range(51)]
+        self.world.s["conversations"][self.rid] = turns
+        recent = self.world.conversation_page(self.rid, 24)
+        self.assertEqual((recent["start"], recent["end"], recent["total"]), (27, 51, 51))
+        turns.append({"id": "new-message", "text": "下一轮", "status": "pending"})
+        older = self.world.conversation_page(self.rid, 24, recent["start"])
+        oldest = self.world.conversation_page(self.rid, 24, older["start"])
+        self.assertTrue(older["waiting"])
+        self.assertEqual(oldest["turns"] + older["turns"] + recent["turns"], turns[:-1])
+        self.assertEqual(self.world.conversation(self.rid), turns)
 
     def test_farm_to_pantry_to_resident_through_http(self):
         for index, (crop, seconds, credit) in enumerate([("cabbage",120,500), ("radish",300,1000)]):

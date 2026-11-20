@@ -96,6 +96,8 @@ const VillageInteractions=(()=>{
 
   function chatView(r){
     return `<section class="resident-chat" data-owner="${esc(r.id)}">
+      <div><button type="button" class="outline chat-earlier" hidden>更早的对话</button>
+      <button type="button" class="outline chat-newer" hidden>更新的对话</button></div>
       <div class="chat-thread" role="log" aria-live="polite" aria-label="聊天记录"></div>
       <form class="chat-compose"><textarea aria-label="给${esc(r.name)}的消息" rows="2" placeholder="发消息…" required></textarea><button type="submit" class="primary">发送</button></form>
       <div class="chat-status" role="status"></div><button type="button" class="outline chat-config" hidden>配置这位居民的 API</button></section>`;
@@ -110,6 +112,7 @@ const VillageInteractions=(()=>{
   }
   function bindChat(r){
     const root=$('.resident-chat'),thread=root.querySelector('.chat-thread'),form=root.querySelector('form');
+    const earlier=root.querySelector('.chat-earlier'),newer=root.querySelector('.chat-newer'),pageSize=24;
     const input=form.querySelector('textarea'),send=form.querySelector('button'),status=root.querySelector('[role=status]'),config=root.querySelector('.chat-config');
     if(!state.resident_interactions){
       input.disabled=true;send.disabled=true;status.textContent=restartHint;
@@ -117,7 +120,7 @@ const VillageInteractions=(()=>{
       return;
     }
     input.disabled=false;
-    let revision=null,loading=false,posting=false,waiting=false,error='';
+    let revision=null,loading=false,posting=false,waiting=false,error='',before=null,start=0,end=0,total=0;
     const draft=drafts.get(r.id)||{text:'',requestId:null};
     drafts.set(r.id,draft);input.value=draft.text;
     function controls(current){
@@ -129,16 +132,21 @@ const VillageInteractions=(()=>{
       if(!root.isConnected||view!=='residentChat'||selected!==r.id)return;
       const current=state.residents.find(x=>x.id===r.id);
       if(!current)return;
-      const next=JSON.stringify([current.chat_revision||'',current.appearance,current.name]);
+      const next=JSON.stringify([current.chat_revision||'',current.appearance,current.name,before]);
       $('#panel-title').textContent=current.name;
       controls(current);
       if(loading||revision===next)return;
       loading=true;
+      earlier.disabled=newer.disabled=true;
       try{
-        const result=await request('residents/chat?id='+encodeURIComponent(r.id));
+        const page=before;
+        const result=await request('residents/chat?id='+encodeURIComponent(r.id)+'&limit='+pageSize+(page===null?'':'&before='+page));
         if(!root.isConnected)return;
+        if(before!==page)return;
+        start=result.start??0;end=result.end??result.turns.length;total=result.total??end;
+        earlier.hidden=start===0;newer.hidden=end===total;
         const atBottom=revision===null||thread.scrollHeight-thread.clientHeight-thread.scrollTop<40;
-        waiting=result.turns.some(t=>t.status==='pending');
+        waiting=result.waiting??result.turns.some(t=>t.status==='pending');
         if(draft.requestId&&result.turns.some(t=>t.id===draft.requestId)&&input.value===draft.text){
           input.value='';draft.text='';draft.requestId=null;
         }
@@ -147,9 +155,11 @@ const VillageInteractions=(()=>{
         if(atBottom)thread.scrollTop=thread.scrollHeight;
         revision=next;
       }catch(problem){error=problem.message;}
-      finally{loading=false;controls(current);}
+      finally{loading=false;earlier.disabled=newer.disabled=false;controls(current);}
     }
     root.sync=sync;
+    earlier.onclick=()=>{before=start;return sync();};
+    newer.onclick=()=>{before=end+pageSize>=total?null:end+pageSize;return sync();};
     config.onclick=()=>navigate('residentApi',r.id);
     input.oninput=()=>{draft.text=input.value;draft.requestId=null;error='';controls(state.residents.find(x=>x.id===r.id));};
     input.onkeydown=e=>{
@@ -162,12 +172,13 @@ const VillageInteractions=(()=>{
       if(send.disabled)return;
       const text=input.value.trim();
       if(Array.from(text).length>1200){status.textContent='每条消息最多 1200 字';return;}
-      const requestId=draft.requestId||crypto.randomUUID();
+      const requestId=draft.requestId||(crypto.randomUUID?.() ||
+        Array.from(crypto.getRandomValues(new Uint8Array(16)),byte=>byte.toString(16).padStart(2,'0')).join(''));
       draft.requestId=requestId;posting=true;error='';input.readOnly=true;controls(r);
       try{
         await request('residents/chat',{id:r.id,request_id:requestId,text});
         if(draft.requestId===requestId){draft.text='';draft.requestId=null;input.value='';}
-        waiting=true;revision=null;
+        waiting=true;revision=null;before=null;
         await sync();
         thread.scrollTop=thread.scrollHeight;
       }catch(problem){error=problem.message;}
