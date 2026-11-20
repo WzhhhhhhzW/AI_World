@@ -10,6 +10,8 @@ Windows 双击仓库根目录的 **启动赛题村庄.cmd**。在带桌面的 Ub
 
 村庄启动 Chromium 时启用 Linux 版自带的 zygote，让子进程继承已初始化的浏览器代码。固定网页、使用全新客体配置各测一次，启动至首次页面请求从 50.93 秒缩短到 43.57 秒，至 QMP 首次截到地图从 80.82 秒缩短到 68.03 秒。两次均从已准备的启动盘开始计时。本版 x-kernel 的 procfs 对 fork 后的子进程可能仍显示 zygote 的参数，按命令行识别 renderer 的赛题工具应配合队伍的正式启动脚本使用。[四组启动配置和实测值](evidence/performance-20261120/chromium-startup.json)
 
+默认村庄会话也启用 Chromium 低内存模式。同一组合网页的两轮客体对照中，截到地图由 66.88 秒变为 62.69 秒。用最终默认入口复测为 59.35 秒，委托田和缩放可用。[组合版实测](performance.md#第三轮首屏与局部绘制)
+
 ## 本机复现输入
 
 | 文件（仓库根目录下） | 来源 | 本机 SHA-256 |
@@ -24,6 +26,7 @@ Windows 双击仓库根目录的 **启动赛题村庄.cmd**。在带桌面的 Ub
 启动盘保存在 `${XDG_CACHE_HOME:-$HOME/.cache}/qilin-village/disks`。退出所有演示后可以清除此缓存，下一次将自动重建。持久村庄存档位于 `${XDG_DATA_HOME:-$HOME/.local/share}/qilin-village/village.json`。
 
 本机新旧启动耗时和进村后的慢帧数据见 [启动与画面性能](performance.md)。
+赛题性能和内存的本机对照见 [决赛性能本机预演](finals-performance.md)。
 
 ## 运行与取证
 

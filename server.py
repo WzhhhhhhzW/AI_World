@@ -132,7 +132,8 @@ def make_handler(world, allow_shutdown=False, qemu_guest=False):
                 return self.respond({"ok": True, "pid": os.getpid(), "mode": "local-village", "workspace_id": WORKSPACE_ID})
             web = ROOT / "web"
             if route in BUNDLES:
-                body, content_type, etag, encoding = bundle(web, route, self.accepts_gzip())
+                compact = route == "/village-runtime.js" and url.query == "render=tcg"
+                body, content_type, etag, encoding = bundle(web, route, self.accepts_gzip(), compact=compact)
                 return self.send_static(body, content_type, etag, encoding)
             if route in ("/", "/index.html") and urllib.parse.parse_qs(url.query).get("render") == ["tcg"]:
                 body = tcg_index((web / "index.html").read_bytes())

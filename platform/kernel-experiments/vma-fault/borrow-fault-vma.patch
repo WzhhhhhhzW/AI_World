@@ -1,0 +1,119 @@
+diff --git a/mm/memspace/src/aspace.rs b/mm/memspace/src/aspace.rs
+--- a/mm/memspace/src/aspace.rs
++++ b/mm/memspace/src/aspace.rs
+@@ -1465,14 +1465,9 @@
+         }
+     }
+ 
+-    fn fault_vma_runtime(&self, vma: &VmArea, _vaddr: VirtAddr) -> Option<(VmArea, VmRuntimeRef)> {
+-        let runtime = self.runtime_for_vma(vma)?;
+-        Some((vma.clone(), runtime))
+-    }
+-
+     fn materialize_fault_for_vma(
+         &mut self,
+-        vma: VmArea,
++        vma: &VmArea,
+         runtime: VmRuntimeRef,
+         ctx: FaultContext,
+     ) -> PageFaultOutcome {
+@@ -1483,11 +1478,11 @@
+ 
+     fn materialize_anonymous_fault_for_vma(
+         &mut self,
+-        vma: VmArea,
++        vma: &VmArea,
+         ctx: FaultContext,
+     ) -> PageFaultOutcome {
+         let vaddr = ctx.address();
+-        let Some((vma, runtime)) = self.fault_vma_runtime(&vma, vaddr) else {
++        let Some(runtime) = self.runtime_for_vma(vma) else {
+             warn!("Backend fault path could not find area for {:?}", vaddr);
+             return PageFaultOutcome::Unmapped;
+         };
+@@ -1496,11 +1491,11 @@
+ 
+     fn materialize_file_fault_for_vma(
+         &mut self,
+-        vma: VmArea,
++        vma: &VmArea,
+         ctx: FaultContext,
+     ) -> PageFaultOutcome {
+         let vaddr = ctx.address();
+-        let Some((vma, runtime)) = self.fault_vma_runtime(&vma, vaddr) else {
++        let Some(runtime) = self.runtime_for_vma(vma) else {
+             warn!("Backend fault path could not find area for {:?}", vaddr);
+             return PageFaultOutcome::Unmapped;
+         };
+@@ -1510,7 +1505,7 @@
+ 
+     pub(crate) fn handle_linear_fault(
+         &mut self,
+-        vma: VmArea,
++        vma: &VmArea,
+         ctx: FaultContext,
+     ) -> PageFaultOutcome {
+         self.materialize_anonymous_fault_for_vma(vma, ctx)
+@@ -1518,7 +1513,7 @@
+ 
+     pub(crate) fn handle_anonymous_shared_fault(
+         &mut self,
+-        vma: VmArea,
++        vma: &VmArea,
+         ctx: FaultContext,
+     ) -> PageFaultOutcome {
+         self.materialize_anonymous_fault_for_vma(vma, ctx)
+@@ -1526,7 +1521,7 @@
+ 
+     pub(crate) fn handle_anonymous_private_fault(
+         &mut self,
+-        vma: VmArea,
++        vma: &VmArea,
+         ctx: FaultContext,
+     ) -> PageFaultOutcome {
+         self.materialize_anonymous_fault_for_vma(vma, ctx)
+@@ -1534,7 +1529,7 @@
+ 
+     pub(crate) fn handle_file_shared_fault(
+         &mut self,
+-        vma: VmArea,
++        vma: &VmArea,
+         ctx: FaultContext,
+     ) -> PageFaultOutcome {
+         self.materialize_file_fault_for_vma(vma, ctx)
+@@ -1542,7 +1537,7 @@
+ 
+     pub(crate) fn handle_file_private_fault(
+         &mut self,
+-        vma: VmArea,
++        vma: &VmArea,
+         ctx: FaultContext,
+     ) -> PageFaultOutcome {
+         self.materialize_file_fault_for_vma(vma, ctx)
+diff --git a/mm/memspace/src/vma.rs b/mm/memspace/src/vma.rs
+--- a/mm/memspace/src/vma.rs
++++ b/mm/memspace/src/vma.rs
+@@ -801,17 +801,13 @@
+             Some(self.start().as_usize().saturating_sub(page_base.as_usize())),
+         );
+         match self.backing.kind() {
+-            VmBackingKind::Linear => aspace.handle_linear_fault(self.clone(), ctx),
+-            VmBackingKind::AnonymousShared { .. } => {
+-                aspace.handle_anonymous_shared_fault(self.clone(), ctx)
++            VmBackingKind::Linear => aspace.handle_linear_fault(self, ctx),
++            VmBackingKind::AnonymousShared { .. } => aspace.handle_anonymous_shared_fault(self, ctx),
++            VmBackingKind::AnonymousPrivate { .. } => {
++                aspace.handle_anonymous_private_fault(self, ctx)
+             }
+-            VmBackingKind::AnonymousPrivate { .. } => {
+-                aspace.handle_anonymous_private_fault(self.clone(), ctx)
+-            }
+-            VmBackingKind::FileShared { .. } => aspace.handle_file_shared_fault(self.clone(), ctx),
+-            VmBackingKind::FilePrivate { .. } => {
+-                aspace.handle_file_private_fault(self.clone(), ctx)
+-            }
++            VmBackingKind::FileShared { .. } => aspace.handle_file_shared_fault(self, ctx),
++            VmBackingKind::FilePrivate { .. } => aspace.handle_file_private_fault(self, ctx),
+         }
+     }
+ 

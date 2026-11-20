@@ -3,7 +3,7 @@
 const VillageMap=(()=>{
   let layout=null,plate=null,loaded=false,glow=null,weather=null;
   const compact = document.documentElement.dataset.renderProfile === 'tcg';
-  const readLayout = fetch('assets/maps/valley-layout-v1.json').then(r=>{if(!r.ok)throw Error('Map layout unavailable');return r.json();});
+  const readLayout = compact ? Promise.resolve(villageTcgAssets.layout) : fetch('assets/maps/valley-layout-v1.json').then(r=>{if(!r.ok)throw Error('Map layout unavailable');return r.json();});
   function loadPlate(url) {
     return new Promise((resolve,reject)=>{
       const image = new Image();
@@ -16,14 +16,28 @@ const VillageMap=(()=>{
   const ready=Promise.all([readLayout,image,VillageProps.ready]).then(([data,art])=>{
     layout=data;
     if(art.naturalWidth!==layout.background_size[0]||art.naturalHeight!==layout.background_size[1])throw Error('Map artwork size mismatch');
-    plate=art;
-    plate=VillageProps.cleanPlate(plate);
+    plate=compact ? art : VillageProps.cleanPlate(art);
     if(!compact)weather=VillageWeather.create(plate,layout);
     loaded=true;document.documentElement.dataset.mapStyle=layout.version;
     document.dispatchEvent(new Event('village-map-ready'));
   });
   const spec=b=>layout?.buildings[b.id];
   const anchor=b=>spec(b)?.anchor||[(b.x+b.w/2)*32,(b.y+b.h)*32];
+  // These bounds cover the pixels drawn above the plate, including sign captions
+  // and the base of a finished building. The map's clickable regions are separate.
+  function overlayBounds(b,state){
+    const item=spec(b);
+    if(!item)return null;
+    if(b.kind==='farm')return b.built && state.farm?.plots.some(p=>p.crop) ? item.rect : null;
+    if(item.baked)return null;
+    const [x,y]=item.anchor;
+    if(!b.built&&!b.constructing){
+      const half=Math.max(32,(b.name.length+3)*6);
+      return [x-half,y-36,half*2,49];
+    }
+    const scale=item.scale;
+    return [x-50*scale,y-114*scale,100*scale,133*scale];
+  }
   function ground(c){if(!loaded)return false;c.clearRect(0,0,960,640);c.drawImage(plate,0,0,960,640);return true;}
   function meadow(c,w,h){if(!loaded)return false;c.fillStyle='#243f30';c.fillRect(0,0,w,h);return true;}
   function building(c,b,state,time){
@@ -65,12 +79,20 @@ const VillageMap=(()=>{
   function groundMotion(c,time,climate){
     if(weather)weather.ground(c,time,climate);
   }
-  function atmosphere(c,time,state,climate){
+  function butterflies(time,state,climate){
+    const wings=[];
+    if(state.clock%1440>360&&state.clock%1440<1140&&(!climate||climate.rain<.25&&climate.fog<.6)){
+      const wing=Math.sin(time/80)>0?3:1;
+      for(let i=0;i<3;i++)wings.push({x:329+Math.sin(time/1900+i*3)*19+i*86,y:355+Math.cos(time/1500+i)*13+i*30,wing});
+    }
+    return wings;
+  }
+  function atmosphere(c,time,state,climate,wings){
     if(!loaded)return;
     if(weather)weather.petals(c,time,climate);
-    if(state.clock%1440>360&&state.clock%1440<1140&&(!climate||climate.rain<.25&&climate.fog<.6)){
-      for(let i=0;i<3;i++){const x=329+Math.sin(time/1900+i*3)*19+i*86,y=355+Math.cos(time/1500+i)*13+i*30,wing=Math.sin(time/80)>0?3:1;c.fillStyle=i%2?'#f1d59d':'#e3c8f3';c.fillRect(x-wing,y,wing,2);c.fillRect(x+1,y,wing,2);}
-    }
+    (wings||butterflies(time,state,climate)).forEach(({x,y,wing},i)=>{
+      c.fillStyle=i%2?'#f1d59d':'#e3c8f3';c.fillRect(x-wing,y,wing,2);c.fillRect(x+1,y,wing,2);
+    });
   }
   function lighting(c,time,state,camera,w,h){
     if(!loaded)return;
@@ -83,5 +105,5 @@ const VillageMap=(()=>{
     for(const b of state.buildings){if(!b.built||b.kind==='farm')continue;const [x,y]=anchor(b);c.drawImage(glow,x-30,y-40,60,60);}
     for(let i=0;i<8;i++){const x=230+i*67+Math.sin(time/1600+i)*8,y=520+Math.cos(time/1500+i)*12;c.globalAlpha=night*(.3+.25*Math.sin(time/700+i));c.fillStyle='#f2ef9d';c.fillRect(x,y,2,2);}c.restore();
   }
-  return {ready,ground,meadow,building,selection,anchor,hitBuilding,plotAt,paintBuildingPortrait,groundMotion,atmosphere,lighting,scenery:()=>[],drawScenery:()=>{},hit:()=>null,get version(){return layout?.version;}};
+  return {ready,ground,meadow,building,overlayBounds,selection,anchor,hitBuilding,plotAt,paintBuildingPortrait,groundMotion,butterflies,atmosphere,lighting,scenery:()=>[],drawScenery:()=>{},hit:()=>null,get version(){return layout?.version;}};
 })();

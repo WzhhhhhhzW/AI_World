@@ -1,0 +1,188 @@
+[
+  {
+    "sourceFile": "old-1795162313903.json",
+    "view": {
+      "clock": 500,
+      "people": 3,
+      "buildings": 6,
+      "canvas": [
+        853,
+        640
+      ]
+    },
+    "cold8": {
+      "ops": {
+        "drawImage": 1836,
+        "rect": 486,
+        "fillRect": 1566,
+        "fillText": 270,
+        "measureText": 162
+      },
+      "rafP95": 16.799999999999272,
+      "rafOver50": 0,
+      "frames": 54,
+      "drawP95": 4.299999998882413,
+      "drawMs": 169
+    },
+    "replay": {
+      "none": {
+        "median": 9.5,
+        "p95": 12,
+        "total": 480,
+        "pixel": 255
+      },
+      "repeated": {
+        "median": 8.900000000372529,
+        "p95": 11.199999999254942,
+        "total": 459,
+        "pixel": 255
+      },
+      "last": {
+        "median": 8.400000000372529,
+        "p95": 10.699999999254942,
+        "total": 431,
+        "pixel": 255
+      }
+    },
+    "errors": []
+  },
+  {
+    "sourceFile": "cand-1795162324510.json",
+    "view": {
+      "clock": 500,
+      "people": 3,
+      "buildings": 6,
+      "canvas": [
+        853,
+        640
+      ]
+    },
+    "cold8": {
+      "ops": {
+        "rect": 594,
+        "drawImage": 1350,
+        "fillRect": 1512,
+        "fillText": 216
+      },
+      "rafP95": 16.700000000000728,
+      "rafOver50": 0,
+      "frames": 54,
+      "drawP95": 3.799999998882413,
+      "drawMs": 150
+    },
+    "replay": {
+      "none": {
+        "median": 6,
+        "p95": 7.700000001117587,
+        "total": 309,
+        "pixel": 255
+      },
+      "repeated": {
+        "median": 5.300000000745058,
+        "p95": 7.799999998882413,
+        "total": 273,
+        "pixel": 255
+      },
+      "last": {
+        "median": 5,
+        "p95": 7,
+        "total": 262,
+        "pixel": 255
+      }
+    },
+    "errors": []
+  },
+  {
+    "sourceFile": "cand-1795162334773.json",
+    "view": {
+      "clock": 500,
+      "people": 3,
+      "buildings": 6,
+      "canvas": [
+        853,
+        640
+      ]
+    },
+    "cold8": {
+      "ops": {
+        "rect": 605,
+        "drawImage": 1375,
+        "fillRect": 1540,
+        "fillText": 220
+      },
+      "rafP95": 16.700000000000728,
+      "rafOver50": 0,
+      "frames": 55,
+      "drawP95": 3.700000001117587,
+      "drawMs": 144
+    },
+    "replay": {
+      "none": {
+        "median": 5.099999999627471,
+        "p95": 6.5,
+        "total": 259,
+        "pixel": 255
+      },
+      "repeated": {
+        "median": 5.5,
+        "p95": 7.099999999627471,
+        "total": 281,
+        "pixel": 255
+      },
+      "last": {
+        "median": 5.5,
+        "p95": 7.100000001490116,
+        "total": 274,
+        "pixel": 255
+      }
+    },
+    "errors": []
+  },
+  {
+    "sourceFile": "old-1795162345368.json",
+    "view": {
+      "clock": 500,
+      "people": 3,
+      "buildings": 6,
+      "canvas": [
+        853,
+        640
+      ]
+    },
+    "cold8": {
+      "ops": {
+        "drawImage": 1836,
+        "rect": 486,
+        "fillRect": 1566,
+        "fillText": 270,
+        "measureText": 162
+      },
+      "rafP95": 16.799999999999272,
+      "rafOver50": 0,
+      "frames": 54,
+      "drawP95": 3.699999999254942,
+      "drawMs": 141
+    },
+    "replay": {
+      "none": {
+        "median": 6.200000001117587,
+        "p95": 8.200000001117587,
+        "total": 319,
+        "pixel": 255
+      },
+      "repeated": {
+        "median": 6.5,
+        "p95": 9.900000000372529,
+        "total": 357,
+        "pixel": 255
+      },
+      "last": {
+        "median": 6.599999999627471,
+        "p95": 8,
+        "total": 332,
+        "pixel": 255
+      }
+    },
+    "errors": []
+  }
+]

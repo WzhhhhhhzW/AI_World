@@ -9,11 +9,8 @@ const VillageSkin=(()=>{
       link.onerror = () => reject(Error('UI skin unavailable'));
       document.head.append(link);
     });
-    const manifest = fetch('assets/tcg/skin.json').then(response => {
-      if (!response.ok) throw Error('UI skin unavailable');
-      return response.json();
-    });
-    return {ready:Promise.all([css,manifest]).then(([, skin]) => {
+    return {ready:css.then(() => {
+      const skin = villageTcgAssets.skin;
       document.documentElement.dataset.uiSkin = skin.version;
       document.documentElement.dataset.uiSkinRegions = String(skin.regions);
     })};

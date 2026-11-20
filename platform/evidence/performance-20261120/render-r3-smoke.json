@@ -1,0 +1,16 @@
+{
+  "profile": "tcg",
+  "ready": true,
+  "map": [
+    1536,
+    1024
+  ],
+  "wheel": [
+    274,
+    224
+  ],
+  "plateColors": 2497,
+  "wheelPixelsChanged": 1251,
+  "realStateZoomResidentPanelResume": true,
+  "errors": []
+}

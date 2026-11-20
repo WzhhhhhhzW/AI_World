@@ -58,10 +58,11 @@ const VillageUI = (() => {
     }
   }
   const compact = typeof document !== 'undefined' && document.documentElement.dataset.renderProfile === 'tcg';
-  const ready = fetch(compact ? 'assets/tcg/ui-atlas.json' : 'assets/ui-atlas.json').then(response => {
+  const manifest = compact ? Promise.resolve(villageTcgAssets.ui) : fetch('assets/ui-atlas.json').then(response => {
     if (!response.ok) throw new Error('UI atlas unavailable');
     return response.json();
-  }).then(async data => {
+  });
+  const ready = manifest.then(async data => {
     atlas = data;
     const results = await Promise.allSettled(Object.entries(data.sheets).map(([key, spec]) => new Promise((resolve,reject) => {
       const image = new Image();

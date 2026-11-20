@@ -1,0 +1,193 @@
+{
+  "baseline_sha256": "20dea65f87636b24b0b1df5d89f0fef736159f7758d79a31e6f2dda0aa2dde5d",
+  "candidate_sha256": "1ece67996f63420f8470c4f2a1934c9a5fea3321fb4b0f53c801d5c0d13afdb0",
+  "probe_sha256": "da9c7717d2748a32ee6e2715c07fc2a484858b92bfcf961654765380aa2d519f",
+  "disk_sha256": "2817c7e2438075a42d8fc6d01d9e525164c9ea05d6696776d94ae26e901eeac4",
+  "runs": [
+    {
+      "run": "01-baseline",
+      "guest_exit_status": 0,
+      "serial_sha256": "1d7f4109d5c8569a3f32de83337405480a5ed88bb92f1798a58bee069298950e",
+      "raw_samples": [
+        {
+          "round": 1,
+          "pages": 2048,
+          "elapsed_ns": 219776496
+        },
+        {
+          "round": 2,
+          "pages": 2048,
+          "elapsed_ns": 175721264
+        },
+        {
+          "round": 3,
+          "pages": 2048,
+          "elapsed_ns": 189036432
+        },
+        {
+          "round": 4,
+          "pages": 2048,
+          "elapsed_ns": 217404960
+        },
+        {
+          "round": 5,
+          "pages": 2048,
+          "elapsed_ns": 200698160
+        },
+        {
+          "round": 6,
+          "pages": 2048,
+          "elapsed_ns": 164409616
+        },
+        {
+          "round": 7,
+          "pages": 2048,
+          "elapsed_ns": 141782432
+        }
+      ],
+      "median_ms": 189.036432
+    },
+    {
+      "run": "02-candidate",
+      "guest_exit_status": 0,
+      "serial_sha256": "20df818dec5bd89db8201c45a4145226c7f1af2f83de5c59b0730cc70aa49fe9",
+      "raw_samples": [
+        {
+          "round": 1,
+          "pages": 2048,
+          "elapsed_ns": 175630272
+        },
+        {
+          "round": 2,
+          "pages": 2048,
+          "elapsed_ns": 143753408
+        },
+        {
+          "round": 3,
+          "pages": 2048,
+          "elapsed_ns": 118566720
+        },
+        {
+          "round": 4,
+          "pages": 2048,
+          "elapsed_ns": 128338624
+        },
+        {
+          "round": 5,
+          "pages": 2048,
+          "elapsed_ns": 130748832
+        },
+        {
+          "round": 6,
+          "pages": 2048,
+          "elapsed_ns": 127755360
+        },
+        {
+          "round": 7,
+          "pages": 2048,
+          "elapsed_ns": 126035280
+        }
+      ],
+      "median_ms": 128.338624
+    },
+    {
+      "run": "03-candidate",
+      "guest_exit_status": 0,
+      "serial_sha256": "54f0665286fddae464524c174fb530b14d81656332ead942334e46873a7f672c",
+      "raw_samples": [
+        {
+          "round": 1,
+          "pages": 2048,
+          "elapsed_ns": 171192176
+        },
+        {
+          "round": 2,
+          "pages": 2048,
+          "elapsed_ns": 163765040
+        },
+        {
+          "round": 3,
+          "pages": 2048,
+          "elapsed_ns": 120279152
+        },
+        {
+          "round": 4,
+          "pages": 2048,
+          "elapsed_ns": 123222288
+        },
+        {
+          "round": 5,
+          "pages": 2048,
+          "elapsed_ns": 164541488
+        },
+        {
+          "round": 6,
+          "pages": 2048,
+          "elapsed_ns": 191632816
+        },
+        {
+          "round": 7,
+          "pages": 2048,
+          "elapsed_ns": 162746432
+        }
+      ],
+      "median_ms": 163.76504
+    },
+    {
+      "run": "04-baseline",
+      "guest_exit_status": 0,
+      "serial_sha256": "e35c93722526024a042d1a94111fed5b287139a8c31f453d9767bb0d4eb80c5e",
+      "raw_samples": [
+        {
+          "round": 1,
+          "pages": 2048,
+          "elapsed_ns": 186518656
+        },
+        {
+          "round": 2,
+          "pages": 2048,
+          "elapsed_ns": 145867472
+        },
+        {
+          "round": 3,
+          "pages": 2048,
+          "elapsed_ns": 140125216
+        },
+        {
+          "round": 4,
+          "pages": 2048,
+          "elapsed_ns": 139800432
+        },
+        {
+          "round": 5,
+          "pages": 2048,
+          "elapsed_ns": 133683344
+        },
+        {
+          "round": 6,
+          "pages": 2048,
+          "elapsed_ns": 136703376
+        },
+        {
+          "round": 7,
+          "pages": 2048,
+          "elapsed_ns": 141587952
+        }
+      ],
+      "median_ms": 140.125216
+    }
+  ],
+  "summary": {
+    "measure": "two independent cold AArch64 boots per kernel in ABBA order; per-boot medians of seven warm-file fresh mappings; COW semantics verified after timings",
+    "baseline_boot_medians_ms": [
+      189.036432,
+      140.125216
+    ],
+    "candidate_boot_medians_ms": [
+      128.338624,
+      163.76504
+    ],
+    "baseline_median_of_boot_medians_ms": 164.580824,
+    "candidate_median_of_boot_medians_ms": 146.051832
+  }
+}

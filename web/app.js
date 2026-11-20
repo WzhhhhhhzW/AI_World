@@ -479,8 +479,12 @@ function baseMap(c){
   for(let i=0;i<17;i++)tree(c,12+i*59,54+(i%3)*9,.9);
   for(const p of [[36,158],[72,203],[25,284],[50,380],[910,164],[938,227],[922,348],[937,489]])tree(c,...p,1);
 }
-const background=document.createElement('canvas');background.width=960;background.height=640;baseMap(background.getContext('2d'));
-document.addEventListener('village-map-ready',()=>baseMap(background.getContext('2d')));
+const launchCover=document.querySelector('#launch-cover');
+const background=document.createElement('canvas');background.width=960;background.height=640;
+if(!tcg || !launchCover?.isConnected || VillageMap.version)baseMap(background.getContext('2d'));
+document.addEventListener('village-map-ready',()=>{
+  if(!tcg || VillageMap.version)baseMap(background.getContext('2d'));
+});
 let lastFrame=0,visualTime=0;
 const worldCamera=VillageCamera.create(),camera={scale:1,x:0,y:0};
 const mapPointers=new Map();
@@ -528,6 +532,23 @@ canvas.addEventListener('keydown',event=>{
   if(moves[event.key]){event.preventDefault();worldCamera.panBy(...moves[event.key]);wakeMap();}
   else if(event.key==='Home'){event.preventDefault();worldCamera.reset(tcg);wakeMap();}
 });
+const namePlaques=new Map();
+function plaqueWidth(c,r){
+  const last=namePlaques.get(r.id);
+  if(last?.name===r.name)return last.width;
+  c.font='10px Microsoft YaHei';
+  const width=Math.max(38,Math.ceil(c.measureText(r.name).width)+8);
+  namePlaques.set(r.id,{name:r.name,width});
+  return width;
+}
+let lastLedger,callingResidents=new Set();
+function residentEmote(r){
+  if(lastLedger!==state.ledger){
+    lastLedger=state.ledger;callingResidents=new Set();
+    for(const entry of lastLedger)if(entry.status==='reserved')callingResidents.add(entry.resident_id);
+  }
+  return r.meeting?'discussion':callingResidents.has(r.id)?'think':r.remaining===0?'hungry':null;
+}
 function drawVillager(c,e,now){
   const {r,p}=e,x=Math.round((p.x+.5)*32),y=Math.round((p.y+1)*32);
   const walking=Math.abs(p.x-p.toX)+Math.abs(p.y-p.toY)>.05;
@@ -543,10 +564,9 @@ function drawVillager(c,e,now){
   if(r.cargo)VillageUI.renderIcon(c,r.cargo.kind,x+8,y-34,17,17);
   if(!walking&&r.phase==='work'&&r.progress>0&&!r.meeting){c.save();c.globalAlpha=.35;for(let i=0;i<2;i++){const p=(phase*2+i*.5)%1;c.fillStyle=r.task==='stone'?'#c4c2a1':'#dbc493';c.fillRect(x-8+i*13,y-5-p*8,2,2);}c.restore();}
   c.font='10px Microsoft YaHei';c.textAlign='center';
-  const plaque=Math.max(38,Math.ceil(c.measureText(r.name).width)+8);
+  const plaque=plaqueWidth(c,r);
   c.fillStyle='#fcf9e8dc';c.fillRect(x-plaque/2,y-73,plaque,15);c.fillStyle='#526347';c.fillText(r.name,x,y-62);
-  const calling=state.ledger.some(entry=>entry.resident_id===r.id&&entry.status==='reserved');
-  const emote=r.meeting?'discussion':calling?'think':r.remaining===0?'hungry':null;
+  const emote=residentEmote(r);
   if(emote)VillageUI.renderIcon(c,emote,x+8,y-98,24,24);
 }
 const frameInterval = tcg ? 125 : 50;
@@ -565,7 +585,10 @@ function wakeMap(invalidate=false){
   if(timer){clearTimeout(timer);timer=0;}
   if(!document.hidden&&!mapCovered()&&!frameRequest)frameRequest=requestAnimationFrame(draw);
 }
-function mapCovered(){return !$('#game-window').hidden || $('#resident-dialog').open;}
+function mapCovered(){
+  return !$('#game-window').hidden || $('#resident-dialog').open ||
+    (launchCover?.isConnected && document.documentElement.dataset.gameReady!=='true');
+}
 function nextMapFrame(){
   if(!document.hidden && !mapCovered() && state && (!state.paused || worldCamera.moving())){
     timer=setTimeout(()=>{timer=0;wakeMap();},frameInterval);
@@ -573,8 +596,10 @@ function nextMapFrame(){
 }
 function actorRect(r,p){
   const x=Math.round((p.x+.5)*32),y=Math.round((p.y+1)*32);
-  const half=Math.max(40,r.name.length*6+7);
-  return [x-half,y-102,half*2,114];
+  const emote=residentEmote(r);
+  const half=Math.max(25,Math.ceil(plaqueWidth(ctx,r)/2)+2);
+  const right=emote?Math.max(half,34):half,top=emote?100:75;
+  return [x-half,y-top,half+right,top+10];
 }
 // Keep the previous positions too so moving or departing residents erase their footprints.
 function dirtyAreas(current,previous){
@@ -618,25 +643,35 @@ function paintFastVillage(now,sky,pose,scaleX,scaleY){
     climate.screen(plate,visualTime,sky,{x:0,y:0,scale:1},960,640,state.clock,false);
     plateKey=key;
   }
-  const entities=state.buildings.map(b=>({b,y:VillageMap.anchor(b)[1]})), current=[];
+  const sx=camera.scale*scaleX,sy=camera.scale*scaleY;
+  const tx=camera.x*scaleX,ty=camera.y*scaleY;
+  const visible=([x,y,w,h])=>tx+(x+w)*sx>=0 && ty+(y+h)*sy>=0 && tx+x*sx<canvas.width && ty+y*sy<canvas.height;
+  const entities=[], current=[];
   for(const r of state.residents){
     if((r.region||'village')!=='village')continue;
     const p=positions.get(r.id),t=Math.max(0,Math.min(1,(now-p.at)/550));
     p.x=p.fromX+(p.toX-p.fromX)*t;p.y=p.fromY+(p.toY-p.fromY)*t;
-    current.push(actorRect(r,p));entities.push({r,p,y:(p.y+1)*32});
+    const area=actorRect(r,p);
+    if(visible(area)){current.push(area);entities.push({r,p,y:(p.y+1)*32});}
   }
   for(const fx of worldEffects)current.push([Math.floor(fx.x)-28,Math.floor(fx.y)-38,56,55]);
-  // Wheel, two flags, smoke and the three butterfly paths use world-space coordinates.
-  const areas=dirtyAreas(current,lastActorRects).concat([[111,87,58,75],[391,106,30,31],[510,106,31,31],[601,208,60,61],[302,338,225,95]]);
+  // Restore the insects' old and new wings, including the frame when they disappear.
+  const wings=VillageMap.butterflies(visualTime,state,sky);
+  for(const {x,y} of wings)current.push([Math.floor(x)-4,Math.floor(y)-1,10,5]);
+  const areas=dirtyAreas(current,lastActorRects).concat([[111,87,58,75],[391,106,30,31],[510,106,31,31],[601,208,60,61]]);
   if(sky.rain>.025 || paintedShowers)areas.push(...showers);
   paintedShowers=sky.rain>.025;
   if(state.farm?.plots.some(p=>p.crop))areas.push([126,318,141,102]);
   for(const b of state.buildings)if(b.constructing){
     const [x,y]=VillageMap.anchor(b);areas.push([x-65,y-50,130,67]);
   }
+  for(const b of state.buildings){
+    const bounds=VillageMap.overlayBounds(b,state);
+    const drawBuilding=bounds && visible(bounds) && (full || areas.some(([x,y,w,h])=>
+      x<=bounds[0]+bounds[2] && y<=bounds[1]+bounds[3] && x+w>=bounds[0] && y+h>=bounds[1]));
+    if(drawBuilding || selected===b.id)entities.push({b,drawBuilding,y:VillageMap.anchor(b)[1]});
+  }
   lastActorRects=current;lastMapPose=pose;repaintAll=false;
-  const sx=camera.scale*scaleX,sy=camera.scale*scaleY;
-  const tx=camera.x*scaleX,ty=camera.y*scaleY;
   // Present a camera change immediately. The first partial redraw projects a
   // backing bitmap so later repairs can copy exact, integral screen pixels.
   if(full)projectionStale=true;
@@ -660,15 +695,18 @@ function paintFastVillage(now,sky,pose,scaleX,scaleY){
       const width=Math.min(canvas.width,Math.ceil(tx+(x+w)*sx))-left;
       const height=Math.min(canvas.height,Math.ceil(ty+(y+h)*sy))-top;
       if(width<=0||height<=0)continue;
-      ctx.drawImage(projectedPlate,left,top,width,height,left,top,width,height);ctx.rect(left,top,width,height);
+      ctx.rect(left,top,width,height);
     }
     ctx.clip();
+    // The existing clip also limits the screen-aligned background restoration.
+    ctx.drawImage(projectedPlate,0,0);
   }
   ctx.setTransform(sx,0,0,sy,tx,ty);
-  VillageProps.draw(ctx,visualTime);VillageProps.rooftops(ctx,visualTime,sky,8);
-  entities.sort((a,b)=>a.y-b.y);
+  if(visible([111,87,58,75]))VillageProps.draw(ctx,visualTime);
+  VillageProps.rooftops(ctx,visualTime,sky,8,visible);
+  entities.sort((a,b)=>a.y-b.y || Number(!!b.b)-Number(!!a.b));
   for(const entity of entities){
-    if(entity.b){building(ctx,entity.b,visualTime);if(selected===entity.b.id)VillageMap.selection(ctx,entity.b,visualTime);}
+    if(entity.b){if(entity.drawBuilding)building(ctx,entity.b,visualTime);if(selected===entity.b.id)VillageMap.selection(ctx,entity.b,visualTime);}
     else drawVillager(ctx,entity,now);
   }
   for(let i=worldEffects.length-1;i>=0;i--){
@@ -676,7 +714,7 @@ function paintFastVillage(now,sky,pose,scaleX,scaleY){
     if(now-fx.start>700)worldEffects.splice(i,1);
     else VillageUI.effect(ctx,fx.kind,now-fx.start,fx.x,fx.y,44,36);
   }
-  VillageMap.atmosphere(ctx,visualTime,state,sky);
+  VillageMap.atmosphere(ctx,visualTime,state,sky,wings);
   if(sky.rain>.025)drawShowers(ctx,visualTime,sky);
   ctx.restore();
 }

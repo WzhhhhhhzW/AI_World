@@ -20,12 +20,12 @@ function fixture(){
   });
   const schedule=(jobs,fn)=>{jobs.set(++id,fn);return id;};
   const ctx=vm.createContext({
-    document,window:new EventTarget(),fetch:()=>new Promise(()=>{}),setInterval(){},
+    document,window:new EventTarget(),URL,location:{href:'http://localhost/?render=tcg'},fetch:()=>new Promise(()=>{}),setInterval(){},
     requestAnimationFrame:fn=>schedule(frames,fn),clearTimeout:key=>timers.delete(key),
     setTimeout:fn=>schedule(timers,fn),VillageMap:{ground:()=>true},
     VillageClimate:{create:()=>({advance:()=>({})})},
-    VillageProps:{frameAt:()=>({angle:0})},VillageInteractions:{bindMenu(){},positionMenu(){}},
-    VillageCamera:{create:()=>({resize(){},moving:()=>false,step:()=>({scale:1,x:0,y:0})})},
+    VillageProps:{frameAt:()=>({angle:0})},VillageInteractions:{bindMenu(){},positionMenu(){},closeMenu(){}},
+    VillageCamera:{create:()=>({resize(){},reset(){},moving:()=>false,step:()=>({scale:1,x:0,y:0})})},
     painted:0,
   });
   vm.runInContext(app,ctx);
@@ -58,6 +58,36 @@ test('dirty areas restore both old and new positions without repainting the gap'
   const f=fixture();
   const result=vm.runInContext('dirtyAreas([[800,220,60,110],[-20,100,42,20]],[[40,350,60,110]])',f.ctx);
   assert.deepEqual(JSON.parse(JSON.stringify(result)),[[800,220,60,110],[0,100,22,20],[40,350,60,110]]);
+});
+
+test('the covered launch screen waits for the playable village before painting',()=>{
+  const f=fixture();
+  f.element('#launch-cover').isConnected=true;
+  f.step(f.frames,100);
+  assert.equal(f.ctx.painted,0);
+  assert.equal(f.timers.size,0);
+  f.document.documentElement.dataset.gameReady='true';
+  f.document.dispatchEvent(new Event('village-game-ready'));
+  f.step(f.frames,200);
+  assert.equal(f.ctx.painted,1);
+});
+
+test('resident damage includes renamed plaques and live emotes, measuring each name once',()=>{
+  const f=fixture();
+  const actual=vm.runInContext(`(()=>{
+    let measurements=0;
+    ctx.measureText=name=>{measurements++;return {width:name.length*10};};
+    state.ledger=[];
+    const actor={id:'a',name:'甲',remaining:4},p={x:2,y:3};
+    const plain=actorRect(actor,p);actorRect(actor,p);
+    actor.name='村里的长名字居民';
+    state.ledger=[{resident_id:'a',status:'reserved'}];
+    const calling=actorRect(actor,p);
+    return {plain,calling,measurements};
+  })()`,f.ctx);
+  assert.equal(actual.measurements,2);
+  assert.ok(actual.calling[1]<actual.plain[1]);
+  assert.ok(actual.calling[2]>actual.plain[2]);
 });
 
 test('the TCG raster cap preserves the viewport aspect and leaves small or full-quality canvases alone',()=>{

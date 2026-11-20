@@ -1,0 +1,432 @@
+{
+  "page_source": "outputs/ict-chromium/testpages, commit 0b6c596",
+  "page_title": "初赛指定测试页 · x-kernel + Chromium",
+  "guest_files_sha256": {
+    "index.html": "831cf28f3748940b450d1da325aa39a2dcaea2fee15b0532bf4111144d176b38",
+    "interaction.html": "58130daa4a2f426fd16b8bde93d964713f20e147da8af1537ab2d8b506d2fd58",
+    "layout.html": "a1b04f9aba81b4b7818be2e7a858d482d471bd0d625dee257f605b2129b8fc4c"
+  },
+  "kernel_sha256": "20dea65f87636b24b0b1df5d89f0fef736159f7758d79a31e6f2dda0aa2dde5d",
+  "rootfs_sha256": "2817c7e2438075a42d8fc6d01d9e525164c9ea05d6696776d94ae26e901eeac4",
+  "original_competition_scripts_available": false,
+  "host": "Linux 6.6.87.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025 x86_64 GNU/Linux",
+  "qemu": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+  "wsl_memtotal": "MemTotal:       16115888 kB",
+  "cpu_model": "Intel(R) Core(TM) Ultra 9 285H",
+  "num_pairs": 5,
+  "order": "baseline, lowend in each pair, new immutable-disk snapshot and browser profile for every VM",
+  "host_os": "Microsoft Windows 11 家庭版 10.0.26300 x64",
+  "host_physical_memory_bytes": 33820106752,
+  "cpu": "Cortex-A76, 4 virtual CPUs",
+  "qemu_guest_memory_bytes": 2147483648,
+  "accelerator": "pure TCG, tb-size=160 MiB",
+  "source_config_sha256": "42e8d16450352712d78813b5f78b7ca221dfb88fadc796f57ecf317d7e33f669",
+  "baseline_browser_script_gitblob": "ebdb7b4bbc86c4e683fd191a7f827873e3061684",
+  "only_lowend_change": "--enable-low-end-device-mode",
+  "clocks": "Host monotonic. QMP samples approx every 0.7 s. Visual starts at ICT_BROWSER_START. CSS latency starts before native Return. Renderer first observed via guest procfs every 0.5 s, including polling and console latency. Peak = lifetime Linux wait4 ru_maxrss * 1024 for whole QEMU.",
+  "raw_artifact_directory": "data/platform/finals-proxy-20261120",
+  "matrix_files_sha256": {
+    "run.py": "c864256627071edd926b75c738a23ea0b0c856b165ba6a02cadad76ccaa9fe4b",
+    "watch.c": "ab5a5469ae09e6be3ddc6abfb45faca6758152e6d414bf1444612cb8f5b6dd31",
+    "watcher": "7b52223ad9f014b2feaad31941fc3b4219b185691f37c828f9679f843636ac85",
+    "matrix.py": "ab542a77eb0ea0f283ed4891406bcae6087cbe16b7773e15c56b6da32f485329"
+  },
+  "runs": [
+    {
+      "pair": 1,
+      "mode": "baseline",
+      "renderer_pid": 86,
+      "stages_s": {
+        "weston_ready": 2.843,
+        "browser_start": 3.044,
+        "renderer_inventory_seen": 37.718,
+        "window_white": 63.519,
+        "home_colors": 66.39,
+        "return_css": 72.235,
+        "css_visible": 75.951
+      },
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1227194368,
+        "user_s": 140.733733,
+        "system_s": 32.070601
+      },
+      "sha256": {
+        "metrics.json": "2831027c62e7e13f22a0574b0d8b8310b9f2702d6e458a88e094e3ef998aee47",
+        "serial.log": "f54886eaf7b012c0b4e2f1f2dadb4211e14e7612c77cbefd90929c4318a7f20e",
+        "browser-window.png": "4f5c01ce9a95fada40d9a3b0346b15ffb9d9355e663ab53ac908a069996575da",
+        "home.png": "e9a2127d3e80e086512c1d797c6b91f74909d18ab1e0b0e8b1eb8631272dd93e",
+        "css.png": "0a41357d3228e802c356c8f203a2c2a2dc5cf7d19ce29d3714a1870bafe0fb13"
+      }
+    },
+    {
+      "pair": 1,
+      "mode": "lowend",
+      "renderer_pid": 88,
+      "stages_s": {
+        "weston_ready": 3.151,
+        "browser_start": 3.352,
+        "renderer_inventory_seen": 36.296,
+        "window_white": 51.73,
+        "home_colors": 57.456,
+        "return_css": 63.297,
+        "css_visible": 67.008
+      },
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1170395136,
+        "user_s": 121.785088,
+        "system_s": 27.029546
+      },
+      "sha256": {
+        "metrics.json": "ddd4a791ad4c48d7d53b0e2f4d2efd141a0c04a2bb86ebddd4e15440a98a4def",
+        "serial.log": "334add179cd80082c12373774be70b3bb0f4daf6785fb407adfa50f812e01297",
+        "browser-window.png": "d8f46c7e18a907266c9ed2b5d8774007f6a9c5ac0ac5c58661caf0216e68b73d",
+        "home.png": "0315820fedb572ad885f89dd4507ed72cf26c873440020aeb1613714cce5e265",
+        "css.png": "b4cd6ccadd49cbabec9dd30f1a3694d11e649828b591322e58fabe55882de9fc"
+      }
+    },
+    {
+      "pair": 2,
+      "mode": "baseline",
+      "renderer_pid": 87,
+      "stages_s": {
+        "weston_ready": 3.235,
+        "browser_start": 3.436,
+        "renderer_inventory_seen": 37.094,
+        "window_white": 61.765,
+        "home_colors": 66.058,
+        "return_css": 71.898,
+        "css_visible": 75.606
+      },
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1231302656,
+        "user_s": 135.072472,
+        "system_s": 31.197272
+      },
+      "sha256": {
+        "metrics.json": "2e2111e3d44c956b3b6e0d2868e389fa02b94d13af648b7ade7a16e2eb8d7362",
+        "serial.log": "0a4890747f0dd80251991502712ddc32bf959924d09112849c973b34085b8072",
+        "browser-window.png": "0a804fd2bb6c8e8d8ffffd6c9204e566846a82dbd3cfd4e637c381bf9443be5b",
+        "home.png": "babac710c28a804bde97364ae3a347134b5110fca98765a8aaec1f4fcd1c2e33",
+        "css.png": "ba51267c9929a557d111a4e5ba0eec072c4caf1e5926422ba2f10798440be8d2"
+      }
+    },
+    {
+      "pair": 2,
+      "mode": "lowend",
+      "renderer_pid": 87,
+      "stages_s": {
+        "weston_ready": 3.169,
+        "browser_start": 3.47,
+        "renderer_inventory_seen": 36.007,
+        "window_white": 51.146,
+        "home_colors": 61.159,
+        "return_css": 67.005,
+        "css_visible": 70.714
+      },
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1164718080,
+        "user_s": 129.28508,
+        "system_s": 28.31467
+      },
+      "sha256": {
+        "metrics.json": "473fa6ddb9c250e0db405950f1d0b708096338c5c01946949160451885942c92",
+        "serial.log": "c8ae554fd7232b298d8d5de63d75d9585cc0807cde8145d45d19bdd9dc0d1150",
+        "browser-window.png": "003d45483b560d30ab98ee0ecf251e7784645693c80fae4c2f47c93d922c6581",
+        "home.png": "fa9648dd9825d965e7af37889a7810023f4faeba3dd367cf877c6e507b08c9c1",
+        "css.png": "b8ac7cca633cb266f497790d02cc044d95b0faadc75d099bd5978641ab73aa08"
+      }
+    },
+    {
+      "pair": 3,
+      "mode": "baseline",
+      "renderer_pid": 88,
+      "stages_s": {
+        "weston_ready": 3.058,
+        "browser_start": 3.36,
+        "renderer_inventory_seen": 35.051,
+        "window_white": 60.243,
+        "home_colors": 63.826,
+        "return_css": 69.664,
+        "css_visible": 72.661
+      },
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1223659520,
+        "user_s": 130.85743,
+        "system_s": 29.998285
+      },
+      "sha256": {
+        "metrics.json": "ea2546e44fc13f46c9b530cfa74837a3d60badfc5def0f202d8c717247d8c458",
+        "serial.log": "1c7b145a22322df6fc1c4d7980c9b38caf8774bb521b98f7344339abe88bd34d",
+        "browser-window.png": "ce3f67a7901c2bbfdeecddd4936829e1874a5a4711e5a5be2e1310c76ee0a40e",
+        "home.png": "1a73eca93fbb27e9f01234cbdcc8bbb7268e32b7bc11b02a160dba8173a9ce97",
+        "css.png": "1ae16b326d994aaf17fb6da0dfbdfc9d0f4d08af986b5e1043c2d8341019aa21"
+      }
+    },
+    {
+      "pair": 3,
+      "mode": "lowend",
+      "renderer_pid": 86,
+      "stages_s": {
+        "weston_ready": 2.952,
+        "browser_start": 3.153,
+        "renderer_inventory_seen": 33.62,
+        "window_white": 49.355,
+        "home_colors": 53.646,
+        "return_css": 59.483,
+        "css_visible": 63.191
+      },
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1174376448,
+        "user_s": 112.338021,
+        "system_s": 24.726053
+      },
+      "sha256": {
+        "metrics.json": "03cc6d8411f3cd16b158f3309606e385f20881cf7a9d0a920fed6e736e5efb85",
+        "serial.log": "4b64f121db21409378ad334a640dd9997a5af6eee03ecb40fe5f0cafba99c6ff",
+        "browser-window.png": "aff717f632d1f4423959318fe5c7776970ff3f5df2d53eb7b83fec1aa208611a",
+        "home.png": "cc4ff4ff622e52be13bae7bddb9ce4bce1a476527b4342d77afbf2f724984884",
+        "css.png": "bed350b4e23f5581c7005653cd939a7b4c6a24493170a7fdbc7197c4c8f66641"
+      }
+    },
+    {
+      "pair": 4,
+      "mode": "baseline",
+      "renderer_pid": 87,
+      "stages_s": {
+        "weston_ready": 3.272,
+        "browser_start": 3.473,
+        "renderer_inventory_seen": 34.177,
+        "window_white": 58.235,
+        "home_colors": 61.818,
+        "return_css": 67.662,
+        "css_visible": 71.37
+      },
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1232908288,
+        "user_s": 129.397626,
+        "system_s": 29.150037
+      },
+      "sha256": {
+        "metrics.json": "f439b20c86940b215efd11e1348d5d5097052622659a8eeb1f04cdbf735e9b83",
+        "serial.log": "c5ed00ceef0eefa7f9705e5be080796a4e32258e8a58825ffd2ab94e50a71c54",
+        "browser-window.png": "b7608d34a1cab70f7a1eeb3ea36d6a84a7966fb469494d7cbcb8561796569ede",
+        "home.png": "e062e553282b93023f6267716c0b23e2e13185f2d3c989503de1151e966c3538",
+        "css.png": "db87958bd8b438ab67f92c0e1a4eb7106922d599dc923f456fda43079bb4cf7f"
+      }
+    },
+    {
+      "pair": 4,
+      "mode": "lowend",
+      "renderer_pid": 87,
+      "stages_s": {
+        "weston_ready": 3.038,
+        "browser_start": 3.239,
+        "renderer_inventory_seen": 34.124,
+        "window_white": 48.734,
+        "home_colors": 53.738,
+        "return_css": 59.576,
+        "css_visible": 62.569
+      },
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1166323712,
+        "user_s": 110.13588,
+        "system_s": 25.064816
+      },
+      "sha256": {
+        "metrics.json": "346bfe28835f0eddec3f6bb17eb83fb776d7f76122d5814a03ca355723c86c1f",
+        "serial.log": "70bdc1dbd91b8b18ede5b49d067ae1494e22b28d5a86761115c4451254db6754",
+        "browser-window.png": "32dbd5d3328d427a668e3dfc419cf34028231c82d620b9f7be7965a9bef7dc16",
+        "home.png": "f59b8856aa42165a404900d2cada54a400170e7278f62dba0190ac7963f4df7f",
+        "css.png": "3f6e27a6ec1dc622289eb53a4f895a262c09be1c2958a60126cd281c85723876"
+      }
+    },
+    {
+      "pair": 5,
+      "mode": "baseline",
+      "renderer_pid": 87,
+      "stages_s": {
+        "weston_ready": 2.732,
+        "browser_start": 2.933,
+        "renderer_inventory_seen": 33.818,
+        "window_white": 56.948,
+        "home_colors": 59.105,
+        "return_css": 64.943,
+        "css_visible": 68.653
+      },
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1234567168,
+        "user_s": 125.612503,
+        "system_s": 29.123548
+      },
+      "sha256": {
+        "metrics.json": "972ee9e780540491fa64fde3068df6049f260e7dbb864a0e72014aabd6e8cb9b",
+        "serial.log": "ce7a4ff848fd89ec7fb6e5e2cc1fce9d462c76967966981d1a292e7e77a6d8fc",
+        "browser-window.png": "cd8f81d8c2e453cb56b2550665fcb09431c0f5ff4e33695737293777698955be",
+        "home.png": "21806e5117962b34cef7585dd3328f28af1d9ed63bdf3119b21f76f69839f5d9",
+        "css.png": "3d0c9332052b2d3cf2913651dece876e03c9d687309b4d89a012606020094280"
+      }
+    },
+    {
+      "pair": 5,
+      "mode": "lowend",
+      "renderer_pid": 86,
+      "stages_s": {
+        "weston_ready": 2.828,
+        "browser_start": 3.028,
+        "renderer_inventory_seen": 32.883,
+        "window_white": 47.102,
+        "home_colors": 52.817,
+        "return_css": 58.654,
+        "css_visible": 62.362
+      },
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1162412032,
+        "user_s": 109.507806,
+        "system_s": 24.484265
+      },
+      "sha256": {
+        "metrics.json": "57e1f87bcd44ba7b851c14a7f0c133443fcb8d0c8db55a8ccbe0590666db9413",
+        "serial.log": "8e981cb8376c1a9f30c63aa8c872818cf9bda04cd5009178ccaca0aa6140c052",
+        "browser-window.png": "a5c717b9ff0904a427847e1cc00f999e9f4b3b4042d3f3f140a741c57f9ea034",
+        "home.png": "1cda096d72a7b0b9f21923ee2bea746185437183bc8544149f2b0745e65fd55c",
+        "css.png": "9275f6b8c09cc45eb1a962bf78ce3bb7ed68fd3c2db24c753f1c99fd08c2e2c2"
+      }
+    }
+  ],
+  "summary": {
+    "baseline": {
+      "browser_to_window_s": {
+        "values": [
+          60.475,
+          58.329,
+          56.883,
+          54.762,
+          54.015
+        ],
+        "median": 56.883,
+        "min": 54.015,
+        "max": 60.475
+      },
+      "browser_to_home_s": {
+        "values": [
+          63.346,
+          62.622,
+          60.466,
+          58.345,
+          56.172
+        ],
+        "median": 60.466,
+        "min": 56.172,
+        "max": 63.346
+      },
+      "browser_to_renderer_observed_s": {
+        "values": [
+          34.674,
+          33.658,
+          31.691,
+          30.704,
+          30.885
+        ],
+        "median": 31.691,
+        "min": 30.704,
+        "max": 34.674
+      },
+      "return_to_css_s": {
+        "values": [
+          3.716,
+          3.708,
+          2.997,
+          3.708,
+          3.71
+        ],
+        "median": 3.708,
+        "min": 2.997,
+        "max": 3.716
+      },
+      "qemu_maxrss_bytes": {
+        "values": [
+          1227194368,
+          1231302656,
+          1223659520,
+          1232908288,
+          1234567168
+        ],
+        "median": 1231302656,
+        "min": 1223659520,
+        "max": 1234567168
+      }
+    },
+    "lowend": {
+      "browser_to_window_s": {
+        "values": [
+          48.378,
+          47.676,
+          46.202,
+          45.495,
+          44.074
+        ],
+        "median": 46.202,
+        "min": 44.074,
+        "max": 48.378
+      },
+      "browser_to_home_s": {
+        "values": [
+          54.104,
+          57.689,
+          50.493,
+          50.499,
+          49.789
+        ],
+        "median": 50.499,
+        "min": 49.789,
+        "max": 57.689
+      },
+      "browser_to_renderer_observed_s": {
+        "values": [
+          32.944,
+          32.537,
+          30.467,
+          30.885,
+          29.855
+        ],
+        "median": 30.885,
+        "min": 29.855,
+        "max": 32.944
+      },
+      "return_to_css_s": {
+        "values": [
+          3.711,
+          3.709,
+          3.708,
+          2.993,
+          3.708
+        ],
+        "median": 3.708,
+        "min": 2.993,
+        "max": 3.711
+      },
+      "qemu_maxrss_bytes": {
+        "values": [
+          1170395136,
+          1164718080,
+          1174376448,
+          1166323712,
+          1162412032
+        ],
+        "median": 1166323712,
+        "min": 1162412032,
+        "max": 1174376448
+      }
+    }
+  }
+}

@@ -19,7 +19,7 @@
         script.addEventListener('error',()=>reject(new Error('加载游戏文件失败')),{once:true});
       } else {
         script = document.createElement('script');
-        script.src='/village-runtime.js';
+        script.src=tcg?'/village-runtime.js?render=tcg':'/village-runtime.js';
         script.onload=resolve;
         script.onerror=()=>reject(new Error('加载游戏文件失败'));
         document.head.append(script);

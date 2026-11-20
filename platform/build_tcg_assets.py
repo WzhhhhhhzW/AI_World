@@ -124,15 +124,40 @@ def skin():
     write("skin.json", {"version": data["version"], "regions": len(declarations)})
 
 
+def valley_plate():
+    """Bake in the three roof patches used by VillageProps.cleanPlate."""
+    plate = Image.open(ASSETS / "maps" / "valley-painted-v1.png").convert("RGBA")
+    roof = Image.open(ASSETS / "props" / "rooftop-motion.png").convert("RGBA")
+    for source, destination in (
+        ((0, 32, 35, 28), (630, 180)),
+        ((40, 32, 37, 28), (821, 180)),
+        ((80, 32, 40, 44), (970, 371)),
+    ):
+        plate.alpha_composite(crop(roof, source), dest=destination)
+    plate.convert("RGB").save(OUT / "valley-painted-v1.webp", quality=90, method=6)
+
+
+def waterwheel():
+    """Pack a small wheel face and hub with room between their sampling edges."""
+    original = Image.open(ASSETS / "props" / "waterwheel-front-v1.png").convert("RGBA")
+    atlas = Image.new("RGBA", (274, 224))
+    face = crop(original, (139, 139, 982, 982)).resize((224, 224), Image.Resampling.LANCZOS)
+    hub = crop(original, (529, 529, 196, 196)).resize((48, 48), Image.Resampling.LANCZOS)
+    atlas.paste(face, (0, 0))
+    atlas.paste(hub, (226, 0))
+    atlas.save(OUT / "waterwheel-front-v1.webp", quality=88, method=6)
+
+
 def main():
     OUT.mkdir(exist_ok=True)
     scenery()
     ui()
     avatars()
     skin()
-    for name in ("valley-painted-v1", "eastwood-v1", "council-hall-v1"):
+    valley_plate()
+    for name in ("eastwood-v1", "council-hall-v1"):
         Image.open(ASSETS / "maps" / (name + ".png")).convert("RGB").save(OUT / (name + ".webp"), quality=90, method=6)
-    Image.open(ASSETS / "props" / "waterwheel-front-v1.png").save(OUT / "waterwheel-front-v1.webp", quality=88, method=6)
+    waterwheel()
 
 
 if __name__ == "__main__":

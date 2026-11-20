@@ -1,0 +1,75 @@
+{
+  "date": "2026-11-20",
+  "upstream_commit": "0b6c59600a8782762a6112eb02cfd96347e496e6",
+  "candidate": "team guest-browser.sh + --enable-low-end-device-mode with separate renderer",
+  "guest_input_chain": "QMP send-key/input-send-event -> virtio-keyboard / relative virtio-mouse -> Weston DRM -> Chromium Wayland",
+  "score_matrix_independent": true,
+  "wayland_debug_client": "enabled only on this functional run to read actual pointer motion; no script added to any test page",
+  "kernel_sha256": "20dea65f87636b24b0b1df5d89f0fef736159f7758d79a31e6f2dda0aa2dde5d",
+  "rootfs_sha256": "2817c7e2438075a42d8fc6d01d9e525164c9ea05d6696776d94ae26e901eeac4",
+  "visual_review": {
+    "tabs": "Ctrl+1 displayed layout.html; Ctrl+2 displayed index.html in the second tab",
+    "javascript": "Core tests T1..T6: 6/6. Separate localStorage check passed.",
+    "keyboard": "hello x-kernel present in both the textbox and the live echo region",
+    "mouse": "Left button down/up on page link changed active second tab from interaction.html to layout.html. Successful wl_pointer surface position [209.234375,660.5390625].",
+    "css": "Layout checks C1..C6: 6/6, reviewed on original QMP frame."
+  },
+  "raw_directory": "data/platform/finals-proxy-20261120/controls-v3/functional",
+  "selected_qmp_pngs": [
+    "keyboard-echo.png",
+    "css-checks.png"
+  ],
+  "raw_sha256": {
+    "browser-window.png": "8305ff355b4f7a79da2a74359f848b1db8b056492f3496ba933adb4fcd3994ad",
+    "command.json": "ea10ff2800b9d36b3a1dae915e78d03707d590780b7cf8b307d652b35a7a0bf3",
+    "css-checks.png": "58254f200eb86a0e31ab63df619579062f751db12c5fa9e26ff0901ab3823572",
+    "css.png": "094588307460ac6e21d406ab0f0b035fb18aa73cec76b7f9ccdda46734a40b34",
+    "home.png": "9c52691deb7bfaa3a296ba8c51c3815a793728903e898550e6422c8fc571f20e",
+    "javascript.png": "010ba3aaee257cd56a9eebe1ffa265a81b02c378e6e899105be75b53f4dc5bbd",
+    "keyboard-before.png": "3d8fc00e2264f654d3220d71e398041b6e1434f53f13bd537ab187b1ce5065ed",
+    "keyboard-echo.png": "9df580a1c2ae1cf292caa50c3a964563da5bea9b5a59fe5053a906ceb00ee745",
+    "metrics.json": "04a21a03b54bae8c9eb60b7a06ca14b94cdf38bbd30f822a52a3f651a7717a5c",
+    "motion-debug.txt": "113b33f5b183332903a1d42a64d6889c6f3d36a8fd604010037e343ce1baf40e",
+    "mouse-css.png": "01c2663afec21056543c115fa25c61f17ba8d800e074b6778734ff03440ca1d3",
+    "pointer-0.png": "36035b30b64158bbe452ec82ffeec069d5d28ba7d9991194889a6fd04cd49f24",
+    "pointer-1.png": "ddf88b2f3a4c5ac70e5f719fb090081915f1b8ab9fb3bff7343100b070897fb6",
+    "pointer-target": "3f7f2ed44c412afded82d9bb480efc7bb6949b0c99b1d3884ec4cc079426e405",
+    "qemu.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "serial.log": "e04a79a81832267e34a48376e1b3a7f8f3275b0556b1662683ae4eed22173ff4",
+    "tab-1-css.png": "a5d19558c70435edac1ef44361e1fb8dc0668569beb400194f69518c6f656d55",
+    "tab-2-index.png": "b4bcd6dd0973c87aa7dd25acd886e9ecc2d24b95242c1d03c0de00656b5eb19c"
+  },
+  "earlier_attempts": [
+    "controls-v1 used a single large relative motion; link navigation was not observed.",
+    "controls-v2 used fixed one-count motions; link navigation was not observed."
+  ],
+  "long_soak": "Not run in this session.",
+  "renderer_pid": 86,
+  "qemu_wait4": {
+    "exit": 0,
+    "maxrss_bytes": 1276960768,
+    "user_s": 200.910954,
+    "system_s": 37.860308
+  },
+  "final_cli_recheck": {
+    "output_directory": "data/platform/finals-proxy-20261120/controls-final-cli",
+    "renderer_pid": 86,
+    "native_inputs_and_screenshots_completed": true,
+    "qemu_wait4": {
+      "exit": 0,
+      "maxrss_bytes": 1269641216,
+      "user_s": 201.942281,
+      "system_s": 37.080939
+    },
+    "sha256": {
+      "keyboard-echo.png": "d20d6fe98020efc34de5d166b1880c5dd7a86ef8d7fae52b40790f4a8bc243ec",
+      "tab-1-css.png": "267358abf06852233c19eba74b09b2ebe1bab22cf00d372c1c73adb0b05928fd",
+      "tab-2-index.png": "32e7f80b1047a5f60f4a411972e054f86bdc373dc0c9f1962878404fb058727d",
+      "javascript.png": "887b49fbc80e2b4575b84845dd55f0f6008f229eac9744f9ab1f5f932904bc4e",
+      "mouse-css.png": "b296098943418499d80b1519379791e921f192002064d1be94d509bf5d92aaa9",
+      "css-checks.png": "b2a954dd8bcbe8e9178b1ff02f6be0b4825672e374bdec0d9004a02403913c2f",
+      "serial.log": "7ec50fbc8e73467a29996e42360010f2c7a0b7190789be56329649e3a9784149",
+      "metrics.json": "67a5bbd795f519675eededf39ce6c668d3bd8dd3fc0b09847f04bbcea5fe625d"
+    }
+  }
+}

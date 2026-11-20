@@ -18,10 +18,11 @@ const VillageAvatars = (() => {
     });
   }
   const compact = typeof document !== 'undefined' && document.documentElement.dataset.renderProfile === 'tcg';
-  const ready=fetch(compact?'assets/tcg/avatars.json':'assets/avatars.json').then(response=>{
+  const source=compact?Promise.resolve(villageTcgAssets.avatars):fetch('assets/avatars.json').then(response=>{
     if(!response.ok)throw new Error('Avatar manifest unavailable');
     return response.json();
-  }).then(data=>new Promise((resolve,reject)=>{
+  });
+  const ready=source.then(data=>new Promise((resolve,reject)=>{
     manifest=data;image=new Image();
     image.onload=()=>{
       if(image.naturalWidth!==data.size[0]||image.naturalHeight!==data.size[1])return reject(new Error('Avatar sheet size mismatch'));

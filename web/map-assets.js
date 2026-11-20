@@ -143,7 +143,8 @@ const VillageTiles = (() => {
     }return null;
   }
   const compact = typeof document !== 'undefined' && document.documentElement.dataset.renderProfile === 'tcg';
-  const ready=fetch(compact?'assets/tcg/scenery.json':'assets/scenery.json').then(response=>{if(!response.ok)throw new Error('Scene atlas unavailable');return response.json();}).then(async data=>{
+  const source=compact?Promise.resolve(villageTcgAssets.scenery):fetch('assets/scenery.json').then(response=>{if(!response.ok)throw new Error('Scene atlas unavailable');return response.json();});
+  const ready=source.then(async data=>{
     manifest=data;
     const results=await Promise.allSettled(Object.entries(data.sheets).map(([key,spec])=>new Promise((resolve,reject)=>{
       const image=new Image();image.onload=()=>{if(image.naturalWidth!==spec.size[0]||image.naturalHeight!==spec.size[1])return reject(new Error('Unexpected scene sheet size'));sheets.set(key,image);resolve();};image.onerror=()=>reject(new Error('Scene sheet unavailable'));image.src='assets/'+spec.file;
