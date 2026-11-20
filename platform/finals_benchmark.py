@@ -43,7 +43,7 @@ def file_hash(path):
     return digest.hexdigest()
 
 
-def prepare(args, work):
+def prepare(args, work, browser_modes):
     script = subprocess.check_output(["git", "-C", args.upstream, "show", f"{COMMIT}:{SCRIPT}"])
     for filename, expected in PAGE_HASHES.items():
         contents = subprocess.check_output(["debugfs", "-R", f"cat /opt/ict/testpages/{filename}",
@@ -63,9 +63,8 @@ def prepare(args, work):
     if scripts["baseline"] == scripts["lowend"]:
         raise ValueError("队友启动脚本中缺少预期的启动参数")
     disks = {}
-    for mode, browser in scripts.items():
-        if (args.controls or args.soak) and mode != "lowend":
-            continue
+    for mode in browser_modes:
+        browser = scripts[mode]
         files = [("/opt/finals-watch", watcher.read_bytes(), True),
                  ("/opt/finals-browser.sh", browser, False), ("/opt/finals-start.sh", start, False)]
         if args.soak:
@@ -440,11 +439,21 @@ def summarize(runs):
                    for k, v in metrics.items()} for mode, metrics in samplings.items()}
 
 
+def paired_order(labels, runs, order):
+    forward = list(labels)
+    reverse = forward[::-1]
+    return [reverse if order == "alternate" and i % 2 else forward for i in range(runs)]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--upstream", type=Path, default=PROJECT / ".git/kernelbridge-source",
                         help="本地队友 KernelBridge Git 仓库，需含固定提交")
     parser.add_argument("--kernel", type=Path, default=PROJECT / "data/platform/candidate/kernel.bin")
+    parser.add_argument("--candidate-kernel", type=Path,
+                        help="与 --kernel 在同一运行盘、同一浏览器设置下进行内核对照")
+    parser.add_argument("--browser-mode", choices=("baseline", "lowend"),
+                        help="内核对照的两侧共用的浏览器设置，默认 baseline")
     parser.add_argument("--rootfs", type=Path, default=PROJECT / "data/platform/wayland.img")
     parser.add_argument("--output", type=Path, required=True, help="新建原始数据目录")
     parser.add_argument("--runs", type=int, default=5, help="每种模式独立启动次数")
@@ -456,7 +465,19 @@ def main():
     args = parser.parse_args()
     if args.runs < 1:
         parser.error("--runs 至少为 1")
+    if args.browser_mode and not args.candidate_kernel:
+        parser.error("--browser-mode 需要 --candidate-kernel")
+    if args.candidate_kernel and (args.controls or args.soak):
+        parser.error("内核对照与 --controls、--soak 分开运行")
     args.kernel, args.rootfs = args.kernel.resolve(strict=True), args.rootfs.resolve(strict=True)
+    validation_only = args.controls or args.soak
+    if args.candidate_kernel:
+        args.candidate_kernel = args.candidate_kernel.resolve(strict=True)
+        browser_mode = args.browser_mode or "baseline"
+        runs = {"baseline": (args.kernel, browser_mode), "candidate": (args.candidate_kernel, browser_mode)}
+    else:
+        browser_modes = ("lowend",) if validation_only else ("baseline", "lowend")
+        runs = {mode: (args.kernel, mode) for mode in browser_modes}
     output = args.output.resolve()
     output.mkdir(parents=True)
     version = subprocess.check_output(["qemu-system-aarch64", "--version"], text=True).splitlines()[0]
@@ -464,23 +485,28 @@ def main():
         parser.error("需要 QEMU 8.0 或以上")
     cpu = next((x.split(":", 1)[1].strip() for x in Path("/proc/cpuinfo").read_text().splitlines()
                 if x.startswith("model name")), os.uname().machine)
-    groups = [["lowend", "baseline"] if args.order == "alternate" and i % 2 == 0
-              else ["baseline", "lowend"] for i in range(1, args.runs + 1)]
-    write_json(output / "inputs.json", {"kernel_sha256": file_hash(args.kernel),
+    groups = [["lowend"]] if validation_only else paired_order(runs, args.runs, args.order)
+    inputs = {"kernel_sha256": file_hash(args.kernel),
                "rootfs_sha256": file_hash(args.rootfs), "guest_files_sha256": PAGE_HASHES,
                "upstream_commit": COMMIT, "host_kernel": os.uname().release, "host_cpu": cpu,
                "host_memtotal": Path("/proc/meminfo").read_text().splitlines()[0], "qemu": version,
-               "run_order": [["lowend"]] if (args.controls or args.soak) else groups})
+               "run_order": groups, "comparison": "kernels" if args.candidate_kernel else "browser_modes"}
+    if args.candidate_kernel:
+        inputs["candidate_kernel_sha256"] = file_hash(args.candidate_kernel)
+        inputs["browser_mode"] = browser_mode
+    write_json(output / "inputs.json", inputs)
     results = []
     with tempfile.TemporaryDirectory() as tmp:
-        disks = prepare(args, Path(tmp))
-        if args.controls or args.soak:
+        disks = prepare(args, Path(tmp), dict.fromkeys(mode for _, mode in runs.values()))
+        if validation_only:
             run_once(args.kernel, disks["lowend"], output / "functional", "lowend",
                      check_controls=args.controls, long_run=args.soak)
             return
         for pair, order in enumerate(groups, 1):
-            for mode in order:
-                results.append(run_once(args.kernel, disks[mode], output / f"{pair:02}-{mode}", mode))
+            for label in order:
+                kernel, mode = runs[label]
+                result = run_once(kernel, disks[mode], output / f"{pair:02}-{label}", label)
+                results.append(result)
                 write_json(output / "summary.json", summarize(results))
 
 

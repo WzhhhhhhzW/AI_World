@@ -2,7 +2,11 @@
 set -euo pipefail
 cd -- "$(dirname -- "$0")/.."
 
-for file in data/platform/candidate/kernel.bin data/platform/wayland.img; do
+kernel=data/platform/candidate/kernel.bin
+if [[ -s data/platform/candidate/finals-kernel.bin ]]; then
+    kernel=data/platform/candidate/finals-kernel.bin
+fi
+for file in "$kernel" data/platform/wayland.img; do
     if [[ ! -s "$file" ]]; then
         echo "缺少 $file，请依照平台说明准备内核和运行盘。" >&2
         exit 1
@@ -46,4 +50,4 @@ done
 if [[ -z "$port" ]]; then cat "$log_file" >&2; exit 1; fi
 
 echo "正在启动赛题客体，Weston 桌面出现后请等待 Chromium 打开村庄。存档位置为 $save_dir"
-python3 platform/qemu_demo.py launch --port "$port"
+python3 platform/qemu_demo.py launch --kernel "$kernel" --port "$port"
