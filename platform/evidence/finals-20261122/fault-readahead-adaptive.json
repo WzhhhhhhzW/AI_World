@@ -1,0 +1,450 @@
+{
+  "inputs": {
+    "kernel_sha256": "248473f7490e9535c36efe4c3ac1460fde77341035fe013e7bb903446a9e881b",
+    "rootfs_sha256": "2817c7e2438075a42d8fc6d01d9e525164c9ea05d6696776d94ae26e901eeac4",
+    "guest_files_sha256": {
+      "index.html": "831cf28f3748940b450d1da325aa39a2dcaea2fee15b0532bf4111144d176b38",
+      "interaction.html": "58130daa4a2f426fd16b8bde93d964713f20e147da8af1537ab2d8b506d2fd58",
+      "layout.html": "a1b04f9aba81b4b7818be2e7a858d482d471bd0d625dee257f605b2129b8fc4c"
+    },
+    "upstream_commit": "0b6c59600a8782762a6112eb02cfd96347e496e6",
+    "host_kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "host_cpu": "Intel(R) Core(TM) Ultra 9 285H",
+    "host_memtotal": "MemTotal:       16115896 kB",
+    "qemu": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+    "run_order": [
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ]
+    ],
+    "comparison": "kernels",
+    "candidate_kernel_sha256": "a1bb707d04259ef7004366ff52ee3150d4edb672fdd7bbd9c6aa3a78f00bf78f",
+    "browser_mode": "baseline"
+  },
+  "source_commit": "846cb7265bd12417e54c26b9595fb563e549c2c7",
+  "resolved_configuration_sha256": "42e8d16450352712d78813b5f78b7ca221dfb88fadc796f57ecf317d7e33f669",
+  "candidate": {
+    "initial_window_pages": 2,
+    "predecessor_resident_window_pages": 8,
+    "reuse_folio_on_cache_hit": true,
+    "release_build_patch_sha256": "b504135794e105c3026c46d58566a6719da68eab7ce58d979440fb5a4c6b55d6",
+    "verified_patch_sha256": "c89dee6d1022d070f7f047f43c81477fc9069da7a754bc1bd86f9011750822f0",
+    "release_and_test_production_hunks_identical": true
+  },
+  "unit_test": {
+    "environment": "AArch64 Cortex-A76 TCG / 4 vCPU / 1 GiB / ext4",
+    "crate": "kvfs",
+    "passed": 188,
+    "failed": 0,
+    "ignored": 0,
+    "readahead_cases_passed": [
+      "kvfs::address_space::tests::readahead::initial_window_prefetches_and_zeroes_partial_eof",
+      "kvfs::address_space::tests::readahead::in_memory_files_skip_speculative_reads",
+      "kvfs::address_space::tests::readahead::prefetch_failure_preserves_successful_demand_read_and_its_error",
+      "kvfs::address_space::tests::readahead::cached_folio_callback_error_is_returned_without_retry",
+      "kvfs::address_space::tests::readahead::distant_faults_prefetch_only_the_initial_window",
+      "kvfs::address_space::tests::readahead::adjacent_demand_reads_preserve_contents_without_repeating_backing_io",
+      "kvfs::address_space::tests::readahead::prefetch_preserves_dirty_neighbours_and_zeroes_partial_eof_tail"
+    ],
+    "log_sha256": "53f740a44c41001c56daf54870f0e7c744a96293cf5a06ef056621af4abcf390",
+    "unit_test_kernel_sha256": "5df34dda0bca0935e94334d7737964e17a05552545f24fd19490f15206f2bcfa"
+  },
+  "summary": {
+    "baseline": {
+      "browser_to_window_s": {
+        "values": [
+          51.844,
+          51.782,
+          52.487,
+          51.771,
+          51.771
+        ],
+        "median": 51.782,
+        "min": 51.771,
+        "max": 52.487
+      },
+      "browser_to_home_s": {
+        "values": [
+          56.127,
+          55.362,
+          56.071,
+          56.064,
+          55.356
+        ],
+        "median": 56.064,
+        "min": 55.356,
+        "max": 56.127
+      },
+      "browser_to_renderer_observed_s": {
+        "values": [
+          29.848,
+          29.682,
+          29.478,
+          29.986,
+          29.884
+        ],
+        "median": 29.848,
+        "min": 29.478,
+        "max": 29.986
+      },
+      "qemu_maxrss_bytes": {
+        "values": [
+          1219567616,
+          1226760192,
+          1226227712,
+          1221406720,
+          1231450112
+        ],
+        "median": 1226227712,
+        "min": 1219567616,
+        "max": 1231450112
+      },
+      "return_to_css_s": {
+        "values": [
+          2.995,
+          2.995,
+          2.996,
+          3.706,
+          3.708
+        ],
+        "median": 2.996,
+        "min": 2.995,
+        "max": 3.708
+      }
+    },
+    "candidate": {
+      "browser_to_window_s": {
+        "values": [
+          53.907,
+          53.202,
+          53.91,
+          53.901,
+          53.913
+        ],
+        "median": 53.907,
+        "min": 53.202,
+        "max": 53.913
+      },
+      "browser_to_home_s": {
+        "values": [
+          56.773,
+          56.778,
+          57.485,
+          57.477,
+          57.491
+        ],
+        "median": 57.477,
+        "min": 56.773,
+        "max": 57.491
+      },
+      "browser_to_renderer_observed_s": {
+        "values": [
+          31.103,
+          30.391,
+          30.492,
+          31.308,
+          31.106
+        ],
+        "median": 31.103,
+        "min": 30.391,
+        "max": 31.308
+      },
+      "qemu_maxrss_bytes": {
+        "values": [
+          1210400768,
+          1209339904,
+          1211179008,
+          1206165504,
+          1211158528
+        ],
+        "median": 1210400768,
+        "min": 1206165504,
+        "max": 1211179008
+      },
+      "return_to_css_s": {
+        "values": [
+          2.995,
+          2.995,
+          2.995,
+          2.995,
+          3.709
+        ],
+        "median": 2.995,
+        "min": 2.995,
+        "max": 3.709
+      }
+    }
+  },
+  "paired_change": {
+    "browser_to_window_s": [
+      2.063,
+      1.42,
+      1.423,
+      2.13,
+      2.142
+    ],
+    "browser_to_home_s": [
+      0.646,
+      1.416,
+      1.414,
+      1.413,
+      2.135
+    ],
+    "browser_to_renderer_observed_s": [
+      1.255,
+      0.709,
+      1.014,
+      1.322,
+      1.222
+    ],
+    "return_to_css_s": [
+      0.0,
+      0.0,
+      -0.001,
+      -0.711,
+      0.001
+    ],
+    "qemu_maxrss_mib": [
+      -8.742,
+      -16.613,
+      -14.352,
+      -14.535,
+      -19.352
+    ]
+  },
+  "raw_stages_by_boot": [
+    {
+      "pair": 1,
+      "mode": "baseline",
+      "stages_s": {
+        "weston_ready": 3.141,
+        "browser_start": 3.342,
+        "renderer_inventory_seen": 33.19,
+        "window_white": 55.186,
+        "home_colors": 59.469,
+        "return_css": 65.301,
+        "css_visible": 68.296
+      },
+      "renderer_pid": 87,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1219567616,
+        "user_s": 124.500426,
+        "system_s": 31.847809
+      },
+      "raw_sha256": "edb6779a9a5a7e3e915e83557ad1cc032cdeabcdb4d940ef5766462423ffd962"
+    },
+    {
+      "pair": 1,
+      "mode": "candidate",
+      "stages_s": {
+        "weston_ready": 3.035,
+        "browser_start": 3.336,
+        "renderer_inventory_seen": 34.439,
+        "window_white": 57.243,
+        "home_colors": 60.109,
+        "return_css": 65.942,
+        "css_visible": 68.937
+      },
+      "renderer_pid": 87,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1210400768,
+        "user_s": 126.535988,
+        "system_s": 34.335618
+      },
+      "raw_sha256": "a43c955054fcb1aef03cb58f6d293ec68e4745995b86870fcd591aeddc4f96c3"
+    },
+    {
+      "pair": 2,
+      "mode": "candidate",
+      "stages_s": {
+        "weston_ready": 3.119,
+        "browser_start": 3.42,
+        "renderer_inventory_seen": 33.811,
+        "window_white": 56.622,
+        "home_colors": 60.198,
+        "return_css": 66.038,
+        "css_visible": 69.033
+      },
+      "renderer_pid": 88,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1209339904,
+        "user_s": 124.818374,
+        "system_s": 33.93283
+      },
+      "raw_sha256": "765494a07b7aa213529d700715d4668ce9744ffa904c6a27ce230d86d1eb6d1d"
+    },
+    {
+      "pair": 2,
+      "mode": "baseline",
+      "stages_s": {
+        "weston_ready": 2.905,
+        "browser_start": 3.206,
+        "renderer_inventory_seen": 32.888,
+        "window_white": 54.988,
+        "home_colors": 58.568,
+        "return_css": 64.409,
+        "css_visible": 67.404
+      },
+      "renderer_pid": 86,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1226760192,
+        "user_s": 124.502499,
+        "system_s": 32.507424
+      },
+      "raw_sha256": "52eae7349483dae208d7a908c95f986ae5df2dcc0288f2ff1737a9b5df98bc2f"
+    },
+    {
+      "pair": 3,
+      "mode": "baseline",
+      "stages_s": {
+        "weston_ready": 2.838,
+        "browser_start": 3.239,
+        "renderer_inventory_seen": 32.717,
+        "window_white": 55.726,
+        "home_colors": 59.31,
+        "return_css": 65.148,
+        "css_visible": 68.144
+      },
+      "renderer_pid": 86,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1226227712,
+        "user_s": 125.348349,
+        "system_s": 33.262818
+      },
+      "raw_sha256": "b6c799df50cae1d01b1f12c9cba33f75e6cae9f7cb163423a08c96c406021e12"
+    },
+    {
+      "pair": 3,
+      "mode": "candidate",
+      "stages_s": {
+        "weston_ready": 3.021,
+        "browser_start": 3.322,
+        "renderer_inventory_seen": 33.814,
+        "window_white": 57.232,
+        "home_colors": 60.807,
+        "return_css": 66.644,
+        "css_visible": 69.639
+      },
+      "renderer_pid": 87,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1211179008,
+        "user_s": 126.778575,
+        "system_s": 32.781795
+      },
+      "raw_sha256": "1a73b98d11e65c30408b29176f0aff2510c2a78d49d713270181626ed0abf9b3"
+    },
+    {
+      "pair": 4,
+      "mode": "candidate",
+      "stages_s": {
+        "weston_ready": 3.012,
+        "browser_start": 3.312,
+        "renderer_inventory_seen": 34.62,
+        "window_white": 57.213,
+        "home_colors": 60.789,
+        "return_css": 66.628,
+        "css_visible": 69.623
+      },
+      "renderer_pid": 87,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1206165504,
+        "user_s": 127.111782,
+        "system_s": 33.675013
+      },
+      "raw_sha256": "1a2169de9da28af348f6b4e48f4a9c9e4440ff4fd7b025f6947a714c7109856f"
+    },
+    {
+      "pair": 4,
+      "mode": "baseline",
+      "stages_s": {
+        "weston_ready": 3.021,
+        "browser_start": 3.322,
+        "renderer_inventory_seen": 33.308,
+        "window_white": 55.093,
+        "home_colors": 59.386,
+        "return_css": 65.22,
+        "css_visible": 68.926
+      },
+      "renderer_pid": 87,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1221406720,
+        "user_s": 124.885625,
+        "system_s": 32.357212
+      },
+      "raw_sha256": "70c5bcb57873e6a764e0d7a4ebcb0eefe4613bf80c4ffd5368299918c6b243ed"
+    },
+    {
+      "pair": 5,
+      "mode": "baseline",
+      "stages_s": {
+        "weston_ready": 2.841,
+        "browser_start": 3.141,
+        "renderer_inventory_seen": 33.025,
+        "window_white": 54.912,
+        "home_colors": 58.497,
+        "return_css": 64.338,
+        "css_visible": 68.046
+      },
+      "renderer_pid": 86,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1231450112,
+        "user_s": 123.925222,
+        "system_s": 32.348398
+      },
+      "raw_sha256": "a2fb84c26c7de0aa01928a703613d06f9df677bb7c0eb5447ba8f8b54163c816"
+    },
+    {
+      "pair": 5,
+      "mode": "candidate",
+      "stages_s": {
+        "weston_ready": 3.137,
+        "browser_start": 3.438,
+        "renderer_inventory_seen": 34.544,
+        "window_white": 57.351,
+        "home_colors": 60.929,
+        "return_css": 66.765,
+        "css_visible": 70.474
+      },
+      "renderer_pid": 87,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1211158528,
+        "user_s": 128.202255,
+        "system_s": 33.726029
+      },
+      "raw_sha256": "c2bbe848f6a5509504bffc08f03621329ba205a03c9306de55d44510e5cc6b81"
+    }
+  ],
+  "upstream_refs_at_closeout": {
+    "refs/heads/codex/kernel-finals-performance-20261120": "cd0d614a2cd69c52526f315eb1655a814325c0e6",
+    "refs/heads/codex/perf-sparse-protect-20261118": "0b6c59600a8782762a6112eb02cfd96347e496e6",
+    "refs/heads/main": "67f9986be4085d0a385957d2c08d18af9b6dd050"
+  },
+  "disposition": "retain_fixed_eight_for_finals; do not deploy the adaptive candidate"
+}

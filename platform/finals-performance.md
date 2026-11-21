@@ -70,3 +70,9 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 本轮五组交替冷启动固定队友原 Chromium 参数、同一只读盘和展开配置，仅把私有文件缺页预读从八页降至一页。一页窗口的宿主峰值中位从 1,172.52 MiB 降至 1,122.19 MiB，首页从 56.13 秒增至 71.74 秒，renderer 从 30.03 秒增至 39.16 秒。五组方向一致。决赛主线继续使用八页。[逐轮数据](evidence/finals-20261121/fault-readahead-comparison.json)
 
 单独用 `--memory-probe` 在 Chromium 启动前、同一布局页出图后采集客体计数。一页窗口的客体页缓存净增量少 57.90 MiB，管理页高水位增量少 56.36 MiB，客体 VirtMem 计数的净增量只相差 0.64 MiB。该组用于定位内存差异，计时统计仍来自单独五组。[客体原始快照](evidence/finals-20261121/fault-readahead-memory-probe.json) · [队友仓库与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/cd0d614a2cd69c52526f315eb1655a814325c0e6/work/performance-20261121-finals-r5)
+
+## 11 月 22 日自适应预读对照
+
+候选在冷缺页时读取两页，前一页已驻留时可扩大到八页。命中时直接复用缓存页。AArch64 客体 188 项 kvfs 回归通过，其中 7 项覆盖预读、文件尾页、脏邻页、错误回调与内存文件。五组浏览器冷启动使用队友原参数、同一配置和 Wayland 启动盘。
+
+自适应方案的宿主峰值中位从 1,169.42 MiB 降到 1,154.33 MiB，五组均下降。首窗从 51.78 秒到 53.91 秒，首页从 56.06 秒到 57.48 秒，renderer 从 29.85 秒到 31.10 秒，这三项五组均较慢。局部节省不足以抵消当前决赛启动代价，继续用固定八页作为默认。[逐轮数据](evidence/finals-20261122/fault-readahead-adaptive.json) · [队友仓库与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/c635e9d08a6484ac93793092425cef9910a9f9fc/work/performance-20261122-finals-r6)
