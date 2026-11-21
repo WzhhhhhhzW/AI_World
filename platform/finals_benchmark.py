@@ -21,6 +21,7 @@ PROJECT = Path(__file__).resolve().parents[1]
 COMMIT = "0b6c59600a8782762a6112eb02cfd96347e496e6"
 SCRIPT = "outputs/ict-chromium/scripts/guest-browser.sh"
 STARTUP_OBSERVATION_SECONDS = 10
+GUEST_MEMORY_PROBE_DELAY_SECONDS = 105
 PAGE_URL = "file:///opt/ict/testpages/"
 PAGE_HASHES = {
     "index.html": "831cf28f3748940b450d1da325aa39a2dcaea2fee15b0532bf4111144d176b38",
@@ -57,6 +58,12 @@ def prepare(args, work, browser_modes):
     start = b"/opt/finals-watch &\nexec sh /opt/finals-browser.sh\n"
     if args.soak:
         start = b"sh /opt/finals-heartbeat.sh &\n" + start
+    if args.memory_probe:
+        start = (
+            "sh /opt/finals-memory-probe.sh before\n"
+            f"(sleep {GUEST_MEMORY_PROBE_DELAY_SECONDS}; "
+            "sh /opt/finals-memory-probe.sh after) </dev/null &\n"
+        ).encode("ascii") + start
     if args.controls:
         start = b"export WAYLAND_DEBUG=client\n" + start
     scripts = {"baseline": script, "lowend": script.replace(
@@ -71,6 +78,9 @@ def prepare(args, work, browser_modes):
         if args.soak:
             files.append(("/opt/finals-heartbeat.sh", Path(__file__).with_name(
                 "guest-heartbeat.sh").read_bytes(), False))
+        if args.memory_probe:
+            files.append(("/opt/finals-memory-probe.sh", Path(__file__).with_name(
+                "guest-memory-probe.sh").read_bytes(), False))
         disks[mode], _ = cached_boot_disk(args.rootfs, session_args=[
             PAGE_URL + "index.html", "sh", "/opt/finals-start.sh"], guest_files=files)
     return disks
@@ -382,7 +392,40 @@ def measure(monitor, work, output, start, result, *, startup_only=False):
         raise RuntimeError(f"客体观测不完整，已保留运行记录：{output}")
 
 
-def run_once(kernel, disk, output, mode, *, check_controls=False, long_run=False, startup_only=False):
+def capture_guest_memory(work, output, pid):
+    """Read guest accounting around browser launch, separate from timing runs."""
+    boundary = re.compile(
+        rb"^FINALS_MEMORY_BEGIN (before|after) (meminfo|memscope)\n(.*?)"
+        rb"^FINALS_MEMORY_END \1 \2$", re.M | re.S,
+    )
+    serial = work / "serial.log"
+    if b"FINALS_MEMORY_BEGIN after" in serial.read_bytes():
+        raise RuntimeError("客体内存终点快照早于布局页观测，串口记录已保留")
+    deadline = time.monotonic() + GUEST_MEMORY_PROBE_DELAY_SECONDS
+    while time.monotonic() < deadline:
+        raw = serial.read_bytes().replace(b"\r\n", b"\n")
+        samples = {
+            f"{phase.decode()}_{source.decode()}": content.decode("ascii").strip()
+            for phase, source, content in boundary.findall(raw)
+        }
+        if len(samples) == 4:
+            if any("Cached:" not in samples[f"{phase}_meminfo"] for phase in ("before", "after")):
+                raise RuntimeError("客体内存快照缺少缓存计数")
+            status = Path(f"/proc/{pid}/status").read_text()
+            qemu_kib = {key: int(value) for key, value in re.findall(
+                r"^(VmRSS|RssAnon|RssFile|RssShmem):\s+(\d+) kB$", status, re.M)}
+            if "VmRSS" not in qemu_kib:
+                raise RuntimeError("宿主 QEMU 内存快照缺少 RSS")
+            write_json(output / "guest-memory.json", {
+                "guest_snapshots": samples, "host_qemu_after_layout_kib": qemu_kib,
+            })
+            return
+        time.sleep(.2)
+    raise RuntimeError("客体内存快照缺失，串口记录已保留")
+
+
+def run_once(kernel, disk, output, mode, *, check_controls=False, long_run=False,
+             startup_only=False, memory_probe=False):
     output.mkdir()
     result = {"mode": mode, "stages_s": {}, "frames": []}
     with tempfile.TemporaryDirectory(prefix="finals-qemu-") as directory:
@@ -403,6 +446,8 @@ def run_once(kernel, disk, output, mode, *, check_controls=False, long_run=False
                     monitor = Monitor(stream)
                     try:
                         measure(monitor, work, output, start, result, startup_only=startup_only)
+                        if memory_probe:
+                            capture_guest_memory(work, output, emulator.pid)
                         if check_controls:
                             controls(monitor, work, output)
                             result["native_inputs_and_screenshots_completed"] = True
@@ -475,6 +520,8 @@ def main():
     validation.add_argument("--soak", action="store_true", help="单独验证 30 分钟长稳与 10 次页面加载")
     validation.add_argument("--startup-only", action="store_true",
                             help=f"首页出现后继续观测 {STARTUP_OBSERVATION_SECONDS} 秒，不触发键盘导航")
+    validation.add_argument("--memory-probe", action="store_true",
+                            help="单独采集浏览器启动前和布局页出图后的客体内存快照")
     args = parser.parse_args()
     validation_only = args.controls or args.soak
     if args.runs < 1:
@@ -509,6 +556,11 @@ def main():
             "navigation": "initial static home only",
             "seconds_after_home_visible": STARTUP_OBSERVATION_SECONDS,
         }
+    if args.memory_probe:
+        inputs["measurement_scope"] = {
+            "guest_memory_probe": "before-browser and after-layout",
+            "guest_endpoint_delay_seconds": GUEST_MEMORY_PROBE_DELAY_SECONDS,
+        }
     if args.candidate_kernel:
         inputs["candidate_kernel_sha256"] = file_hash(args.candidate_kernel)
         inputs["browser_mode"] = browser_mode
@@ -528,7 +580,7 @@ def main():
             for label in order:
                 kernel, mode = runs[label]
                 result = run_once(kernel, disks[mode], output / f"{pair:02}-{label}", label,
-                                  startup_only=args.startup_only)
+                                  startup_only=args.startup_only, memory_probe=args.memory_probe)
                 results.append(result)
                 write_json(output / "summary.json", summarize(results))
 

@@ -1,0 +1,118 @@
+{
+  "scope": "one dedicated diagnostic pair; exclude from timed-run series",
+  "input": {
+    "kernel_sha256": "248473f7490e9535c36efe4c3ac1460fde77341035fe013e7bb903446a9e881b",
+    "rootfs_sha256": "2817c7e2438075a42d8fc6d01d9e525164c9ea05d6696776d94ae26e901eeac4",
+    "guest_files_sha256": {
+      "index.html": "831cf28f3748940b450d1da325aa39a2dcaea2fee15b0532bf4111144d176b38",
+      "interaction.html": "58130daa4a2f426fd16b8bde93d964713f20e147da8af1537ab2d8b506d2fd58",
+      "layout.html": "a1b04f9aba81b4b7818be2e7a858d482d471bd0d625dee257f605b2129b8fc4c"
+    },
+    "upstream_commit": "0b6c59600a8782762a6112eb02cfd96347e496e6",
+    "host_kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "host_cpu": "Intel(R) Core(TM) Ultra 9 285H",
+    "host_memtotal": "MemTotal:       16115892 kB",
+    "qemu": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+    "run_order": [
+      [
+        "baseline",
+        "candidate"
+      ]
+    ],
+    "comparison": "kernels",
+    "measurement_scope": {
+      "guest_memory_probe": "before-browser and after-layout",
+      "guest_endpoint_delay_seconds": 105
+    },
+    "candidate_kernel_sha256": "3e71371fa9a5740aa9b52f0674653d9953ac37a3ba5f8b0f24a3aa1d67cd8ad2",
+    "browser_mode": "baseline"
+  },
+  "runs": {
+    "baseline": {
+      "guest_before_kib": {
+        "Cached": 4048,
+        "AnonPages": 15332,
+        "Slab": 17595,
+        "PageTables": 5144,
+        "CmaTotal": 4176,
+        "XKernelManagedUsed": 73632,
+        "XKernelManagedPeak": 73632
+      },
+      "guest_after_layout_kib": {
+        "Cached": 225852,
+        "AnonPages": 372452,
+        "Slab": 125777,
+        "PageTables": 10972,
+        "CmaTotal": 4176,
+        "XKernelManagedUsed": 822248,
+        "XKernelManagedPeak": 889740
+      },
+      "guest_change_kib": {
+        "Cached": 221804,
+        "AnonPages": 357120,
+        "Slab": 108182,
+        "PageTables": 5828,
+        "CmaTotal": 0,
+        "XKernelManagedUsed": 748616,
+        "XKernelManagedPeak": 816108
+      },
+      "memory_snapshots_raw": {
+        "before_meminfo": "MemTotal:        2086532 kB\nMemFree:         2012900 kB\nXKernelManagedUsed: 73632 kB\nXKernelManagedPeak: 73632 kB\nMemAvailable:    2016948 kB\nBuffers:               0 kB\nCached:             4048 kB\nSwapCached:            0 kB\nActive:                 0 kB\nInactive:               0 kB\nSwapTotal:             0 kB\nSwapFree:              0 kB\nDirty:                  0 kB\nWriteback:              0 kB\nAnonPages:          15332 kB\nMapped:            15332 kB\nShmem:                 0 kB\nSlab:              17595 kB\nSReclaimable:          0 kB\nSUnreclaim:        17595 kB\nPageTables:         5144 kB\nKernelStack:           0 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nCmaTotal:          4176 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugepagesize:       2048 kB\nDirectMap4k:      2086532 kB\nDirectMap2M:            0 kB",
+        "before_memscope": "version 1\npage_size_bytes 4096\ninitialization_count 1\nregistration_generation 3\ntotal_pages 521650\nreserved_pages 18486\npeak_reserved_pages 18486\nram 0x40000000 0x80000000\nmanaged 0xffff000040000000 0x40000000 0x200000 0x401fffff\nmanaged 0xffff000040b4e000 0x40b4e000 0x74b2000 0x47ffffff\nmanaged 0xffff000048100000 0x48100000 0x77f00000 0xbfffffff\nhal_free 0x40000000 0x200000\nhal_reserved 0x40201000 0x6f3000\nhal_reserved 0x408f4000 0xe0000\nhal_reserved 0x409d4000 0x50000\nhal_reserved 0x40a24000 0x100000\nhal_reserved 0x40b24000 0x2a000\nhal_free 0x40b4e000 0x74b2000\nhal_reserved 0x48000000 0x100000\nhal_free 0x48100000 0x77f00000",
+        "after_meminfo": "MemTotal:        2086532 kB\nMemFree:         1264284 kB\nXKernelManagedUsed: 822248 kB\nXKernelManagedPeak: 889740 kB\nMemAvailable:    1490136 kB\nBuffers:               0 kB\nCached:           225852 kB\nSwapCached:            0 kB\nActive:                 0 kB\nInactive:               0 kB\nSwapTotal:             0 kB\nSwapFree:              0 kB\nDirty:                  0 kB\nWriteback:              0 kB\nAnonPages:         372452 kB\nMapped:           372452 kB\nShmem:                 0 kB\nSlab:             125777 kB\nSReclaimable:          0 kB\nSUnreclaim:       125777 kB\nPageTables:        10972 kB\nKernelStack:           0 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nCmaTotal:          4176 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugepagesize:       2048 kB\nDirectMap4k:      2086532 kB\nDirectMap2M:            0 kB",
+        "after_memscope": "version 1\npage_size_bytes 4096\ninitialization_count 1\nregistration_generation 3\ntotal_pages 521650\nreserved_pages 205584\npeak_reserved_pages 222452\nram 0x40000000 0x80000000\nmanaged 0xffff000040000000 0x40000000 0x200000 0x401fffff\nmanaged 0xffff000040b4e000 0x40b4e000 0x74b2000 0x47ffffff\nmanaged 0xffff000048100000 0x48100000 0x77f00000 0xbfffffff\nhal_free 0x40000000 0x200000\nhal_reserved 0x40201000 0x6f3000\nhal_reserved 0x408f4000 0xe0000\nhal_reserved 0x409d4000 0x50000\nhal_reserved 0x40a24000 0x100000\nhal_reserved 0x40b24000 0x2a000\nhal_free 0x40b4e000 0x74b2000\nhal_reserved 0x48000000 0x100000\nhal_free 0x48100000 0x77f00000"
+      },
+      "host_qemu_after_layout_kib": {
+        "VmRSS": 1198524,
+        "RssAnon": 1173564,
+        "RssFile": 24960,
+        "RssShmem": 0
+      },
+      "host_qemu_wait4_peak_bytes": 1235685376,
+      "serial_sha256": "e6fff68e38da17a844dc628ec8a1e4a41667e86f239daaa5a028410a7b315e9b"
+    },
+    "candidate": {
+      "guest_before_kib": {
+        "Cached": 3008,
+        "AnonPages": 13356,
+        "Slab": 17407,
+        "PageTables": 5144,
+        "CmaTotal": 4176,
+        "XKernelManagedUsed": 70604,
+        "XKernelManagedPeak": 70604
+      },
+      "guest_after_layout_kib": {
+        "Cached": 165520,
+        "AnonPages": 371136,
+        "Slab": 123825,
+        "PageTables": 10856,
+        "CmaTotal": 4176,
+        "XKernelManagedUsed": 760480,
+        "XKernelManagedPeak": 829000
+      },
+      "guest_change_kib": {
+        "Cached": 162512,
+        "AnonPages": 357780,
+        "Slab": 106418,
+        "PageTables": 5712,
+        "CmaTotal": 0,
+        "XKernelManagedUsed": 689876,
+        "XKernelManagedPeak": 758396
+      },
+      "memory_snapshots_raw": {
+        "before_meminfo": "MemTotal:        2086536 kB\nMemFree:         2015932 kB\nXKernelManagedUsed: 70604 kB\nXKernelManagedPeak: 70604 kB\nMemAvailable:    2018940 kB\nBuffers:               0 kB\nCached:             3008 kB\nSwapCached:            0 kB\nActive:                 0 kB\nInactive:               0 kB\nSwapTotal:             0 kB\nSwapFree:              0 kB\nDirty:                  0 kB\nWriteback:              0 kB\nAnonPages:          13356 kB\nMapped:            13356 kB\nShmem:                 0 kB\nSlab:              17407 kB\nSReclaimable:          0 kB\nSUnreclaim:        17407 kB\nPageTables:         5144 kB\nKernelStack:           0 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nCmaTotal:          4176 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugepagesize:       2048 kB\nDirectMap4k:      2086536 kB\nDirectMap2M:            0 kB",
+        "before_memscope": "version 1\npage_size_bytes 4096\ninitialization_count 1\nregistration_generation 3\ntotal_pages 521651\nreserved_pages 18234\npeak_reserved_pages 18234\nram 0x40000000 0x80000000\nmanaged 0xffff000040000000 0x40000000 0x200000 0x401fffff\nmanaged 0xffff000040b4d000 0x40b4d000 0x74b3000 0x47ffffff\nmanaged 0xffff000048100000 0x48100000 0x77f00000 0xbfffffff\nhal_free 0x40000000 0x200000\nhal_reserved 0x40201000 0x6f3000\nhal_reserved 0x408f4000 0xdf000\nhal_reserved 0x409d3000 0x50000\nhal_reserved 0x40a23000 0x100000\nhal_reserved 0x40b23000 0x2a000\nhal_free 0x40b4d000 0x74b3000\nhal_reserved 0x48000000 0x100000\nhal_free 0x48100000 0x77f00000",
+        "after_meminfo": "MemTotal:        2086536 kB\nMemFree:         1326056 kB\nXKernelManagedUsed: 760480 kB\nXKernelManagedPeak: 829000 kB\nMemAvailable:    1491576 kB\nBuffers:               0 kB\nCached:           165520 kB\nSwapCached:            0 kB\nActive:                 0 kB\nInactive:               0 kB\nSwapTotal:             0 kB\nSwapFree:              0 kB\nDirty:                  0 kB\nWriteback:              0 kB\nAnonPages:         371136 kB\nMapped:           371136 kB\nShmem:                 0 kB\nSlab:             123825 kB\nSReclaimable:          0 kB\nSUnreclaim:       123825 kB\nPageTables:        10856 kB\nKernelStack:           0 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nCmaTotal:          4176 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugepagesize:       2048 kB\nDirectMap4k:      2086536 kB\nDirectMap2M:            0 kB",
+        "after_memscope": "version 1\npage_size_bytes 4096\ninitialization_count 1\nregistration_generation 3\ntotal_pages 521651\nreserved_pages 190142\npeak_reserved_pages 207267\nram 0x40000000 0x80000000\nmanaged 0xffff000040000000 0x40000000 0x200000 0x401fffff\nmanaged 0xffff000040b4d000 0x40b4d000 0x74b3000 0x47ffffff\nmanaged 0xffff000048100000 0x48100000 0x77f00000 0xbfffffff\nhal_free 0x40000000 0x200000\nhal_reserved 0x40201000 0x6f3000\nhal_reserved 0x408f4000 0xdf000\nhal_reserved 0x409d3000 0x50000\nhal_reserved 0x40a23000 0x100000\nhal_reserved 0x40b23000 0x2a000\nhal_free 0x40b4d000 0x74b3000\nhal_reserved 0x48000000 0x100000\nhal_free 0x48100000 0x77f00000"
+      },
+      "host_qemu_after_layout_kib": {
+        "VmRSS": 1153256,
+        "RssAnon": 1128168,
+        "RssFile": 25088,
+        "RssShmem": 0
+      },
+      "host_qemu_wait4_peak_bytes": 1183694848,
+      "serial_sha256": "bb6bf9d88a6bd099139c859fb11f812c4caf79606a231815405ec5b6f22ef637"
+    }
+  }
+}

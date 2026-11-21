@@ -64,3 +64,9 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 同一运行盘、同一套 Chromium 原参数交替跑五组。首窗中位从 61.02 秒到 53.91 秒，首页四色块从 73.86 秒到 57.48 秒，renderer 从 39.52 秒到 31.10 秒。首页在四组更快，第五组慢 8.72 秒。宿主峰值 RSS 中位从 1,104.57 MiB 增至 1,156.38 MiB，五组均上升。[逐轮数据](evidence/finals-20261121/first-version-comparison.json)
 
 首版的布局页键盘导航预试未完成。本机对照统一使用 `--startup-only`，在首页出现后固定再观察至少十秒，比较两版共有的启动阶段。报告中的内存覆盖这段宿主 QEMU 进程生命周期，完整功能、长稳和现场成绩采用各自的证据。[队友分支与复跑命令](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/338e372da71248c5cd823331dbb4e1542594ff2a/work/performance-20261121-finals-r4)
+
+## 私有文件缺页预读的内存与启动权衡
+
+本轮五组交替冷启动固定队友原 Chromium 参数、同一只读盘和展开配置，仅把私有文件缺页预读从八页降至一页。一页窗口的宿主峰值中位从 1,172.52 MiB 降至 1,122.19 MiB，首页从 56.13 秒增至 71.74 秒，renderer 从 30.03 秒增至 39.16 秒。五组方向一致。决赛主线继续使用八页。[逐轮数据](evidence/finals-20261121/fault-readahead-comparison.json)
+
+单独用 `--memory-probe` 在 Chromium 启动前、同一布局页出图后采集客体计数。一页窗口的客体页缓存净增量少 57.90 MiB，管理页高水位增量少 56.36 MiB，客体 VirtMem 计数的净增量只相差 0.64 MiB。该组用于定位内存差异，计时统计仍来自单独五组。[客体原始快照](evidence/finals-20261121/fault-readahead-memory-probe.json) · [队友仓库与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/cd0d614a2cd69c52526f315eb1655a814325c0e6/work/performance-20261121-finals-r5)
