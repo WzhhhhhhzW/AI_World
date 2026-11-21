@@ -1,0 +1,402 @@
+{
+  "inputs": {
+    "kernel_sha256": "8d96bcd693d2d284a04d56d3b4899f9640af2f0225004a440be2b23c1690e1a8",
+    "rootfs_sha256": "2817c7e2438075a42d8fc6d01d9e525164c9ea05d6696776d94ae26e901eeac4",
+    "guest_files_sha256": {
+      "index.html": "831cf28f3748940b450d1da325aa39a2dcaea2fee15b0532bf4111144d176b38",
+      "interaction.html": "58130daa4a2f426fd16b8bde93d964713f20e147da8af1537ab2d8b506d2fd58",
+      "layout.html": "a1b04f9aba81b4b7818be2e7a858d482d471bd0d625dee257f605b2129b8fc4c"
+    },
+    "upstream_commit": "0b6c59600a8782762a6112eb02cfd96347e496e6",
+    "host_kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "host_cpu": "Intel(R) Core(TM) Ultra 9 285H",
+    "host_memtotal": "MemTotal:       16115892 kB",
+    "qemu": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+    "run_order": [
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ]
+    ],
+    "comparison": "kernels",
+    "measurement_scope": {
+      "navigation": "initial static home only",
+      "seconds_after_home_visible": 10
+    },
+    "candidate_kernel_sha256": "248473f7490e9535c36efe4c3ac1460fde77341035fe013e7bb903446a9e881b",
+    "browser_mode": "baseline"
+  },
+  "source": {
+    "first_tree": "b43dc27ee89e63047fd8ee3c92a9167705a18e00",
+    "candidate_commit": "846cb7265bd12417e54c26b9595fb563e549c2c7",
+    "identical_resolved_configuration_sha256": "42e8d16450352712d78813b5f78b7ca221dfb88fadc796f57ecf317d7e33f669"
+  },
+  "summary": {
+    "baseline": {
+      "browser_to_window_s": {
+        "values": [
+          61.056,
+          58.865,
+          58.866,
+          61.716,
+          61.015
+        ],
+        "median": 61.015,
+        "min": 58.865,
+        "max": 61.716
+      },
+      "browser_to_home_s": {
+        "values": [
+          73.856,
+          73.094,
+          73.092,
+          75.94,
+          75.963
+        ],
+        "median": 73.856,
+        "min": 73.092,
+        "max": 75.963
+      },
+      "browser_to_renderer_observed_s": {
+        "values": [
+          40.789,
+          39.408,
+          39.405,
+          40.323,
+          39.519
+        ],
+        "median": 39.519,
+        "min": 39.405,
+        "max": 40.789
+      },
+      "qemu_maxrss_bytes": {
+        "values": [
+          1172393984,
+          1149714432,
+          1158230016,
+          1156673536,
+          1163091968
+        ],
+        "median": 1158230016,
+        "min": 1149714432,
+        "max": 1172393984
+      }
+    },
+    "candidate": {
+      "browser_to_window_s": {
+        "values": [
+          51.77,
+          51.062,
+          54.617,
+          53.913,
+          78.241
+        ],
+        "median": 53.913,
+        "min": 51.062,
+        "max": 78.241
+      },
+      "browser_to_home_s": {
+        "values": [
+          55.348,
+          54.636,
+          57.484,
+          58.198,
+          84.684
+        ],
+        "median": 57.484,
+        "min": 54.636,
+        "max": 84.684
+      },
+      "browser_to_renderer_observed_s": {
+        "values": [
+          29.776,
+          29.176,
+          31.1,
+          31.104,
+          38.489
+        ],
+        "median": 31.1,
+        "min": 29.176,
+        "max": 38.489
+      },
+      "qemu_maxrss_bytes": {
+        "values": [
+          1212477440,
+          1220362240,
+          1212551168,
+          1214349312,
+          1210744832
+        ],
+        "median": 1212551168,
+        "min": 1210744832,
+        "max": 1220362240
+      }
+    }
+  },
+  "paired_change": {
+    "browser_to_window_s": [
+      -9.286,
+      -7.803,
+      -4.249,
+      -7.803,
+      17.226
+    ],
+    "browser_to_home_s": [
+      -18.508,
+      -18.458,
+      -15.608,
+      -17.742,
+      8.721
+    ],
+    "browser_to_renderer_observed_s": [
+      -11.013,
+      -10.232,
+      -8.305,
+      -9.219,
+      -1.03
+    ],
+    "qemu_maxrss_mib": [
+      38.227,
+      67.375,
+      51.805,
+      55.004,
+      45.445
+    ]
+  },
+  "raw_stages_by_boot": [
+    {
+      "pair": 1,
+      "kernel": "baseline",
+      "stages_s": {
+        "weston_ready": 3.03,
+        "browser_start": 3.331,
+        "renderer_inventory_seen": 44.12,
+        "window_white": 64.387,
+        "home_colors": 77.187,
+        "startup_observation_complete": 87.88
+      },
+      "renderer_pid": 88,
+      "host_qemu_usage": {
+        "exit": 0,
+        "maxrss_bytes": 1172393984,
+        "user_s": 159.17716,
+        "system_s": 37.044278
+      },
+      "evidence_sha256": "0b9207857030655fead2e204827b8f97b36b521bc2740103d3d325d2eaa3ef7e"
+    },
+    {
+      "pair": 1,
+      "kernel": "candidate",
+      "stages_s": {
+        "weston_ready": 3.027,
+        "browser_start": 3.328,
+        "renderer_inventory_seen": 33.104,
+        "window_white": 55.098,
+        "home_colors": 58.676,
+        "startup_observation_complete": 69.37
+      },
+      "renderer_pid": 88,
+      "host_qemu_usage": {
+        "exit": 0,
+        "maxrss_bytes": 1212477440,
+        "user_s": 112.013961,
+        "system_s": 32.46267
+      },
+      "evidence_sha256": "19a9e19481e0decd33e00287ff4a25d2be16ffc806ea3f9b2946c3d378438c86"
+    },
+    {
+      "pair": 2,
+      "kernel": "candidate",
+      "stages_s": {
+        "weston_ready": 3.029,
+        "browser_start": 3.33,
+        "renderer_inventory_seen": 32.506,
+        "window_white": 54.392,
+        "home_colors": 57.966,
+        "startup_observation_complete": 68.665
+      },
+      "renderer_pid": 87,
+      "host_qemu_usage": {
+        "exit": 0,
+        "maxrss_bytes": 1220362240,
+        "user_s": 111.118475,
+        "system_s": 31.458272
+      },
+      "evidence_sha256": "8b65a17f1e615e5ba932ae0bc5e8f4dc446838a9de67b6c2771975afa4660f48"
+    },
+    {
+      "pair": 2,
+      "kernel": "baseline",
+      "stages_s": {
+        "weston_ready": 3.321,
+        "browser_start": 3.622,
+        "renderer_inventory_seen": 43.03,
+        "window_white": 62.487,
+        "home_colors": 76.716,
+        "startup_observation_complete": 87.416
+      },
+      "renderer_pid": 88,
+      "host_qemu_usage": {
+        "exit": 0,
+        "maxrss_bytes": 1149714432,
+        "user_s": 155.07563,
+        "system_s": 35.696316
+      },
+      "evidence_sha256": "01a1a2319e321a0adaf5dddf04e2278725f07d70592a319be494af34b09ef6f0"
+    },
+    {
+      "pair": 3,
+      "kernel": "baseline",
+      "stages_s": {
+        "weston_ready": 3.009,
+        "browser_start": 3.309,
+        "renderer_inventory_seen": 42.714,
+        "window_white": 62.175,
+        "home_colors": 76.401,
+        "startup_observation_complete": 87.103
+      },
+      "renderer_pid": 86,
+      "host_qemu_usage": {
+        "exit": 0,
+        "maxrss_bytes": 1158230016,
+        "user_s": 156.095801,
+        "system_s": 35.868684
+      },
+      "evidence_sha256": "4e5fc5a45c76e7a7e264acf668ccbb6416c0611be1488b6df69cd3bd0ac220ed"
+    },
+    {
+      "pair": 3,
+      "kernel": "candidate",
+      "stages_s": {
+        "weston_ready": 3.139,
+        "browser_start": 3.44,
+        "renderer_inventory_seen": 34.54,
+        "window_white": 58.057,
+        "home_colors": 60.924,
+        "startup_observation_complete": 71.627
+      },
+      "renderer_pid": 87,
+      "host_qemu_usage": {
+        "exit": 0,
+        "maxrss_bytes": 1212551168,
+        "user_s": 118.592867,
+        "system_s": 30.731177
+      },
+      "evidence_sha256": "06ba187b6bd5205fcb1e81ac2c4b2e34c2c077ff1e70a82b55133b9f0a3bd707"
+    },
+    {
+      "pair": 4,
+      "kernel": "candidate",
+      "stages_s": {
+        "weston_ready": 3.044,
+        "browser_start": 3.344,
+        "renderer_inventory_seen": 34.448,
+        "window_white": 57.257,
+        "home_colors": 61.542,
+        "startup_observation_complete": 72.239
+      },
+      "renderer_pid": 88,
+      "host_qemu_usage": {
+        "exit": 0,
+        "maxrss_bytes": 1214349312,
+        "user_s": 118.971028,
+        "system_s": 31.568517
+      },
+      "evidence_sha256": "972f5b4d9291901a5f9d50cf30b0cb98012a3b3c797ca350bd14501367cc6e63"
+    },
+    {
+      "pair": 4,
+      "kernel": "baseline",
+      "stages_s": {
+        "weston_ready": 3.482,
+        "browser_start": 3.783,
+        "renderer_inventory_seen": 44.106,
+        "window_white": 65.499,
+        "home_colors": 79.723,
+        "startup_observation_complete": 90.424
+      },
+      "renderer_pid": 87,
+      "host_qemu_usage": {
+        "exit": 0,
+        "maxrss_bytes": 1156673536,
+        "user_s": 159.920403,
+        "system_s": 35.290197
+      },
+      "evidence_sha256": "621f565962a3a7a86fa0eb3067d3ab4ad53a4c6cf0e452b9ee3027f238ca8f9a"
+    },
+    {
+      "pair": 5,
+      "kernel": "baseline",
+      "stages_s": {
+        "weston_ready": 3.355,
+        "browser_start": 3.757,
+        "renderer_inventory_seen": 43.276,
+        "window_white": 64.772,
+        "home_colors": 79.72,
+        "startup_observation_complete": 90.419
+      },
+      "renderer_pid": 87,
+      "host_qemu_usage": {
+        "exit": 0,
+        "maxrss_bytes": 1163091968,
+        "user_s": 162.41706,
+        "system_s": 35.39498
+      },
+      "evidence_sha256": "f48a6f52843dcef9b3f5b2cce407b633445b243b4d585aee12c1fa95a82cc901"
+    },
+    {
+      "pair": 5,
+      "kernel": "candidate",
+      "stages_s": {
+        "weston_ready": 3.312,
+        "browser_start": 3.513,
+        "renderer_inventory_seen": 42.002,
+        "window_white": 81.754,
+        "home_colors": 88.197,
+        "startup_observation_complete": 98.216
+      },
+      "renderer_pid": 87,
+      "host_qemu_usage": {
+        "exit": 0,
+        "maxrss_bytes": 1210744832,
+        "user_s": 179.085089,
+        "system_s": 43.739425
+      },
+      "evidence_sha256": "498d66850a29a2542bebeb0fade8469cb31584066a09878f4ee6b5d4164fafaa"
+    }
+  ],
+  "excluded_full_navigation_screen": {
+    "separate_preliminary_run": true,
+    "stages": {
+      "weston_ready": 3.333,
+      "browser_start": 3.634,
+      "renderer_inventory_seen": 44.964,
+      "window_white": 66.867,
+      "home_colors": 83.942,
+      "return_css": 89.782
+    },
+    "layout_visible": false,
+    "evidence_sha256": "06cf8fe2df107fae35978067ac8caa2cb776a18814cc362a5f11220ebfdf5ed1"
+  },
+  "upstream_refs_at_closeout": {
+    "codex/kernel-finals-performance-20261120": "26511f19db92d1822c1571e6bc480528e5024c1e",
+    "codex/perf-sparse-protect-20261118": "0b6c59600a8782762a6112eb02cfd96347e496e6",
+    "main": "67f9986be4085d0a385957d2c08d18af9b6dd050"
+  }
+}

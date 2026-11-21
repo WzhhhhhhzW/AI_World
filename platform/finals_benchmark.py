@@ -20,6 +20,7 @@ from qemu_demo import cached_boot_disk, emulator_command
 PROJECT = Path(__file__).resolve().parents[1]
 COMMIT = "0b6c59600a8782762a6112eb02cfd96347e496e6"
 SCRIPT = "outputs/ict-chromium/scripts/guest-browser.sh"
+STARTUP_OBSERVATION_SECONDS = 10
 PAGE_URL = "file:///opt/ict/testpages/"
 PAGE_HASHES = {
     "index.html": "831cf28f3748940b450d1da325aa39a2dcaea2fee15b0532bf4111144d176b38",
@@ -332,7 +333,7 @@ def soak(monitor, work, output, pid):
             "browser_pid": int(identity[0]), "weston_pid": int(identity[1])}
 
 
-def measure(monitor, work, output, start, result):
+def measure(monitor, work, output, start, result, *, startup_only=False):
     stages = result["stages_s"]
     def mark(label):
         if label not in stages:
@@ -353,10 +354,15 @@ def measure(monitor, work, output, start, result):
             if counts["ffffff"] > 250000 and "window_white" not in stages:
                 mark("window_white")
                 monitor.screenshot(output / "browser-window.png")
-            if all(counts[c] > 3000 for c in HOME_COLORS) and "home_colors" not in stages:
+            home_visible = all(counts[c] > 3000 for c in HOME_COLORS)
+            if home_visible and "home_colors" not in stages:
                 mark("home_colors")
                 monitor.screenshot(output / "home.png")
-            if ("home_colors" in stages and "return_css" not in stages
+            if startup_only:
+                if home_visible and time.monotonic() - start >= stages["home_colors"] + STARTUP_OBSERVATION_SECONDS:
+                    mark("startup_observation_complete")
+                    break
+            elif ("home_colors" in stages and "return_css" not in stages
                     and time.monotonic() - start > stages["home_colors"] + 3):
                 monitor.address("layout.html")
                 mark("return_css")
@@ -366,7 +372,8 @@ def measure(monitor, work, output, start, result):
                 monitor.screenshot(output / "css.png")
                 break
         time.sleep(.1)
-    result["valid_visual"] = "home_colors" in stages and "css_visible" in stages
+    final_stage = "startup_observation_complete" if startup_only else "css_visible"
+    result["valid_visual"] = "home_colors" in stages and final_stage in stages
     result["renderer_pid"] = None
     matched = re.search(rb"FINALS_RENDERER_SEEN_FIRST pid=(\d+)", raw)
     if matched:
@@ -375,7 +382,7 @@ def measure(monitor, work, output, start, result):
         raise RuntimeError(f"客体观测不完整，已保留运行记录：{output}")
 
 
-def run_once(kernel, disk, output, mode, *, check_controls=False, long_run=False):
+def run_once(kernel, disk, output, mode, *, check_controls=False, long_run=False, startup_only=False):
     output.mkdir()
     result = {"mode": mode, "stages_s": {}, "frames": []}
     with tempfile.TemporaryDirectory(prefix="finals-qemu-") as directory:
@@ -395,7 +402,7 @@ def run_once(kernel, disk, output, mode, *, check_controls=False, long_run=False
                 with sock.makefile("rwb") as stream:
                     monitor = Monitor(stream)
                     try:
-                        measure(monitor, work, output, start, result)
+                        measure(monitor, work, output, start, result, startup_only=startup_only)
                         if check_controls:
                             controls(monitor, work, output)
                             result["native_inputs_and_screenshots_completed"] = True
@@ -434,8 +441,9 @@ def summarize(runs):
         metrics = {"browser_to_window_s": stages["window_white"] - browser,
                    "browser_to_home_s": stages["home_colors"] - browser,
                    "browser_to_renderer_observed_s": stages["renderer_inventory_seen"] - browser,
-                   "return_to_css_s": stages["css_visible"] - stages["return_css"],
                    "qemu_maxrss_bytes": run["qemu_wait4"]["maxrss_bytes"]}
+        if "css_visible" in stages:
+            metrics["return_to_css_s"] = stages["css_visible"] - stages["return_css"]
         for key, value in metrics.items():
             samplings.setdefault(run["mode"], {}).setdefault(key, []).append(round(value, 3))
     return {mode: {k: {"values": v, "median": statistics.median(v), "min": min(v), "max": max(v)}
@@ -465,6 +473,8 @@ def main():
     validation = parser.add_mutually_exclusive_group()
     validation.add_argument("--controls", action="store_true", help="单独验证键鼠、双标签、CSS 和 JS")
     validation.add_argument("--soak", action="store_true", help="单独验证 30 分钟长稳与 10 次页面加载")
+    validation.add_argument("--startup-only", action="store_true",
+                            help=f"首页出现后继续观测 {STARTUP_OBSERVATION_SECONDS} 秒，不触发键盘导航")
     args = parser.parse_args()
     validation_only = args.controls or args.soak
     if args.runs < 1:
@@ -494,6 +504,11 @@ def main():
                "upstream_commit": COMMIT, "host_kernel": os.uname().release, "host_cpu": cpu,
                "host_memtotal": Path("/proc/meminfo").read_text().splitlines()[0], "qemu": version,
                "run_order": groups, "comparison": "kernels" if args.candidate_kernel else "browser_modes"}
+    if args.startup_only:
+        inputs["measurement_scope"] = {
+            "navigation": "initial static home only",
+            "seconds_after_home_visible": STARTUP_OBSERVATION_SECONDS,
+        }
     if args.candidate_kernel:
         inputs["candidate_kernel_sha256"] = file_hash(args.candidate_kernel)
         inputs["browser_mode"] = browser_mode
@@ -512,7 +527,8 @@ def main():
         for pair, order in enumerate(groups, 1):
             for label in order:
                 kernel, mode = runs[label]
-                result = run_once(kernel, disks[mode], output / f"{pair:02}-{label}", label)
+                result = run_once(kernel, disks[mode], output / f"{pair:02}-{label}", label,
+                                  startup_only=args.startup_only)
                 results.append(result)
                 write_json(output / "summary.json", summarize(results))
 
