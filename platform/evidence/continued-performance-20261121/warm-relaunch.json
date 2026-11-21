@@ -1,0 +1,27 @@
+{
+  "map_seconds": 52.224,
+  "qmp_name": "Qilin Village eaf77bdedbc7",
+  "existing_qemu_pid": 688,
+  "qemu_pid_after_three_relaunches": 688,
+  "gtk_window_title_observed": null,
+  "duplicates": [
+    {
+      "elapsed_s": 0.137,
+      "exit": 75,
+      "stdout": "赛题村庄已在运行或启动中。请从任务栏切回 QEMU (Qilin Village eaf77bdedbc7)；若窗口尚未出现，请等待原启动窗口。"
+    },
+    {
+      "elapsed_s": 0.159,
+      "exit": 75,
+      "stdout": "赛题村庄已在运行或启动中。请从任务栏切回 QEMU (Qilin Village eaf77bdedbc7)；若窗口尚未出现，请等待原启动窗口。"
+    },
+    {
+      "elapsed_s": 0.1,
+      "exit": 75,
+      "stdout": "赛题村庄已在运行或启动中。请从任务栏切回 QEMU (Qilin Village eaf77bdedbc7)；若窗口尚未出现，请等待原启动窗口。"
+    }
+  ],
+  "test_desktop": "Xvfb, Windows foreground switching not exercised",
+  "qmp_screenshot_sha256": "d82a74db537f1edc756990f3adb4709111296ecf0fd700baa106583ca8db8b9f",
+  "kernel_sha256": "248473f7490e9535c36efe4c3ac1460fde77341035fe013e7bb903446a9e881b"
+}

@@ -42,7 +42,11 @@ while [ ! -S /run/seatd.sock ]; do
     i=$((i+1)); [ "$i" -lt 600 ] || { cat /tmp/village-seat.log; exit 1; }
     sleep .1
 done
-weston --backend=drm-backend.so --renderer=pixman --drm-device=card0 \
+village_shell=
+if [ "$#" -eq 1 ] && [ -r /usr/lib/weston/kiosk-shell.so ]; then
+    village_shell=--shell=kiosk-shell.so
+fi
+weston ${village_shell:+"$village_shell"} --backend=drm-backend.so --renderer=pixman --drm-device=card0 \
     --seat=seat0 --continue-without-input --idle-time=0 --socket="$WAYLAND_DISPLAY" \
     --log=/tmp/village-weston.log &
 i=0
@@ -59,7 +63,7 @@ fi
 # The guest's Chromium zygote shares its initialized image with child processes.
 exec chromium --no-sandbox --ozone-platform=wayland --disable-gpu \
     --disable-software-rasterizer --disable-dev-shm-usage --no-first-run \
-    --enable-low-end-device-mode \
+    --enable-low-end-device-mode --enable-features=NetworkServiceInProcess2 \
     --disable-background-networking --disable-component-update --disable-extensions \
     --ipc-connection-timeout=120 --start-maximized --user-data-dir=/tmp/village-profile \
     "$url" >/tmp/village-chromium.log 2>&1

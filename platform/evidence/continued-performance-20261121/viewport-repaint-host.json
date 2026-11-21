@@ -1,0 +1,94 @@
+{
+  "environment": "Windows desktop Chrome headless, software composition, CDP 4x slowdown; alternating baseline/candidate/candidate/baseline",
+  "procedure": "Repeated complete viewport repairs at unchanged art/clock with one-pixel readback per frame; complete raw pixel hash after last paint; repeated hall bubble rendering with stable full state.",
+  "result": [
+    {
+      "mode": "base",
+      "render": {
+        "backing": [
+          960,
+          472
+        ],
+        "samples": 24,
+        "plateBuilds": 24,
+        "pixelHash": 3416740921,
+        "p50": 9.5,
+        "p95": 13.599999999976717,
+        "total": 237.80000000004657
+      },
+      "hall": {
+        "frames": 120,
+        "serializations": 120,
+        "ms": 19.300000000046566,
+        "bubbles": 3
+      },
+      "errors": []
+    },
+    {
+      "mode": "split",
+      "render": {
+        "backing": [
+          960,
+          472
+        ],
+        "samples": 24,
+        "plateBuilds": 0,
+        "pixelHash": 3416740921,
+        "p50": 5.799999999930151,
+        "p95": 7.199999999953434,
+        "total": 137.0999999998603
+      },
+      "hall": {
+        "frames": 120,
+        "serializations": 0,
+        "ms": 11.900000000023283,
+        "bubbles": 3
+      },
+      "errors": []
+    },
+    {
+      "mode": "split",
+      "render": {
+        "backing": [
+          960,
+          472
+        ],
+        "samples": 24,
+        "plateBuilds": 0,
+        "pixelHash": 3416740921,
+        "p50": 6,
+        "p95": 9.599999999976717,
+        "total": 142.70000000006985
+      },
+      "hall": {
+        "frames": 120,
+        "serializations": 0,
+        "ms": 10.5,
+        "bubbles": 3
+      },
+      "errors": []
+    },
+    {
+      "mode": "base",
+      "render": {
+        "backing": [
+          960,
+          472
+        ],
+        "samples": 24,
+        "plateBuilds": 24,
+        "pixelHash": 3416740921,
+        "p50": 9,
+        "p95": 11.900000000023283,
+        "total": 213.89999999990687
+      },
+      "hall": {
+        "frames": 120,
+        "serializations": 120,
+        "ms": 15.199999999953434,
+        "bubbles": 3
+      },
+      "errors": []
+    }
+  ]
+}

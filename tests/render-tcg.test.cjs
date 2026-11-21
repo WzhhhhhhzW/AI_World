@@ -29,7 +29,7 @@ function fixture(){
     painted:0,
   });
   vm.runInContext(app,ctx);
-  vm.runInContext("paintFastVillage=()=>{painted++};paintWeather=()=>{};state={paused:false,clock:480};",ctx);
+  vm.runInContext("const actualVillagePaint=paintFastVillage;paintFastVillage=()=>{painted++};paintWeather=()=>{};state={paused:false,clock:480};",ctx);
   function step(jobs,time=0){const [key,fn]=jobs.entries().next().value;jobs.delete(key);fn(time);}
   return {ctx,frames,timers,element,step,document};
 }
@@ -101,4 +101,51 @@ test('the TCG raster cap preserves the viewport aspect and leaves small or full-
     const result=vm.runInContext(`backingViewport(${width},${height},${tcg})`,f.ctx);
     assert.deepEqual(JSON.parse(JSON.stringify(result)),expected);
   }
+});
+
+test('complete viewport repairs reuse the plate until art or lighting changes',()=>{
+  const f=fixture();
+  f.ctx.rebuilds=0;
+  vm.runInContext(`
+    const noop=()=>{};
+    Object.assign(ctx,{save:noop,restore:noop,setTransform:noop,drawImage:noop});
+    Object.assign(VillageMap,{version:'painted-valley-v1',lighting:noop,butterflies:()=>[],atmosphere:noop});
+    Object.assign(climate,{ground:noop,screen:noop});
+    Object.assign(VillageProps,{draw:noop,rooftops:noop});
+    Object.assign(state,{residents:[],buildings:[]});
+    scenePlate={getContext:()=>({drawImage(){rebuilds++;}})};
+    const fixedSky={id:'sunny',cloud:.08,rain:0,fog:0};
+    function repairViewport(){repaintAll=true;actualVillagePaint(1000,fixedSky,'viewport',1,1);}
+    repairViewport();repairViewport();
+  `,f.ctx);
+  assert.equal(f.ctx.rebuilds,1);
+  f.document.dispatchEvent(new Event('village-map-ready'));
+  vm.runInContext('repairViewport()',f.ctx);
+  assert.equal(f.ctx.rebuilds,2);
+  vm.runInContext('state.clock+=30;repairViewport()',f.ctx);
+  assert.equal(f.ctx.rebuilds,3);
+});
+
+test('speech bubbles preserve unchanged DOM and respond to an inline rename',()=>{
+  const f=fixture();
+  const layer=f.element('#hall-speech-layer');
+  layer.hidden=false;
+  layer.children=[];
+  let markup='',writes=0;
+  Object.defineProperty(layer,'innerHTML',{set(value){markup=value;writes++;}});
+  vm.runInContext(`
+    state.residents=[{id:'a',name:'甲'}];
+    state.meetings=[{id:'m',status:'complete',messages:[{resident_id:'a',text:'发言'}]}];
+    drawRoomBubbles();
+    state.meetings=[{...state.meetings[0]}];
+    drawRoomBubbles();
+  `,f.ctx);
+  assert.equal(writes,1);
+  assert.match(markup,/甲.*发言/);
+  vm.runInContext("state.residents[0].name='乙';drawRoomBubbles()",f.ctx);
+  assert.equal(writes,2);
+  assert.match(markup,/乙.*发言/);
+  vm.runInContext("state.meetings=[{...state.meetings[0],messages:[{resident_id:'a',text:'新发言'}]}];drawRoomBubbles()",f.ctx);
+  assert.equal(writes,3);
+  assert.match(markup,/乙.*新发言/);
 });

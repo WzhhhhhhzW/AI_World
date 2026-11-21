@@ -42,3 +42,9 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 键鼠、双标签耐用性和长稳各自单独运行。长稳入口持续 30 分钟，按两分钟间隔换页十次，同时保留进程存活、内存曲线与终点响应的证据。
 
 复跑默认在奇数组先跑原参数、偶数组先跑低内存模式，以减小宿主热身影响。加 `--order baseline-first` 可复现表中每组固定先原参数的顺序。
+
+## 11 月 21 日内核对照
+
+在上一版预读及 VMA 优化之上，新增私有文件缺页的完整覆盖快路径与初始栈缓冲复用。用队友原 Chromium 参数和同一只读 Wayland 盘进行五组交替对照，首个白窗中位从 59.00 降至 53.97 秒，首页四色块从 62.59 降至 58.25 秒，renderer 首次观测从 33.08 降至 30.73 秒。宿主 QEMU 的峰值中位由 1,173.32 到 1,173.71 MiB。两侧时延范围有重叠，基线的两次 75 秒以上首页样本均保留。[逐次内核对照](evidence/continued-performance-20261121/kernel-file-fault-comparison.json) · [队友分支源码与复跑步骤](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/codex/kernel-finals-performance-20261120/work/performance-20261121-finals-r3)
+
+可将 `--browser-mode baseline` 与 `--soak` 或 `--controls` 一起使用，使独立验证采用队友原启动参数。只传 `--soak` 或 `--controls` 时使用低内存模式。

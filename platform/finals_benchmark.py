@@ -320,6 +320,7 @@ def soak(monitor, work, output, pid):
                 reloads += 1
                 monitor.screenshot(output / f"load-{reloads:02}.png")
                 entry["load"] = reloads
+                print(f"soak load {reloads}/10 at {elapsed:.1f}s", flush=True)
             log.write(json.dumps(entry) + "\n")
             time.sleep(1)
     # The final input and frame check test responsiveness past the 30-minute mark.
@@ -327,6 +328,8 @@ def soak(monitor, work, output, pid):
     monitor.key("ret")
     wait_frame(monitor, work, lambda c: c["dbeafe"] < 500 and all(c[x] > 3000 for x in HOME_COLORS))
     monitor.screenshot(output / "soak-finished.png")
+    return {"elapsed_s": round(time.monotonic() - started, 3), "successful_loads": reloads,
+            "browser_pid": int(identity[0]), "weston_pid": int(identity[1])}
 
 
 def measure(monitor, work, output, start, result):
@@ -398,7 +401,7 @@ def run_once(kernel, disk, output, mode, *, check_controls=False, long_run=False
                             result["native_inputs_and_screenshots_completed"] = True
                             result["review_images_for"] = ["JS 6/6", "CSS 6/6", "hello x-kernel input and echo"]
                         if long_run:
-                            soak(monitor, work, output, emulator.pid)
+                            result["soak"] = soak(monitor, work, output, emulator.pid)
                             result["soak_completed"] = True
                     finally:
                         with contextlib.suppress(OSError, RuntimeError):
@@ -453,30 +456,30 @@ def main():
     parser.add_argument("--candidate-kernel", type=Path,
                         help="与 --kernel 在同一运行盘、同一浏览器设置下进行内核对照")
     parser.add_argument("--browser-mode", choices=("baseline", "lowend"),
-                        help="内核对照的两侧共用的浏览器设置，默认 baseline")
+                        help="内核对照或独立验证的浏览器设置；默认分别为 baseline 和 lowend")
     parser.add_argument("--rootfs", type=Path, default=PROJECT / "data/platform/wayland.img")
     parser.add_argument("--output", type=Path, required=True, help="新建原始数据目录")
     parser.add_argument("--runs", type=int, default=5, help="每种模式独立启动次数")
     parser.add_argument("--order", choices=("alternate", "baseline-first"), default="alternate",
                         help="默认奇数组先原版、偶数组先候选；baseline-first 复现首次矩阵顺序")
     validation = parser.add_mutually_exclusive_group()
-    validation.add_argument("--controls", action="store_true", help="单独验证低内存模式的键鼠、双标签、CSS 和 JS")
-    validation.add_argument("--soak", action="store_true", help="单独验证低内存模式的 30 分钟长稳与 10 次页面加载")
+    validation.add_argument("--controls", action="store_true", help="单独验证键鼠、双标签、CSS 和 JS")
+    validation.add_argument("--soak", action="store_true", help="单独验证 30 分钟长稳与 10 次页面加载")
     args = parser.parse_args()
+    validation_only = args.controls or args.soak
     if args.runs < 1:
         parser.error("--runs 至少为 1")
-    if args.browser_mode and not args.candidate_kernel:
-        parser.error("--browser-mode 需要 --candidate-kernel")
-    if args.candidate_kernel and (args.controls or args.soak):
+    if args.browser_mode and not (args.candidate_kernel or validation_only):
+        parser.error("--browser-mode 需要 --candidate-kernel、--controls 或 --soak")
+    if args.candidate_kernel and validation_only:
         parser.error("内核对照与 --controls、--soak 分开运行")
     args.kernel, args.rootfs = args.kernel.resolve(strict=True), args.rootfs.resolve(strict=True)
-    validation_only = args.controls or args.soak
     if args.candidate_kernel:
         args.candidate_kernel = args.candidate_kernel.resolve(strict=True)
         browser_mode = args.browser_mode or "baseline"
         runs = {"baseline": (args.kernel, browser_mode), "candidate": (args.candidate_kernel, browser_mode)}
     else:
-        browser_modes = ("lowend",) if validation_only else ("baseline", "lowend")
+        browser_modes = (args.browser_mode or "lowend",) if validation_only else ("baseline", "lowend")
         runs = {mode: (args.kernel, mode) for mode in browser_modes}
     output = args.output.resolve()
     output.mkdir(parents=True)
@@ -485,7 +488,7 @@ def main():
         parser.error("需要 QEMU 8.0 或以上")
     cpu = next((x.split(":", 1)[1].strip() for x in Path("/proc/cpuinfo").read_text().splitlines()
                 if x.startswith("model name")), os.uname().machine)
-    groups = [["lowend"]] if validation_only else paired_order(runs, args.runs, args.order)
+    groups = [list(runs)] if validation_only else paired_order(runs, args.runs, args.order)
     inputs = {"kernel_sha256": file_hash(args.kernel),
                "rootfs_sha256": file_hash(args.rootfs), "guest_files_sha256": PAGE_HASHES,
                "upstream_commit": COMMIT, "host_kernel": os.uname().release, "host_cpu": cpu,
@@ -494,12 +497,16 @@ def main():
     if args.candidate_kernel:
         inputs["candidate_kernel_sha256"] = file_hash(args.candidate_kernel)
         inputs["browser_mode"] = browser_mode
+    elif validation_only:
+        inputs["comparison"] = "soak" if args.soak else "controls"
+        inputs["browser_mode"] = next(iter(runs))
     write_json(output / "inputs.json", inputs)
     results = []
     with tempfile.TemporaryDirectory() as tmp:
         disks = prepare(args, Path(tmp), dict.fromkeys(mode for _, mode in runs.values()))
         if validation_only:
-            run_once(args.kernel, disks["lowend"], output / "functional", "lowend",
+            mode = next(iter(runs))
+            run_once(args.kernel, disks[mode], output / "functional", mode,
                      check_controls=args.controls, long_run=args.soak)
             return
         for pair, order in enumerate(groups, 1):

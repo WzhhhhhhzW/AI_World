@@ -147,6 +147,8 @@ def launch(args):
         network = f"user,id=net0,restrict=on,guestfwd=tcp:{GUEST_HOST}-cmd:{nc} 127.0.0.1 {args.port}"
         command = emulator_command(kernel, disk, work, network=network, cpus=args.cpus,
                                    memory=args.memory, headless=args.headless, append=args.append)
+        if args.window_name:
+            command.extend(["-name", "guest=" + args.window_name.replace(",", ",,")])
         print(version, "\n" + shlex.join(command), flush=True)
         print(f"客体 Chromium 地址 {GUEST_URL}\nQMP 监视器 {monitor}\n串口记录 {work}/serial.log", flush=True)
         with subprocess.Popen(command) as emulator:
@@ -208,6 +210,7 @@ def main():
     run.add_argument("--cpus", type=int, default=4)
     run.add_argument("--memory", type=int, default=2048, help="演示 VM 内存，单位 MiB")
     run.add_argument("--append", help="沿用当前内核构建的启动参数")
+    run.add_argument("--window-name", help="设置 QEMU 窗口的识别名称")
     run.add_argument("--headless", action="store_true", help="仅使用 monitor 读取虚拟显示")
     shot = commands.add_parser("capture", help="调用 QEMU monitor screendump 保存 PNG")
     shot.add_argument("--monitor", required=True, type=Path)

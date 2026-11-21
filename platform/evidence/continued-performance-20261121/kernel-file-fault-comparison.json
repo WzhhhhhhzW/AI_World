@@ -1,0 +1,587 @@
+{
+  "description": "Five independent pairs from two sequential suites with the same kernel/disk SHA, normal team Chromium and same host",
+  "inputs": [
+    {
+      "kernel_sha256": "2c57ec22904f161aac4ed9d37941bff6bdb9d4a25143f5fb727bbd009f752ce1",
+      "rootfs_sha256": "2817c7e2438075a42d8fc6d01d9e525164c9ea05d6696776d94ae26e901eeac4",
+      "guest_files_sha256": {
+        "index.html": "831cf28f3748940b450d1da325aa39a2dcaea2fee15b0532bf4111144d176b38",
+        "interaction.html": "58130daa4a2f426fd16b8bde93d964713f20e147da8af1537ab2d8b506d2fd58",
+        "layout.html": "a1b04f9aba81b4b7818be2e7a858d482d471bd0d625dee257f605b2129b8fc4c"
+      },
+      "upstream_commit": "0b6c59600a8782762a6112eb02cfd96347e496e6",
+      "host_kernel": "6.6.87.2-microsoft-standard-WSL2",
+      "host_cpu": "Intel(R) Core(TM) Ultra 9 285H",
+      "host_memtotal": "MemTotal:       16115892 kB",
+      "qemu": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+      "run_order": [
+        [
+          "baseline",
+          "candidate"
+        ],
+        [
+          "candidate",
+          "baseline"
+        ]
+      ],
+      "comparison": "kernels",
+      "candidate_kernel_sha256": "248473f7490e9535c36efe4c3ac1460fde77341035fe013e7bb903446a9e881b",
+      "browser_mode": "baseline"
+    },
+    {
+      "kernel_sha256": "2c57ec22904f161aac4ed9d37941bff6bdb9d4a25143f5fb727bbd009f752ce1",
+      "rootfs_sha256": "2817c7e2438075a42d8fc6d01d9e525164c9ea05d6696776d94ae26e901eeac4",
+      "guest_files_sha256": {
+        "index.html": "831cf28f3748940b450d1da325aa39a2dcaea2fee15b0532bf4111144d176b38",
+        "interaction.html": "58130daa4a2f426fd16b8bde93d964713f20e147da8af1537ab2d8b506d2fd58",
+        "layout.html": "a1b04f9aba81b4b7818be2e7a858d482d471bd0d625dee257f605b2129b8fc4c"
+      },
+      "upstream_commit": "0b6c59600a8782762a6112eb02cfd96347e496e6",
+      "host_kernel": "6.6.87.2-microsoft-standard-WSL2",
+      "host_cpu": "Intel(R) Core(TM) Ultra 9 285H",
+      "host_memtotal": "MemTotal:       16115892 kB",
+      "qemu": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+      "run_order": [
+        [
+          "baseline",
+          "candidate"
+        ],
+        [
+          "candidate",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "candidate"
+        ]
+      ],
+      "comparison": "kernels",
+      "candidate_kernel_sha256": "248473f7490e9535c36efe4c3ac1460fde77341035fe013e7bb903446a9e881b",
+      "browser_mode": "baseline"
+    }
+  ],
+  "summary": {
+    "baseline": {
+      "first_frame_s": {
+        "values": [
+          54.02,
+          59.001,
+          54.019,
+          71.158,
+          71.217
+        ],
+        "median": 59.001,
+        "min": 54.019,
+        "max": 71.217
+      },
+      "home_s": {
+        "values": [
+          56.897,
+          62.586,
+          57.598,
+          75.45,
+          77.658
+        ],
+        "median": 62.586,
+        "min": 56.897,
+        "max": 77.658
+      },
+      "renderer_observed_s": {
+        "values": [
+          30.583,
+          34.012,
+          31.192,
+          33.079,
+          36.455
+        ],
+        "median": 33.079,
+        "min": 30.583,
+        "max": 36.455
+      },
+      "return_to_css_s": {
+        "values": [
+          3.712,
+          3.713,
+          3.709,
+          3.712,
+          3.712
+        ],
+        "median": 3.712,
+        "min": 3.709,
+        "max": 3.713
+      },
+      "qemu_maxrss_bytes": {
+        "values": [
+          1223376896,
+          1231151104,
+          1230315520,
+          1235824640,
+          1224597504
+        ],
+        "median": 1230315520,
+        "min": 1223376896,
+        "max": 1235824640
+      },
+      "qemu_to_home_s": {
+        "values": [
+          60.232,
+          66.211,
+          61.052,
+          78.906,
+          81.101
+        ],
+        "median": 66.211,
+        "min": 60.232,
+        "max": 81.101
+      }
+    },
+    "candidate": {
+      "first_frame_s": {
+        "values": [
+          53.27,
+          55.416,
+          53.959,
+          53.973,
+          62.527
+        ],
+        "median": 53.973,
+        "min": 53.27,
+        "max": 62.527
+      },
+      "home_s": {
+        "values": [
+          56.141,
+          58.997,
+          58.25,
+          57.552,
+          66.111
+        ],
+        "median": 58.25,
+        "min": 56.141,
+        "max": 66.111
+      },
+      "renderer_observed_s": {
+        "values": [
+          29.719,
+          31.047,
+          30.727,
+          30.433,
+          34.493
+        ],
+        "median": 30.727,
+        "min": 29.719,
+        "max": 34.493
+      },
+      "return_to_css_s": {
+        "values": [
+          3.711,
+          3.715,
+          3.714,
+          3.714,
+          3.716
+        ],
+        "median": 3.714,
+        "min": 3.711,
+        "max": 3.716
+      },
+      "qemu_maxrss_bytes": {
+        "values": [
+          1228533760,
+          1226805248,
+          1238855680,
+          1232068608,
+          1230721024
+        ],
+        "median": 1230721024,
+        "min": 1226805248,
+        "max": 1238855680
+      },
+      "qemu_to_home_s": {
+        "values": [
+          59.7,
+          62.245,
+          61.694,
+          61.083,
+          70.176
+        ],
+        "median": 61.694,
+        "min": 59.7,
+        "max": 70.176
+      }
+    }
+  },
+  "runs": [
+    {
+      "pair": 1,
+      "suite": "finals-kernel-screen",
+      "mode": "baseline",
+      "stages_s": {
+        "weston_ready": 3.034,
+        "browser_start": 3.335,
+        "renderer_inventory_seen": 33.918,
+        "window_white": 57.355,
+        "home_colors": 60.232,
+        "return_css": 66.073,
+        "css_visible": 69.785
+      },
+      "renderer_pid": 88,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1223376896,
+        "user_s": 127.020281,
+        "system_s": 33.568484
+      },
+      "metrics": {
+        "first_frame_s": 54.02,
+        "home_s": 56.897,
+        "renderer_observed_s": 30.583,
+        "return_to_css_s": 3.712,
+        "qemu_maxrss_bytes": 1223376896,
+        "qemu_to_home_s": 60.232
+      },
+      "home_frame_sha256": "4fb99290089cf211251dc01c4bd8ccf473f9601e54689ff6817da08caf43e929"
+    },
+    {
+      "pair": 1,
+      "suite": "finals-kernel-screen",
+      "mode": "candidate",
+      "stages_s": {
+        "weston_ready": 3.158,
+        "browser_start": 3.559,
+        "renderer_inventory_seen": 33.278,
+        "window_white": 56.829,
+        "home_colors": 59.7,
+        "return_css": 65.542,
+        "css_visible": 69.253
+      },
+      "renderer_pid": 87,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1228533760,
+        "user_s": 125.60766,
+        "system_s": 33.169911
+      },
+      "metrics": {
+        "first_frame_s": 53.27,
+        "home_s": 56.141,
+        "renderer_observed_s": 29.719,
+        "return_to_css_s": 3.711,
+        "qemu_maxrss_bytes": 1228533760,
+        "qemu_to_home_s": 59.7
+      },
+      "home_frame_sha256": "8627942e5a17007cae6a9c951ad076aadb18fd55ce5a666c1c8d312e470d5afb"
+    },
+    {
+      "pair": 2,
+      "suite": "finals-kernel-screen",
+      "mode": "candidate",
+      "stages_s": {
+        "weston_ready": 2.947,
+        "browser_start": 3.248,
+        "renderer_inventory_seen": 34.295,
+        "window_white": 58.664,
+        "home_colors": 62.245,
+        "return_css": 68.092,
+        "css_visible": 71.807
+      },
+      "renderer_pid": 87,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1226805248,
+        "user_s": 131.076086,
+        "system_s": 33.046836
+      },
+      "metrics": {
+        "first_frame_s": 55.416,
+        "home_s": 58.997,
+        "renderer_observed_s": 31.047,
+        "return_to_css_s": 3.715,
+        "qemu_maxrss_bytes": 1226805248,
+        "qemu_to_home_s": 62.245
+      },
+      "home_frame_sha256": "7b8a0289a9168f6d180dc1af04b41d7e2c1c98b226c970da3a431cfdb39c6734"
+    },
+    {
+      "pair": 2,
+      "suite": "finals-kernel-screen",
+      "mode": "baseline",
+      "stages_s": {
+        "weston_ready": 3.324,
+        "browser_start": 3.625,
+        "renderer_inventory_seen": 37.637,
+        "window_white": 62.626,
+        "home_colors": 66.211,
+        "return_css": 72.05,
+        "css_visible": 75.763
+      },
+      "renderer_pid": 87,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1231151104,
+        "user_s": 135.257817,
+        "system_s": 34.787245
+      },
+      "metrics": {
+        "first_frame_s": 59.001,
+        "home_s": 62.586,
+        "renderer_observed_s": 34.012,
+        "return_to_css_s": 3.713,
+        "qemu_maxrss_bytes": 1231151104,
+        "qemu_to_home_s": 66.211
+      },
+      "home_frame_sha256": "429b99e4ea6d8c04cfb4e11d33ded0d9f65a00b87bc46a68ec7df89ee5f17d21"
+    },
+    {
+      "pair": 3,
+      "suite": "finals-kernel-confirm",
+      "mode": "baseline",
+      "stages_s": {
+        "weston_ready": 3.254,
+        "browser_start": 3.454,
+        "renderer_inventory_seen": 34.646,
+        "window_white": 57.473,
+        "home_colors": 61.052,
+        "return_css": 66.894,
+        "css_visible": 70.603
+      },
+      "renderer_pid": 87,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1230315520,
+        "user_s": 125.651086,
+        "system_s": 34.036155
+      },
+      "metrics": {
+        "first_frame_s": 54.019,
+        "home_s": 57.598,
+        "renderer_observed_s": 31.192,
+        "return_to_css_s": 3.709,
+        "qemu_maxrss_bytes": 1230315520,
+        "qemu_to_home_s": 61.052
+      },
+      "home_frame_sha256": "855a38a1c0bd3007447806f9057289331613f28b5abd0b5759ca33f53b54770c"
+    },
+    {
+      "pair": 3,
+      "suite": "finals-kernel-confirm",
+      "mode": "candidate",
+      "stages_s": {
+        "weston_ready": 3.143,
+        "browser_start": 3.444,
+        "renderer_inventory_seen": 34.171,
+        "window_white": 57.403,
+        "home_colors": 61.694,
+        "return_css": 67.534,
+        "css_visible": 71.248
+      },
+      "renderer_pid": 87,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1238855680,
+        "user_s": 129.596291,
+        "system_s": 33.312039
+      },
+      "metrics": {
+        "first_frame_s": 53.959,
+        "home_s": 58.25,
+        "renderer_observed_s": 30.727,
+        "return_to_css_s": 3.714,
+        "qemu_maxrss_bytes": 1238855680,
+        "qemu_to_home_s": 61.694
+      },
+      "home_frame_sha256": "09e98a2c6143c360e4d677109d6e141996759bd18373fed1928dda54669ae1a7"
+    },
+    {
+      "pair": 4,
+      "suite": "finals-kernel-confirm",
+      "mode": "candidate",
+      "stages_s": {
+        "weston_ready": 3.23,
+        "browser_start": 3.531,
+        "renderer_inventory_seen": 33.964,
+        "window_white": 57.504,
+        "home_colors": 61.083,
+        "return_css": 66.927,
+        "css_visible": 70.641
+      },
+      "renderer_pid": 87,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1232068608,
+        "user_s": 130.429072,
+        "system_s": 33.430955
+      },
+      "metrics": {
+        "first_frame_s": 53.973,
+        "home_s": 57.552,
+        "renderer_observed_s": 30.433,
+        "return_to_css_s": 3.714,
+        "qemu_maxrss_bytes": 1232068608,
+        "qemu_to_home_s": 61.083
+      },
+      "home_frame_sha256": "05472ca8bba657e6c969ce38ffa2c95d23e3413ea5ab9a7469297f68fb36be5f"
+    },
+    {
+      "pair": 4,
+      "suite": "finals-kernel-confirm",
+      "mode": "baseline",
+      "stages_s": {
+        "weston_ready": 3.155,
+        "browser_start": 3.456,
+        "renderer_inventory_seen": 36.535,
+        "window_white": 74.614,
+        "home_colors": 78.906,
+        "return_css": 84.747,
+        "css_visible": 88.459
+      },
+      "renderer_pid": 87,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1235824640,
+        "user_s": 155.412098,
+        "system_s": 40.314648
+      },
+      "metrics": {
+        "first_frame_s": 71.158,
+        "home_s": 75.45,
+        "renderer_observed_s": 33.079,
+        "return_to_css_s": 3.712,
+        "qemu_maxrss_bytes": 1235824640,
+        "qemu_to_home_s": 78.906
+      },
+      "home_frame_sha256": "d5d6d2bb9afbed08c9f331700e07fe27c88258549af95744a1d687f35ca66151"
+    },
+    {
+      "pair": 5,
+      "suite": "finals-kernel-confirm",
+      "mode": "baseline",
+      "stages_s": {
+        "weston_ready": 3.042,
+        "browser_start": 3.443,
+        "renderer_inventory_seen": 39.898,
+        "window_white": 74.66,
+        "home_colors": 81.101,
+        "return_css": 87.025,
+        "css_visible": 90.737
+      },
+      "renderer_pid": 87,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1224597504,
+        "user_s": 162.711739,
+        "system_s": 41.707139
+      },
+      "metrics": {
+        "first_frame_s": 71.217,
+        "home_s": 77.658,
+        "renderer_observed_s": 36.455,
+        "return_to_css_s": 3.712,
+        "qemu_maxrss_bytes": 1224597504,
+        "qemu_to_home_s": 81.101
+      },
+      "home_frame_sha256": "130168e19f4cf7f3926bf8e1b712738013cfc7b5cad914d78d2f8aae13d46044"
+    },
+    {
+      "pair": 5,
+      "suite": "finals-kernel-confirm",
+      "mode": "candidate",
+      "stages_s": {
+        "weston_ready": 3.664,
+        "browser_start": 4.065,
+        "renderer_inventory_seen": 38.558,
+        "window_white": 66.592,
+        "home_colors": 70.176,
+        "return_css": 76.017,
+        "css_visible": 79.733
+      },
+      "renderer_pid": 87,
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1230721024,
+        "user_s": 144.707788,
+        "system_s": 35.185392
+      },
+      "metrics": {
+        "first_frame_s": 62.527,
+        "home_s": 66.111,
+        "renderer_observed_s": 34.493,
+        "return_to_css_s": 3.716,
+        "qemu_maxrss_bytes": 1230721024,
+        "qemu_to_home_s": 70.176
+      },
+      "home_frame_sha256": "66999d62544c8b62c04c0c9fb6a68085bcc9ecd57ba840702910fde6ffab20df"
+    }
+  ],
+  "file_fault_probe": {
+    "baseline_sha256": "2c57ec22904f161aac4ed9d37941bff6bdb9d4a25143f5fb727bbd009f752ce1",
+    "candidate_sha256": "248473f7490e9535c36efe4c3ac1460fde77341035fe013e7bb903446a9e881b",
+    "probe_sha256": "07b11370a133efd6ee6c66e60ac581981c49949341ca34166ac036e0abeb41e2",
+    "disk_sha256": "2817c7e2438075a42d8fc6d01d9e525164c9ea05d6696776d94ae26e901eeac4",
+    "runs": [
+      {
+        "run": "01-baseline",
+        "guest_exit_status": 0,
+        "lines": [
+          "FAULT_TOUCH round=1 pages=2048 elapsed_ns=190307200",
+          "FAULT_TOUCH round=2 pages=2048 elapsed_ns=179576608",
+          "FAULT_TOUCH round=3 pages=2048 elapsed_ns=174169008",
+          "FAULT_TOUCH round=4 pages=2048 elapsed_ns=155782624",
+          "FAULT_TOUCH round=5 pages=2048 elapsed_ns=174483808",
+          "FAULT_TOUCH round=6 pages=2048 elapsed_ns=198073280",
+          "FAULT_TOUCH round=7 pages=2048 elapsed_ns=155489952",
+          "FAULT_ZERO_FILL_OK",
+          "FAULT_TOUCH_OK",
+          "QILIN_VMA_PROBE_DONE 0"
+        ]
+      },
+      {
+        "run": "02-candidate",
+        "guest_exit_status": 0,
+        "lines": [
+          "FAULT_TOUCH round=1 pages=2048 elapsed_ns=163492976",
+          "FAULT_TOUCH round=2 pages=2048 elapsed_ns=202709184",
+          "FAULT_TOUCH round=3 pages=2048 elapsed_ns=182962080",
+          "FAULT_TOUCH round=4 pages=2048 elapsed_ns=176731104",
+          "FAULT_TOUCH round=5 pages=2048 elapsed_ns=167003232",
+          "FAULT_TOUCH round=6 pages=2048 elapsed_ns=166853168",
+          "FAULT_TOUCH round=7 pages=2048 elapsed_ns=168671936",
+          "FAULT_ZERO_FILL_OK",
+          "FAULT_TOUCH_OK",
+          "QILIN_VMA_PROBE_DONE 0"
+        ]
+      },
+      {
+        "run": "03-candidate",
+        "guest_exit_status": 0,
+        "lines": [
+          "FAULT_TOUCH round=1 pages=2048 elapsed_ns=200697712",
+          "FAULT_TOUCH round=2 pages=2048 elapsed_ns=157126096",
+          "FAULT_TOUCH round=3 pages=2048 elapsed_ns=177853504",
+          "FAULT_TOUCH round=4 pages=2048 elapsed_ns=195055808",
+          "FAULT_TOUCH round=5 pages=2048 elapsed_ns=168186784",
+          "FAULT_TOUCH round=6 pages=2048 elapsed_ns=182665456",
+          "FAULT_TOUCH round=7 pages=2048 elapsed_ns=175421856",
+          "FAULT_ZERO_FILL_OK",
+          "FAULT_TOUCH_OK",
+          "QILIN_VMA_PROBE_DONE 0"
+        ]
+      },
+      {
+        "run": "04-baseline",
+        "guest_exit_status": 0,
+        "lines": [
+          "FAULT_TOUCH round=1 pages=2048 elapsed_ns=180371952",
+          "FAULT_TOUCH round=2 pages=2048 elapsed_ns=168581696",
+          "FAULT_TOUCH round=3 pages=2048 elapsed_ns=190174528",
+          "FAULT_TOUCH round=4 pages=2048 elapsed_ns=163422656",
+          "FAULT_TOUCH round=5 pages=2048 elapsed_ns=215026112",
+          "FAULT_TOUCH round=6 pages=2048 elapsed_ns=172928224",
+          "FAULT_TOUCH round=7 pages=2048 elapsed_ns=211791008",
+          "FAULT_ZERO_FILL_OK",
+          "FAULT_TOUCH_OK",
+          "QILIN_VMA_PROBE_DONE 0"
+        ]
+      }
+    ]
+  }
+}

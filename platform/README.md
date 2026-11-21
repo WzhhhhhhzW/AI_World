@@ -1,6 +1,8 @@
 # 在赛题的 x-kernel 中运行村庄
 
-Windows 双击仓库根目录的 **启动赛题村庄.cmd**。在带桌面的 Ubuntu 或 WSLg 中，也可从仓库根目录运行 `bash platform/start.sh`。出现 Weston 桌面后稍等，客体 Chromium 会自动打开村庄。点击左下角 **委托田 → 播下委托**，选“本地实习”即可操作一张真实存档的村务委托，全程无需模型密钥。关闭 QEMU 窗口即可结束本次演示。
+Windows 双击仓库根目录的 **启动赛题村庄.cmd**。在带桌面的 Ubuntu 或 WSLg 中，也可从仓库根目录运行 `bash platform/start.sh`。客体 Chromium 会自动打开村庄。点击左下角 **委托田 → 播下委托**，选“本地实习”即可操作一张真实存档的村务委托，全程无需模型密钥。关闭 QEMU 窗口即可结束本次演示。
+
+同一份存档的客体窗口已经打开时，再次运行入口会尝试切回该窗口，继续当前会话。若窗口还在启动，或桌面拒绝自动切换，入口会显示原窗口的名称，可从任务栏切回。关闭原 QEMU 窗口后，下次进入会重新启动客体。
 
 ## 哪些部分运行在客体
 
@@ -21,7 +23,7 @@ Windows 双击仓库根目录的 **启动赛题村庄.cmd**。在带桌面的 Ub
 
 队友分支为 `codex/perf-sparse-protect-20261118`，本次固定提交 `0b6c59600a8782762a6112eb02cfd96347e496e6`。展开的 `.config` SHA-256 为 `42e8d16450352712d78813b5f78b7ca221dfb88fadc796f57ecf317d7e33f669`，与分支记录相同。队友的 11 月历史实测使用 `ff0376b1…` 内核和 `3be0a923…` 运行盘。本机采用同一源码重建内核，搭配队伍此前已归档的 `2817c7e2…` Wayland 派生盘。运行盘和生成的内核未随上游 Git 发布；转移到另一台机器时要一并复制本表两份文件并核对哈希。[候选源码与实测](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/0b6c59600a8782762a6112eb02cfd96347e496e6/work/performance-20261117-r1) · [团队 Wayland 镜像恢复配方](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/0b6c59600a8782762a6112eb02cfd96347e496e6/work/cloud-runtime-recovery-20261006-r5/runtime/wayland_reconstruction_default_shell)
 
-村庄启动入口优先读取 `data/platform/candidate/finals-kernel.bin`，缺省时使用表中的 `kernel.bin`。本机已放入队友仓库决赛优化分支的构建产物，SHA-256 为 `2c57ec22904f161aac4ed9d37941bff6bdb9d4a25143f5fb727bbd009f752ce1`。[内核改动与复现](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/codex/kernel-finals-performance-20261120/work/performance-20261120-finals-r2)
+村庄启动入口优先读取 `data/platform/candidate/finals-kernel.bin`，缺省时使用表中的 `kernel.bin`。本机已放入队友仓库决赛优化分支的构建产物，SHA-256 为 `248473f7490e9535c36efe4c3ac1460fde77341035fe013e7bb903446a9e881b`。[内核改动与复现](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/codex/kernel-finals-performance-20261120/work/performance-20261121-finals-r3)
 
 首次启动会在 Linux 用户缓存中准备可复用的只读启动盘，注入并回读校验桌面会话脚本。本机的 2 GiB raw 盘在 ext4 上实际占用约 945 MiB。再次启动会复用这份盘，原盘或会话脚本变更时会重新准备。每个 QEMU 实例使用独立的临时写入层。客体固定访问 `10.0.2.100:8766`，宿主端口继续按实例分配。
 

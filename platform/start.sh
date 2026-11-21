@@ -2,6 +2,46 @@
 set -euo pipefail
 cd -- "$(dirname -- "$0")/.."
 
+save_dir="${XDG_DATA_HOME:-$HOME/.local/share}/qilin-village"
+mkdir -p -- "$save_dir"
+save_dir=$(cd -- "$save_dir" && pwd -P)
+session_key=$(printf '%s' "$save_dir" | sha256sum)
+window_name="Qilin Village ${session_key:0:12}"
+window_title="QEMU ($window_name)"
+
+focus_existing() {
+    # A duplicate can arrive while the launch owner is still preparing the disk.
+    # Wait for the original window instead of starting another guest or host service.
+    if pgrep -f -- "^([^ ]*/)?qemu-system-aarch64 .* -name guest=$window_name( |$)" >/dev/null 2>&1; then
+        if [[ -n "${DISPLAY:-}" ]] && command -v wmctrl >/dev/null && wmctrl -a "$window_title" 2>/dev/null; then
+            return 0
+        fi
+        if [[ -n "${WSL_DISTRO_NAME:-}" ]] && command -v powershell.exe >/dev/null; then
+            local script
+            printf -v script '$shell = New-Object -ComObject WScript.Shell; if ($shell.AppActivate("%s")) { exit 0 }; exit 1' "$window_title"
+            timeout 4s powershell.exe -NoLogo -NoProfile -NonInteractive -Command "$script" </dev/null >/dev/null 2>&1
+            return $?
+        fi
+    fi
+    return 1
+}
+
+# The launch owner keeps this descriptor for the session. Child processes must
+# not inherit it, so an ended launcher cannot leave a stale launch lock behind.
+exec {launch_lock}>>"$save_dir/launcher.lock"
+if flock -n -E 75 "$launch_lock"; then
+    :
+else
+    result=$?
+    if [[ "$result" != 75 ]]; then exit "$result"; fi
+    if focus_existing; then
+        echo "已请求切回正在运行的赛题村庄。"
+        exit 0
+    fi
+    printf '赛题村庄已在运行或启动中。请从任务栏切回 %s；若窗口尚未出现，请等待原启动窗口。\n' "$window_title"
+    exit 75
+fi
+
 kernel=data/platform/candidate/kernel.bin
 if [[ -s data/platform/candidate/finals-kernel.bin ]]; then
     kernel=data/platform/candidate/finals-kernel.bin
@@ -31,9 +71,8 @@ if ! qemu-system-aarch64 -display help | grep -qx gtk; then
     fi
 fi
 
-save_dir="${XDG_DATA_HOME:-$HOME/.local/share}/qilin-village"
 log_file=$(mktemp)
-python3 -u server.py --port 0 --qemu-guest --data "$save_dir/village.json" >"$log_file" 2>&1 &
+python3 -u server.py --port 0 --qemu-guest --data "$save_dir/village.json" >"$log_file" 2>&1 {launch_lock}>&- &
 server_pid=$!
 cleanup() {
     kill "$server_pid" 2>/dev/null || true
@@ -49,5 +88,5 @@ for ((i=0; i<120; i++)); do
 done
 if [[ -z "$port" ]]; then cat "$log_file" >&2; exit 1; fi
 
-echo "正在启动赛题客体，Weston 桌面出现后请等待 Chromium 打开村庄。存档位置为 $save_dir"
-python3 platform/qemu_demo.py launch --kernel "$kernel" --port "$port"
+echo "正在启动赛题客体，Chromium 会自动打开村庄。存档位置为 $save_dir"
+python3 platform/qemu_demo.py launch --kernel "$kernel" --port "$port" --window-name "$window_name" {launch_lock}>&-

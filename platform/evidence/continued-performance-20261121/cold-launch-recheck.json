@@ -1,0 +1,1218 @@
+{
+  "description": "Same candidate kernel and same village build within ABBA recheck; boot disk warmed and Chromium profiles new",
+  "candidate_kernel_sha256": "248473f7490e9535c36efe4c3ac1460fde77341035fe013e7bb903446a9e881b",
+  "active_settings": "Weston kiosk shell when installed, lowend Chromium plus NetworkServiceInProcess2",
+  "qemu_configuration": "QEMU 8.2.2 GTK, AArch64 cortex-a76, 4 vCPU, 2 GiB, pure TCG",
+  "pilot_previous_day": [
+    {
+      "mode": "default-first",
+      "clock": "host monotonic; seconds from launcher start",
+      "stages": {
+        "qemu_socket": 0.46,
+        "kernel_identified": 1.09,
+        "weston_ready": 3.69,
+        "chromium_launch": 3.69,
+        "map_visible": 64.88,
+        "browser_report_received": 76.5
+      },
+      "profile": {
+        "ready_ms": 25872,
+        "navigation": {
+          "requestStart": 5050,
+          "responseStart": 5068,
+          "responseEnd": 5397,
+          "domInteractive": 14239,
+          "domContentLoadedEventEnd": 16055
+        },
+        "first_resources": [
+          [
+            "/village-style.css",
+            9525,
+            10327
+          ],
+          [
+            "/__village_profile.js",
+            9569,
+            10263
+          ],
+          [
+            "/boot.js",
+            9588,
+            11125
+          ],
+          [
+            "/village-runtime.js",
+            9591,
+            12353
+          ],
+          [
+            "/assets/tcg/skin.css",
+            14890,
+            15419
+          ],
+          [
+            "/assets/manifest.json",
+            15592,
+            15750
+          ],
+          [
+            "/api/state",
+            15742,
+            15807
+          ],
+          [
+            "/assets/tcg/waterwheel-front-v1.webp",
+            15815,
+            16388
+          ]
+        ],
+        "startup_requests": 15,
+        "profile": "tcg",
+        "asset_count": 10,
+        "asset_body_bytes": 2033681,
+        "asset_wire_bytes": 2036681,
+        "last_assets": [
+          {
+            "path": "/assets/tcg/valley-painted-v1.webp",
+            "start_ms": 15855,
+            "end_ms": 17280,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/scenery.webp",
+            "start_ms": 15889,
+            "end_ms": 17130,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/avatars.webp",
+            "start_ms": 15873,
+            "end_ms": 16949,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/ui-atlas.webp",
+            "start_ms": 15864,
+            "end_ms": 16897,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/props/radish.png",
+            "start_ms": 15844,
+            "end_ms": 16406,
+            "protocol": "http/1.1"
+          }
+        ],
+        "viewport": [
+          1280,
+          629
+        ],
+        "backing_canvas": [
+          960,
+          472
+        ],
+        "sample_ms": 8109,
+        "paints": 33,
+        "draw_calls": 1785,
+        "frame_callback_p95_ms": 523
+      },
+      "exercise": [
+        [
+          "open-task-board",
+          1244
+        ],
+        [
+          "close-task-board",
+          589
+        ],
+        [
+          "zoom-first-frame",
+          200
+        ],
+        [
+          "open-task-board",
+          177
+        ],
+        [
+          "close-task-board",
+          177
+        ],
+        [
+          "zoom-first-frame",
+          178
+        ],
+        [
+          "open-task-board",
+          152
+        ],
+        [
+          "close-task-board",
+          254
+        ],
+        [
+          "zoom-first-frame",
+          187
+        ]
+      ]
+    },
+    {
+      "mode": "kiosk",
+      "clock": "host monotonic; seconds from launcher start",
+      "stages": {
+        "qemu_socket": 0.31,
+        "kernel_identified": 0.86,
+        "weston_ready": 3.92,
+        "chromium_launch": 3.92,
+        "map_visible": 59.35,
+        "browser_report_received": 71.3
+      },
+      "profile": {
+        "ready_ms": 23076,
+        "navigation": {
+          "requestStart": 5168,
+          "responseStart": 5201,
+          "responseEnd": 5521,
+          "domInteractive": 14467,
+          "domContentLoadedEventEnd": 15579
+        },
+        "first_resources": [
+          [
+            "/village-style.css",
+            8201,
+            9182
+          ],
+          [
+            "/__village_profile.js",
+            8537,
+            9117
+          ],
+          [
+            "/boot.js",
+            8558,
+            10518
+          ],
+          [
+            "/village-runtime.js",
+            8567,
+            12025
+          ],
+          [
+            "/assets/tcg/skin.css",
+            14779,
+            15235
+          ],
+          [
+            "/assets/manifest.json",
+            15294,
+            15622
+          ],
+          [
+            "/api/state",
+            15405,
+            15635
+          ],
+          [
+            "/assets/tcg/waterwheel-front-v1.webp",
+            15446,
+            15845
+          ]
+        ],
+        "startup_requests": 15,
+        "profile": "tcg",
+        "asset_count": 10,
+        "asset_body_bytes": 2033681,
+        "asset_wire_bytes": 2036681,
+        "last_assets": [
+          {
+            "path": "/assets/tcg/valley-painted-v1.webp",
+            "start_ms": 15480,
+            "end_ms": 16781,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/scenery.webp",
+            "start_ms": 15489,
+            "end_ms": 16618,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/avatars.webp",
+            "start_ms": 15487,
+            "end_ms": 16496,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/ui-atlas.webp",
+            "start_ms": 15483,
+            "end_ms": 16343,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/props/cabbage.png",
+            "start_ms": 15473,
+            "end_ms": 15930,
+            "protocol": "http/1.1"
+          }
+        ],
+        "viewport": [
+          1280,
+          748
+        ],
+        "backing_canvas": [
+          960,
+          561
+        ],
+        "sample_ms": 8153,
+        "paints": 24,
+        "draw_calls": 1216,
+        "frame_callback_p95_ms": 367
+      },
+      "exercise": [
+        [
+          "open-task-board",
+          1088
+        ],
+        [
+          "close-task-board",
+          392
+        ],
+        [
+          "zoom-first-frame",
+          234
+        ],
+        [
+          "open-task-board",
+          183
+        ],
+        [
+          "close-task-board",
+          299
+        ],
+        [
+          "zoom-first-frame",
+          245
+        ],
+        [
+          "open-task-board",
+          475
+        ],
+        [
+          "close-task-board",
+          181
+        ],
+        [
+          "zoom-first-frame",
+          321
+        ]
+      ]
+    },
+    {
+      "mode": "jitless",
+      "clock": "host monotonic; seconds from launcher start",
+      "stages": {
+        "qemu_socket": 0.31,
+        "kernel_identified": 0.84,
+        "weston_ready": 3.59,
+        "chromium_launch": 3.59,
+        "map_visible": 61.62,
+        "browser_report_received": 73.25
+      },
+      "profile": {
+        "ready_ms": 26046,
+        "navigation": {
+          "requestStart": 5049,
+          "responseStart": 5092,
+          "responseEnd": 5432,
+          "domInteractive": 15023,
+          "domContentLoadedEventEnd": 16395
+        },
+        "first_resources": [
+          [
+            "/village-style.css",
+            8439,
+            9339
+          ],
+          [
+            "/__village_profile.js",
+            8552,
+            9278
+          ],
+          [
+            "/boot.js",
+            8593,
+            10721
+          ],
+          [
+            "/village-runtime.js",
+            8608,
+            12235
+          ],
+          [
+            "/assets/tcg/skin.css",
+            15469,
+            15926
+          ],
+          [
+            "/assets/manifest.json",
+            15914,
+            16168
+          ],
+          [
+            "/api/state",
+            16110,
+            16259
+          ],
+          [
+            "/assets/tcg/waterwheel-front-v1.webp",
+            16174,
+            16696
+          ]
+        ],
+        "startup_requests": 15,
+        "profile": "tcg",
+        "asset_count": 10,
+        "asset_body_bytes": 2033681,
+        "asset_wire_bytes": 2036681,
+        "last_assets": [
+          {
+            "path": "/assets/tcg/valley-painted-v1.webp",
+            "start_ms": 16228,
+            "end_ms": 17760,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/scenery.webp",
+            "start_ms": 16258,
+            "end_ms": 17647,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/avatars.webp",
+            "start_ms": 16256,
+            "end_ms": 17447,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/ui-atlas.webp",
+            "start_ms": 16240,
+            "end_ms": 17429,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/props/cabbage.png",
+            "start_ms": 16222,
+            "end_ms": 16750,
+            "protocol": "http/1.1"
+          }
+        ],
+        "viewport": [
+          1280,
+          629
+        ],
+        "backing_canvas": [
+          960,
+          472
+        ],
+        "sample_ms": 8114,
+        "paints": 32,
+        "draw_calls": 1739,
+        "frame_callback_p95_ms": 355
+      },
+      "exercise": [
+        [
+          "open-task-board",
+          1141
+        ],
+        [
+          "close-task-board",
+          544
+        ],
+        [
+          "zoom-first-frame",
+          219
+        ],
+        [
+          "open-task-board",
+          208
+        ],
+        [
+          "close-task-board",
+          171
+        ],
+        [
+          "zoom-first-frame",
+          143
+        ],
+        [
+          "open-task-board",
+          104
+        ],
+        [
+          "close-task-board",
+          71
+        ],
+        [
+          "zoom-first-frame",
+          134
+        ]
+      ]
+    },
+    {
+      "mode": "network",
+      "clock": "host monotonic; seconds from launcher start",
+      "stages": {
+        "qemu_socket": 0.31,
+        "kernel_identified": 0.88,
+        "weston_ready": 3.48,
+        "chromium_launch": 3.48,
+        "map_visible": 58.25,
+        "browser_report_received": 70.34
+      },
+      "profile": {
+        "ready_ms": 24555,
+        "navigation": {
+          "requestStart": 4817,
+          "responseStart": 4868,
+          "responseEnd": 5268,
+          "domInteractive": 13345,
+          "domContentLoadedEventEnd": 14932
+        },
+        "first_resources": [
+          [
+            "/village-style.css",
+            7855,
+            8678
+          ],
+          [
+            "/__village_profile.js",
+            7977,
+            8626
+          ],
+          [
+            "/boot.js",
+            8004,
+            10097
+          ],
+          [
+            "/village-runtime.js",
+            8013,
+            11490
+          ],
+          [
+            "/assets/tcg/skin.css",
+            13901,
+            14569
+          ],
+          [
+            "/assets/manifest.json",
+            14586,
+            14723
+          ],
+          [
+            "/api/state",
+            14767,
+            14816
+          ],
+          [
+            "/assets/tcg/waterwheel-front-v1.webp",
+            14803,
+            15134
+          ]
+        ],
+        "startup_requests": 15,
+        "profile": "tcg",
+        "asset_count": 10,
+        "asset_body_bytes": 2033681,
+        "asset_wire_bytes": 2036681,
+        "last_assets": [
+          {
+            "path": "/assets/tcg/valley-painted-v1.webp",
+            "start_ms": 14844,
+            "end_ms": 16453,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/scenery.webp",
+            "start_ms": 14859,
+            "end_ms": 16185,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/avatars.webp",
+            "start_ms": 14851,
+            "end_ms": 15966,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/ui-atlas.webp",
+            "start_ms": 14848,
+            "end_ms": 15918,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/props/cabbage.png",
+            "start_ms": 14837,
+            "end_ms": 15428,
+            "protocol": "http/1.1"
+          }
+        ],
+        "viewport": [
+          1280,
+          629
+        ],
+        "backing_canvas": [
+          960,
+          472
+        ],
+        "sample_ms": 8134,
+        "paints": 32,
+        "draw_calls": 1574,
+        "frame_callback_p95_ms": 441
+      },
+      "exercise": [
+        [
+          "open-task-board",
+          1109
+        ],
+        [
+          "close-task-board",
+          392
+        ],
+        [
+          "zoom-first-frame",
+          647
+        ],
+        [
+          "open-task-board",
+          236
+        ],
+        [
+          "close-task-board",
+          179
+        ],
+        [
+          "zoom-first-frame",
+          202
+        ],
+        [
+          "open-task-board",
+          463
+        ],
+        [
+          "close-task-board",
+          174
+        ],
+        [
+          "zoom-first-frame",
+          244
+        ]
+      ]
+    }
+  ],
+  "abba": [
+    {
+      "mode": "default-a",
+      "clock": "host monotonic; seconds from launcher start",
+      "stages": {
+        "qemu_socket": 0.46,
+        "kernel_identified": 1.01,
+        "weston_ready": 3.76,
+        "chromium_launch": 3.76,
+        "map_visible": 60.39,
+        "browser_report_received": 71.98
+      },
+      "profile": {
+        "ready_ms": 24228,
+        "navigation": {
+          "requestStart": 4785,
+          "responseStart": 4806,
+          "responseEnd": 5144,
+          "domInteractive": 13718,
+          "domContentLoadedEventEnd": 15396
+        },
+        "first_resources": [
+          [
+            "/village-style.css",
+            8714,
+            9357
+          ],
+          [
+            "/__village_profile.js",
+            8783,
+            9277
+          ],
+          [
+            "/boot.js",
+            8794,
+            10697
+          ],
+          [
+            "/village-runtime.js",
+            8795,
+            12177
+          ],
+          [
+            "/assets/tcg/skin.css",
+            14440,
+            14975
+          ],
+          [
+            "/assets/manifest.json",
+            15078,
+            15131
+          ],
+          [
+            "/api/state",
+            15183,
+            15232
+          ],
+          [
+            "/assets/tcg/waterwheel-front-v1.webp",
+            15245,
+            15638
+          ]
+        ],
+        "startup_requests": 15,
+        "profile": "tcg",
+        "asset_count": 10,
+        "asset_body_bytes": 2033681,
+        "asset_wire_bytes": 2036681,
+        "last_assets": [
+          {
+            "path": "/assets/tcg/valley-painted-v1.webp",
+            "start_ms": 15275,
+            "end_ms": 16497,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/scenery.webp",
+            "start_ms": 15292,
+            "end_ms": 16388,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/avatars.webp",
+            "start_ms": 15288,
+            "end_ms": 16183,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/ui-atlas.webp",
+            "start_ms": 15278,
+            "end_ms": 16139,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/props/cabbage.png",
+            "start_ms": 15265,
+            "end_ms": 15684,
+            "protocol": "http/1.1"
+          }
+        ],
+        "viewport": [
+          1280,
+          629
+        ],
+        "backing_canvas": [
+          960,
+          472
+        ],
+        "sample_ms": 8218,
+        "paints": 29,
+        "draw_calls": 1477,
+        "frame_callback_p95_ms": 394
+      },
+      "exercise": [
+        [
+          "open-task-board",
+          1022
+        ],
+        [
+          "close-task-board",
+          560
+        ],
+        [
+          "zoom-first-frame",
+          492
+        ],
+        [
+          "open-task-board",
+          278
+        ],
+        [
+          "close-task-board",
+          103
+        ],
+        [
+          "zoom-first-frame",
+          199
+        ],
+        [
+          "open-task-board",
+          254
+        ],
+        [
+          "close-task-board",
+          236
+        ],
+        [
+          "zoom-first-frame",
+          138
+        ]
+      ]
+    },
+    {
+      "mode": "kiosk-network-a",
+      "clock": "host monotonic; seconds from launcher start",
+      "stages": {
+        "qemu_socket": 0.31,
+        "kernel_identified": 0.85,
+        "weston_ready": 3.44,
+        "chromium_launch": 3.44,
+        "map_visible": 52.9,
+        "browser_report_received": 63.92
+      },
+      "profile": {
+        "ready_ms": 21695,
+        "navigation": {
+          "requestStart": 5115,
+          "responseStart": 5153,
+          "responseEnd": 5419,
+          "domInteractive": 14950,
+          "domContentLoadedEventEnd": 16091
+        },
+        "first_resources": [
+          [
+            "/village-style.css",
+            7681,
+            8580
+          ],
+          [
+            "/__village_profile.js",
+            7747,
+            8437
+          ],
+          [
+            "/boot.js",
+            7766,
+            9925
+          ],
+          [
+            "/village-runtime.js",
+            7771,
+            10835
+          ],
+          [
+            "/assets/tcg/skin.css",
+            15381,
+            15750
+          ],
+          [
+            "/assets/manifest.json",
+            15825,
+            15946
+          ],
+          [
+            "/api/state",
+            15936,
+            15985
+          ],
+          [
+            "/assets/tcg/waterwheel-front-v1.webp",
+            15980,
+            16309
+          ]
+        ],
+        "startup_requests": 15,
+        "profile": "tcg",
+        "asset_count": 10,
+        "asset_body_bytes": 2033681,
+        "asset_wire_bytes": 2036681,
+        "last_assets": [
+          {
+            "path": "/assets/tcg/valley-painted-v1.webp",
+            "start_ms": 15996,
+            "end_ms": 16903,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/scenery.webp",
+            "start_ms": 16002,
+            "end_ms": 16894,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/avatars.webp",
+            "start_ms": 16000,
+            "end_ms": 16729,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/ui-atlas.webp",
+            "start_ms": 15998,
+            "end_ms": 16571,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/props/cabbage.png",
+            "start_ms": 15995,
+            "end_ms": 16417,
+            "protocol": "http/1.1"
+          }
+        ],
+        "viewport": [
+          1280,
+          748
+        ],
+        "backing_canvas": [
+          960,
+          561
+        ],
+        "sample_ms": 8063,
+        "paints": 32,
+        "draw_calls": 1594,
+        "frame_callback_p95_ms": 421
+      },
+      "exercise": [
+        [
+          "open-task-board",
+          730
+        ],
+        [
+          "close-task-board",
+          448
+        ],
+        [
+          "zoom-first-frame",
+          214
+        ],
+        [
+          "open-task-board",
+          229
+        ],
+        [
+          "close-task-board",
+          78
+        ],
+        [
+          "zoom-first-frame",
+          243
+        ],
+        [
+          "open-task-board",
+          340
+        ],
+        [
+          "close-task-board",
+          101
+        ],
+        [
+          "zoom-first-frame",
+          452
+        ]
+      ]
+    },
+    {
+      "mode": "kiosk-network-b",
+      "clock": "host monotonic; seconds from launcher start",
+      "stages": {
+        "qemu_socket": 0.31,
+        "kernel_identified": 0.84,
+        "weston_ready": 3.59,
+        "chromium_launch": 3.59,
+        "map_visible": 51.8,
+        "browser_report_received": 64.16
+      },
+      "profile": {
+        "ready_ms": 21453,
+        "navigation": {
+          "requestStart": 4907,
+          "responseStart": 4932,
+          "responseEnd": 5240,
+          "domInteractive": 13557,
+          "domContentLoadedEventEnd": 14534
+        },
+        "first_resources": [
+          [
+            "/village-style.css",
+            8179,
+            8987
+          ],
+          [
+            "/__village_profile.js",
+            8279,
+            8846
+          ],
+          [
+            "/boot.js",
+            8300,
+            9901
+          ],
+          [
+            "/village-runtime.js",
+            8316,
+            11124
+          ],
+          [
+            "/assets/tcg/skin.css",
+            13960,
+            14318
+          ],
+          [
+            "/assets/manifest.json",
+            14327,
+            14371
+          ],
+          [
+            "/api/state",
+            14405,
+            14460
+          ],
+          [
+            "/assets/tcg/waterwheel-front-v1.webp",
+            14432,
+            14838
+          ]
+        ],
+        "startup_requests": 15,
+        "profile": "tcg",
+        "asset_count": 10,
+        "asset_body_bytes": 2033681,
+        "asset_wire_bytes": 2036681,
+        "last_assets": [
+          {
+            "path": "/assets/tcg/valley-painted-v1.webp",
+            "start_ms": 14457,
+            "end_ms": 15652,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/scenery.webp",
+            "start_ms": 14467,
+            "end_ms": 15629,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/avatars.webp",
+            "start_ms": 14466,
+            "end_ms": 15579,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/ui-atlas.webp",
+            "start_ms": 14461,
+            "end_ms": 15276,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/props/cabbage.png",
+            "start_ms": 14455,
+            "end_ms": 15038,
+            "protocol": "http/1.1"
+          }
+        ],
+        "viewport": [
+          1280,
+          748
+        ],
+        "backing_canvas": [
+          960,
+          561
+        ],
+        "sample_ms": 8092,
+        "paints": 30,
+        "draw_calls": 1480,
+        "frame_callback_p95_ms": 436
+      },
+      "exercise": [
+        [
+          "open-task-board",
+          1104
+        ],
+        [
+          "close-task-board",
+          615
+        ],
+        [
+          "zoom-first-frame",
+          551
+        ],
+        [
+          "open-task-board",
+          191
+        ],
+        [
+          "close-task-board",
+          240
+        ],
+        [
+          "zoom-first-frame",
+          158
+        ],
+        [
+          "open-task-board",
+          343
+        ],
+        [
+          "close-task-board",
+          151
+        ],
+        [
+          "zoom-first-frame",
+          342
+        ]
+      ]
+    },
+    {
+      "mode": "default-b",
+      "clock": "host monotonic; seconds from launcher start",
+      "stages": {
+        "qemu_socket": 0.31,
+        "kernel_identified": 0.82,
+        "weston_ready": 3.26,
+        "chromium_launch": 3.26,
+        "map_visible": 58.22,
+        "browser_report_received": 70.42
+      },
+      "profile": {
+        "ready_ms": 23687,
+        "navigation": {
+          "requestStart": 4870,
+          "responseStart": 4887,
+          "responseEnd": 5154,
+          "domInteractive": 13021,
+          "domContentLoadedEventEnd": 18117
+        },
+        "first_resources": [
+          [
+            "/village-style.css",
+            7621,
+            8644
+          ],
+          [
+            "/__village_profile.js",
+            7944,
+            8575
+          ],
+          [
+            "/boot.js",
+            7991,
+            10275
+          ],
+          [
+            "/village-runtime.js",
+            8006,
+            12332
+          ],
+          [
+            "/assets/tcg/skin.css",
+            16909,
+            17574
+          ],
+          [
+            "/assets/manifest.json",
+            17631,
+            17709
+          ],
+          [
+            "/api/state",
+            17837,
+            17888
+          ],
+          [
+            "/assets/tcg/waterwheel-front-v1.webp",
+            17909,
+            18303
+          ]
+        ],
+        "startup_requests": 15,
+        "profile": "tcg",
+        "asset_count": 10,
+        "asset_body_bytes": 2033681,
+        "asset_wire_bytes": 2036681,
+        "last_assets": [
+          {
+            "path": "/assets/tcg/valley-painted-v1.webp",
+            "start_ms": 17928,
+            "end_ms": 19338,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/scenery.webp",
+            "start_ms": 17974,
+            "end_ms": 19225,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/avatars.webp",
+            "start_ms": 17949,
+            "end_ms": 18951,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/ui-atlas.webp",
+            "start_ms": 17937,
+            "end_ms": 18873,
+            "protocol": "http/1.1"
+          },
+          {
+            "path": "/assets/tcg/waterwheel-front-v1.webp",
+            "start_ms": 17909,
+            "end_ms": 18303,
+            "protocol": "http/1.1"
+          }
+        ],
+        "viewport": [
+          1280,
+          629
+        ],
+        "backing_canvas": [
+          960,
+          472
+        ],
+        "sample_ms": 8121,
+        "paints": 33,
+        "draw_calls": 1626,
+        "frame_callback_p95_ms": 678
+      },
+      "exercise": [
+        [
+          "open-task-board",
+          889
+        ],
+        [
+          "close-task-board",
+          493
+        ],
+        [
+          "zoom-first-frame",
+          650
+        ],
+        [
+          "open-task-board",
+          335
+        ],
+        [
+          "close-task-board",
+          273
+        ],
+        [
+          "zoom-first-frame",
+          168
+        ],
+        [
+          "open-task-board",
+          285
+        ],
+        [
+          "close-task-board",
+          240
+        ],
+        [
+          "zoom-first-frame",
+          151
+        ]
+      ]
+    }
+  ]
+}

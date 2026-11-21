@@ -4,7 +4,7 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;',
 const number = n => Number(n || 0).toLocaleString('zh-CN');
 const statusName = {draft:'待讨论',gathering:'正在召集',discussing:'独立提案中',synthesizing:'主持人汇总中',complete:'已归档',interrupted:'已中断 · 保留记录'};
 let state, view = 'village', selected = null, toastTimer, pending = false, loading = false, previousSignature = '',exiting=false;
-let scene='village',roomMeeting=null,speechResident=null,speechSignature='';
+let scene='village',roomMeeting=null,speechResident=null;
 const canvas = $('#village'), ctx = canvas.getContext('2d', {alpha:false});
 const tcg = document.documentElement.dataset.renderProfile === 'tcg';
 const positions = new Map(), assets = {};
@@ -45,7 +45,7 @@ function setScene(next, updateAddress=true){
   $('#map-tooltip').hidden=true;
   view='village';selected=null;$('#game-window').hidden=true;$('#hall-tools').hidden=next!=='hall';$('#scene-back').hidden=next==='village';$('#hall-speech-layer').hidden=next!=='hall';
   $('#world-hint').textContent=next==='hall'?'点击村民查看发言 · 会议记录保留完整讨论':next==='eastwood'?'东林开拓地 · 建筑须经居民表决后施工':'拖动探索村庄 · 点击居民或建筑 · 滚轮缩放';
-  worldCamera.reset(tcg);speechSignature='';bubbleLayout='';
+  worldCamera.reset(tcg);bubbleLayout='';
   wakeMap(true);
 }
 function navigate(next,id=null){
@@ -207,12 +207,31 @@ function renderSpeech(){
   const r=state.residents.find(r=>r.id===speechResident),m=currentRoomMeeting();
   return `<p class="panel-intro">${esc(m?.question||'圆桌还在等待新的议题')}</p>${m?.messages.filter(v=>v.resident_id===speechResident).map(v=>`<div class="speech-message"><strong>${esc(v.name)} · ${esc(providerLabel(v.provider))} · 真实发言</strong><p>${esc(v.text)}</p></div>`).join('')||`<p class="empty">${esc(r?.name||'这位居民')}还没有在这个议题发言。</p>`}${m?`<button class="outline full" data-meeting="${m.id}">查看完整会议记录</button>`:''}`;
 }
-let bubbleLayout='';
+let bubbleLayout='',bubbleMeeting,bubbleRows=[];
 function drawRoomBubbles(){
-  const layer=$('#hall-speech-layer');if(layer.hidden)return;
-  const m=currentRoomMeeting(),sig=JSON.stringify([state.residents.map(r=>[r.id,r.name]),m?.id,m?.status,m?.messages]);
-  if(sig!==speechSignature){speechSignature=sig;layer.innerHTML=state.residents.map((r,i)=>{const message=m?.messages.filter(v=>v.resident_id===r.id).at(-1);return `<button class="hall-bubble ${i%2?'right':''} ${message?'':'quiet'}" data-speech="${r.id}" aria-label="查看${esc(r.name)}的发言"><strong>${esc(r.name)}</strong><span>${esc(message?.text.slice(0,85)||(['discussing','synthesizing'].includes(m?.status)?'等候这一轮发言…':'候会 · 点击查看发言'))}</span></button>`;}).join('');}
-  const pose=[sig,camera.x,camera.y,camera.scale].join('/');
+  const layer=$('#hall-speech-layer');
+  if(layer.hidden)return;
+  const meeting=currentRoomMeeting(),residents=state.residents;
+  // A successful inline rename can update the name before the next poll.
+  const namesChanged=residents.length!==bubbleRows.length ||
+    residents.some((r,i)=>r.id!==bubbleRows[i][0] || r.name!==bubbleRows[i][1]);
+  if(meeting!==bubbleMeeting || namesChanged){
+    bubbleMeeting=meeting;
+    const messages=new Map();
+    for(const message of meeting?.messages||[])messages.set(message.resident_id,message);
+    const waiting=['discussing','synthesizing'].includes(meeting?.status)?'等候这一轮发言…':'候会 · 点击查看发言';
+    const rows=residents.map(({id,name})=>{
+      const message=messages.get(id);
+      return [id,name,!!message,message?.text.slice(0,85)||waiting];
+    });
+    if(namesChanged || rows.some((row,i)=>row[2]!==bubbleRows[i][2] || row[3]!==bubbleRows[i][3])){
+      bubbleRows=rows;
+      bubbleLayout='';
+      layer.innerHTML=rows.map(([id,name,hasMessage,text],i)=>
+        `<button class="hall-bubble ${i%2?'right':''} ${hasMessage?'':'quiet'}" data-speech="${id}" aria-label="查看${esc(name)}的发言"><strong>${esc(name)}</strong><span>${esc(text)}</span></button>`).join('');
+    }
+  }
+  const pose=[camera.x,camera.y,camera.scale].join('/');
   if(pose!==bubbleLayout){
     bubbleLayout=pose;
     const widths=[...layer.children].map(el=>el.offsetWidth);
@@ -483,7 +502,10 @@ const launchCover=document.querySelector('#launch-cover');
 const background=document.createElement('canvas');background.width=960;background.height=640;
 if(!tcg || !launchCover?.isConnected || VillageMap.version)baseMap(background.getContext('2d'));
 document.addEventListener('village-map-ready',()=>{
-  if(!tcg || VillageMap.version)baseMap(background.getContext('2d'));
+  if(!tcg || VillageMap.version){
+    baseMap(background.getContext('2d'));
+    plateKey='';
+  }
 });
 let lastFrame=0,visualTime=0;
 const worldCamera=VillageCamera.create(),camera={scale:1,x:0,y:0};
@@ -635,7 +657,8 @@ function paintFastVillage(now,sky,pose,scaleX,scaleY){
   }
   const key=[Math.floor(state.clock/30),sky.id,Math.round(sky.cloud*6),Math.round(sky.fog*4),Math.round(sky.rain*6)].join('/');
   const full=repaintAll||pose!==lastMapPose||key!==plateKey;
-  if(repaintAll||key!==plateKey){
+  // A viewport repaint can reuse the world-space plate while its art and lighting match.
+  if(key!==plateKey){
     const plate=scenePlate.getContext('2d');
     plate.drawImage(background,0,0);
     climate.ground(plate,visualTime,sky);
