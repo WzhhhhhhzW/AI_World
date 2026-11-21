@@ -1,0 +1,11 @@
+{
+  "source_tree": "b43dc27ee89e63047fd8ee3c92a9167705a18e00",
+  "release_build": "platforms/kplat-aarch64/qemu_defconfig, make defconfig, make build",
+  "toolchain": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "resolved_configuration_sha256": "42e8d16450352712d78813b5f78b7ca221dfb88fadc796f57ecf317d7e33f669",
+  "resolved_configuration_matches_latest_candidate": true,
+  "historical_kernel_sha256_reported_in_manifest": "556b25c5e9cac8c7195e02732249968512b778b1d28e4c4b12bfc0b6ae588a24",
+  "new_binary_sha256": "8d96bcd693d2d284a04d56d3b4899f9640af2f0225004a440be2b23c1690e1a8",
+  "build_log_sha256": "4d7a93335e5b3213a136711f40ec67d4a903ec95e29bfdc86bfc95178f76e74f",
+  "archive_sha256": "f81cf83c38ad144023c88ddfa59053d1705604cbb30a48c38e50f94f8ecd38c4"
+}

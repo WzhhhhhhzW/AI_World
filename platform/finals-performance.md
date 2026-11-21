@@ -52,3 +52,9 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 ## 11 月 21 日 30 分钟浏览器长稳
 
 新内核使用队友原 Chromium 参数和同一只读 Wayland 启动盘连续运行 1811.38 秒。原始首页和布局页每隔约两分钟交替加载，10 次均通过画面检测，结束时再向 Chromium 发送导航键并确认首页显示。采样期间 Chromium 和 Weston 的 PID 一直相同，串口未发现 OOM、内核 panic 或图形进程丢失。宿主 QEMU 全生命周期峰值 RSS 为 1,199.17 MiB。本次长稳使用队友归档页面。正式长稳与得分以组委会统一环境为准。[长稳汇总](evidence/continued-performance-20261121/finals-soak.json)
+
+## 11 月 21 日低内存模式复测与首版恢复
+
+同一候选内核使用两种 Chromium 参数交替冷启动五组。首窗中位数从 54.76 秒降至 46.89 秒，首页从 56.91 秒降至 51.18 秒，宿主 QEMU 峰值 RSS 从 1,175.10 MiB 降至 1,119.14 MiB。五组这三项均改善。renderer 与布局页的结果处于两侧重叠范围内，布局页差距接近取图间隔。独立回归中，键鼠、双标签和 JS、CSS 检查通过。低内存模式为可选验证条件，正式测试使用组委会指定参数。[五组逐次记录](evidence/finals-20261121/low-memory-comparison.json) · [队友分支与功能证据](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/26511f19db92d1822c1571e6bc480528e5024c1e/work/performance-20261121-finals-r4)
+
+队伍首次可运行版已从官方上游和五个冻结补丁恢复，源码树哈希和历史清单相同。用当前相同的 AArch64 展开配置和 Rust 1.95.0 完成构建。重建二进制单独记录 SHA-256，首版与当前版本使用同一运行盘和脚本复测。[首版构建校验](evidence/finals-20261121/first-build.json)
