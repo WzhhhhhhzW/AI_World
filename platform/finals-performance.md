@@ -48,3 +48,7 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 在上一版预读及 VMA 优化之上，新增私有文件缺页的完整覆盖快路径与初始栈缓冲复用。用队友原 Chromium 参数和同一只读 Wayland 盘进行五组交替对照，首个白窗中位从 59.00 降至 53.97 秒，首页四色块从 62.59 降至 58.25 秒，renderer 首次观测从 33.08 降至 30.73 秒。宿主 QEMU 的峰值中位由 1,173.32 到 1,173.71 MiB。两侧时延范围有重叠，基线的两次 75 秒以上首页样本均保留。[逐次内核对照](evidence/continued-performance-20261121/kernel-file-fault-comparison.json) · [队友分支源码与复跑步骤](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/codex/kernel-finals-performance-20261120/work/performance-20261121-finals-r3)
 
 可将 `--browser-mode baseline` 与 `--soak` 或 `--controls` 一起使用，使独立验证采用队友原启动参数。只传 `--soak` 或 `--controls` 时使用低内存模式。
+
+## 11 月 21 日 30 分钟浏览器长稳
+
+新内核使用队友原 Chromium 参数和同一只读 Wayland 启动盘连续运行 1811.38 秒。原始首页和布局页每隔约两分钟交替加载，10 次均通过画面检测，结束时再向 Chromium 发送导航键并确认首页显示。采样期间 Chromium 和 Weston 的 PID 一直相同，串口未发现 OOM、内核 panic 或图形进程丢失。宿主 QEMU 全生命周期峰值 RSS 为 1,199.17 MiB。本次长稳使用队友归档页面。正式长稳与得分以组委会统一环境为准。[长稳汇总](evidence/continued-performance-20261121/finals-soak.json)
