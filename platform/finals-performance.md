@@ -111,4 +111,8 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 
 两次独立诊断冷启动各采集三份客体累计计数。启动前至首次观测 renderer 分别记录 55,831 和 55,745 次首次触页，各有 873 个计时样本。文件页获取及复制占样本累计计时的 74.4% 和 77.0%，在 renderer 至首页的区间仍是两次的最大分项。计时涵盖整个客体的首次私有文件缺页，包含可能重叠的任务区间和调度等待。继续分解缓存查找、锁等待、缓存未命中后的读取和内存复制。[快照与分阶段数据](evidence/finals-20261122/private-file-faults/observations.json) · [队友分支的诊断补丁与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/066d4ba7675ca4eaf77763590de7ce8c139d6df6/work/performance-20261122-finals-r13)
 
+## 11 月 22 日同步预读及重复尾页
+
+同盘、原 Chromium 参数两轮诊断中，首次观测 renderer 前同步预读占 folio 获取与复制的抽样计时约 73.9%。两轮各完成 781 和 784 个抽样预读页，其中 231 和 199 个重复，连续重复尾页为 228 和 199 个。renderer 观测至首页的连续重复尾页是 179/320 和 122/352。重复统计使用预读完成时的插入结果，可能包含并发插入。以此为依据测试仅裁剪已驻留尾段的候选，保留夹在缓存页之间的缺页及按需读取回退。[诊断数据与原始快照](evidence/finals-20261122/private-file-fault-io/observations.json) · [队友分支的诊断补丁与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/5f246e2e42e7eddfe12c40ca350e5fc683a9850d/work/performance-20261122-finals-r14)
+
 诊断批次可用 `--keep-going` 保留观测超时时的画面和原始记录，并完成其他样本。任何样本超时，整批仍返回失败，时延汇总只包含完成观察的样本。
