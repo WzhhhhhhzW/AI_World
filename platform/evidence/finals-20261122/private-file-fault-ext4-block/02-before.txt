@@ -1,0 +1,13 @@
+private_fault_io format=4 sample_stride=64 time_unit=ticks timer_hz=62500000
+cpu exec samples calls file_hits file_misses bypass prefetch_calls prefetch_pages_requested prefetch_errors invalidate_ticks probe_ticks prefetch_ticks get_ticks callback_copy_ticks return_ticks prefetch_pages_completed prefetch_pages_inserted prefetch_pages_duplicate prefetch_duplicate_suffix_pages ext4_requests ext4_read_bytes ext4_buffer_ticks ext4_read_at_ticks ext4_publish_ticks ext4_map_calls ext4_data_requests ext4_data_requested_bytes ext4_map_ticks ext4_data_ticks ext4_read_other_ticks
+0 0 1 1 1 0 0 0 0 0 124 359 0 1429 655 225 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 1 3 3 3 0 0 0 0 0 537 2176 0 4289 1811 2665 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+1 0 3 3 1 2 0 2 5 0 296 1162 131788 2678 1285 1154 5 3 2 2 2 16656 1627 122692 6551 2 2 20480 923 111313 10456
+1 1 19 19 15 4 0 4 32 0 4138 44432 358051 34955 34462 12389 32 14 18 18 4 131072 10556 277292 57990 4 4 131072 2960 267382 6950
+2 0 1 1 1 0 0 0 0 0 56 338 0 287 517 99 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+2 1 6 6 6 0 0 0 0 0 685 2512 0 3842 25326 8943 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+3 0 3 2 1 1 0 1 2 0 148 583 43085 739 1056 986 2 1 1 1 1 6072 754 38749 3039 1 1 8192 357 36059 2333
+3 1 17 17 17 0 0 0 0 0 3749 10396 0 25605 180610 14975 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+virtio_blk_read_stages format=1 sample_stride=64 timer_hz=62500000 scope=all_irq_reads
+reads completed bytes errors no_token waited_admission waited_completion before_submit_ticks until_used_ticks reclaim_ticks after_done_ticks
+520 9 123904 0 0 0 9 59030 327122 47857 225023

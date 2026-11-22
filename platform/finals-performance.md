@@ -137,4 +137,8 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 
 部署后从本机默认村庄入口启动，确认实际加载上述内核。使用 Xvfb 和临时存档复核，地图、角色、资源栏和交互入口正常显示。截图在启动后固定时点采集，用于核对入口。[运行证据](evidence/finals-20261122/ext4-crc32c-deployed-entry.json) · [默认入口画面](evidence/finals-20261122/ext4-crc32c-deployed-entry.png)
 
+## 11 月 22 日 ext4 映射与 VirtIO 等待计时
+
+从已采用的 CRC32C 源码构建诊断版，用原 Chromium 参数和同一 Wayland 盘冷启动两次。renderer 观测前，同步数据读取占 ext4 `read_at` 抽样耗时 84.7% 和 91.3%，映射校验占 3.7% 和 6.4%。整个客体的 IRQ VirtIO 读样本无准入等待。完成结果发布至提交任务观察，在 renderer 前两轮平均约 405 微秒，renderer 至首页两轮平均约 1.08 和 1.32 毫秒。块请求与 ext4 缺页在同一边界独立抽样。优先试验单等待任务的终态唤醒特化，保留原 IRQ 回收和排空流程。[三个边界的原始计数](evidence/finals-20261122/private-file-fault-ext4-block/observations.json) · [队友分支诊断补丁和复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/bec76d677776b44eb4e502a635f80a4853b82415/work/performance-20261122-finals-r19)
+
 诊断批次可用 `--keep-going` 保留观测超时时的画面和原始记录，并完成其他样本。任何样本超时，整批仍返回失败，时延汇总只包含完成观察的样本。
