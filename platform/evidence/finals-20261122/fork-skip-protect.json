@@ -478,5 +478,6 @@
       "system_s": 44.051492
     }
   },
-  "disposition": "advance to 30-minute qualification; pending long stability before deployment"
+  "disposition": "validated for use after cold-start, interaction and stability checks",
+  "production_source_commit": "38d221e357d50e9c5b7dae5232a45c2ec8fa2b98"
 }
