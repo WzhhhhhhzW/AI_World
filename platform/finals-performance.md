@@ -88,3 +88,5 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 候选已通过键盘输入与回显、鼠标链接、双标签切换、JS 和 CSS 各 6 项。使用相同二进制和原 Chromium 参数单独测试，长稳持续 1,805.16 秒，十次交替加载全部通过，结束时可导航回首页。Chromium 和 Weston 进程编号在观察期间保持一致，串口未记录 OOM 或 panic。宿主 QEMU 全生命周期峰值为 1,205.30 MiB。[逐轮和功能记录](evidence/finals-20261122/fork-skip-protect.json) · [长稳汇总](evidence/finals-20261122/fork-skip-protect-soak.json)
 
 源码变更已加入队友决赛协作分支，生产源码提交为 `38d221e`，实测证据提交为 `d113f8e`。本机启动入口的默认内核已替换为同一通过长稳的二进制，上一版保存在本地 `data/platform/finals-next/pre-fork-final-kernel.bin`。比赛现场仍采用组委会统一环境和计时方式。[队友仓库与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/d113f8e9d128bf2455f9210233b6b7fec7c23d49/work/performance-20261122-finals-r8)
+
+部署后通过本机默认入口启动 Xvfb 临时存档，地图正常显示，三次重复启动均复用原 QEMU。此回合包含首次准备启动盘，作为入口验证留档。[启动器验证](evidence/finals-20261122/fork-deployed-entry.json)
