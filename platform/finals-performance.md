@@ -10,6 +10,8 @@
 
 在 AArch64 银河麒麟 Linux 上使用 `platform/finals_benchmark.py --accel kvm` 运行本仓库的对照脚本。脚本要求 `/dev/kvm` 可读写、KVM API 版本为 12 和 QEMU 版本至少 8.0，并使用 `-accel kvm -cpu host`。各轮 `metrics.json` 保存 QMP `query-kvm`，其中 `present` 和 `enabled` 均为 `true` 才进入观测流程。KVM 模式取首张采样到的浏览器白窗或首页截图，报告 `browser_to_first_visible_s`。`inputs.json` 记录宿主 CPU、内存、内核、发行版和 QEMU 版本。[QEMU virt CPU 与图形设备](https://www.qemu.org/docs/master/system/arm/virt.html) · [QEMU QMP 加速状态](https://www.qemu.org/docs/master/interop/qemu-qmp-ref.html#command-QMP-query-kvm)
 
+现场可用 `--prepared-assets` 读取预先导出的 `guest-browser.sh` 和静态 AArch64 `renderer-watch`，省去克隆仓库和现场交叉编译。脚本校验浏览器启动脚本与固定提交的字节一致，并把两个离线文件的 SHA-256 写入 `inputs.json`。本地传输包包含已通过长稳的 CRC32C 版、同配置重建首版和 R20 对照的两份内核，附镜像与文件校验值。首版共同启动阶段使用 `--startup-only`，完整功能及长稳单独验证。
+
 ## 输入和计时口径
 
 - 主机为 Intel Core Ultra 9 285H、32 GB 内存、Windows 11 与 WSL2 Ubuntu，QEMU 8.2.2。AArch64 客体使用 Cortex-A76、4 vCPU、2 GiB、纯 TCG。图形管线为 Weston、Wayland 和 Chromium 142.0.7444.59。QEMU 宿主侧以无窗口方式运行，客体通过 virtio-gpu 正常渲染。

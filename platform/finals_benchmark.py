@@ -20,6 +20,7 @@ from qemu_demo import cached_boot_disk, emulator_command
 PROJECT = Path(__file__).resolve().parents[1]
 COMMIT = "0b6c59600a8782762a6112eb02cfd96347e496e6"
 SCRIPT = "outputs/ict-chromium/scripts/guest-browser.sh"
+SCRIPT_SHA256 = "c68ea39d6977316ba9e63af487984d446a9216548ad3c33767642d3fbda93541"
 STARTUP_OBSERVATION_SECONDS = 10
 GUEST_MEMORY_PROBE_DELAY_SECONDS = 105
 PAGE_URL = "file:///opt/ict/testpages/"
@@ -78,15 +79,22 @@ def file_hash(path):
 
 
 def prepare(args, work, browser_modes):
-    script = subprocess.check_output(["git", "-C", args.upstream, "show", f"{COMMIT}:{SCRIPT}"])
+    if args.prepared_assets:
+        script = (args.prepared_assets / "guest-browser.sh").read_bytes()
+        if hashlib.sha256(script).hexdigest() != SCRIPT_SHA256:
+            raise ValueError("离线浏览器启动脚本与固定提交不同")
+        watcher = args.prepared_assets / "renderer-watch"
+    else:
+        script = subprocess.check_output(["git", "-C", args.upstream, "show", f"{COMMIT}:{SCRIPT}"])
+        watcher = work / "renderer-watch"
+        subprocess.run(["aarch64-linux-gnu-gcc", "-O2", "-static", "-s", "-Wall", "-Wextra",
+                        Path(__file__).with_name("renderer_watch.c"), "-o", watcher], check=True)
+    watcher_data = watcher.read_bytes()
     for filename, expected in PAGE_HASHES.items():
         contents = subprocess.check_output(["debugfs", "-R", f"cat /opt/ict/testpages/{filename}",
                                            args.rootfs], stderr=subprocess.DEVNULL)
         if hashlib.sha256(contents).hexdigest() != expected:
             raise ValueError(f"原盘内页面校验失败：{filename}")
-    watcher = work / "renderer-watch"
-    subprocess.run(["aarch64-linux-gnu-gcc", "-O2", "-static", "-s", "-Wall", "-Wextra",
-                    Path(__file__).with_name("renderer_watch.c"), "-o", watcher], check=True)
     start = b"/opt/finals-watch &\nexec sh /opt/finals-browser.sh\n"
     if args.soak:
         start = b"sh /opt/finals-heartbeat.sh &\n" + start
@@ -105,7 +113,7 @@ def prepare(args, work, browser_modes):
     disks = {}
     for mode in browser_modes:
         browser = scripts[mode]
-        files = [("/opt/finals-watch", watcher.read_bytes(), True),
+        files = [("/opt/finals-watch", watcher_data, True),
                  ("/opt/finals-browser.sh", browser, False), ("/opt/finals-start.sh", start, False)]
         if args.soak:
             files.append(("/opt/finals-heartbeat.sh", Path(__file__).with_name(
@@ -115,7 +123,8 @@ def prepare(args, work, browser_modes):
                 "guest-memory-probe.sh").read_bytes(), False))
         disks[mode], _ = cached_boot_disk(args.rootfs, session_args=[
             PAGE_URL + "index.html", "sh", "/opt/finals-start.sh"], guest_files=files)
-    return disks
+    return disks, {"browser_script_sha256": hashlib.sha256(script).hexdigest(),
+                   "renderer_watch_sha256": hashlib.sha256(watcher_data).hexdigest()}
 
 
 class Monitor:
@@ -548,6 +557,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--upstream", type=Path, default=PROJECT / ".git/kernelbridge-source",
                         help="本地队友 KernelBridge Git 仓库，需含固定提交")
+    parser.add_argument("--prepared-assets", type=Path,
+                        help="离线使用目录内的冻结 guest-browser.sh 和 AArch64 静态 renderer-watch")
     parser.add_argument("--kernel", type=Path, default=PROJECT / "data/platform/candidate/kernel.bin")
     parser.add_argument("--accel", choices=("tcg", "kvm"), default="tcg",
                         help="默认使用 TCG；原生 AArch64 Linux 可显式选择 KVM")
@@ -628,7 +639,10 @@ def main():
     results = []
     failures = []
     with tempfile.TemporaryDirectory() as tmp:
-        disks = prepare(args, Path(tmp), dict.fromkeys(mode for _, mode in runs.values()))
+        disks, asset_hashes = prepare(args, Path(tmp), dict.fromkeys(mode for _, mode in runs.values()))
+        if args.prepared_assets:
+            inputs["prepared_assets"] = asset_hashes
+            write_json(output / "inputs.json", inputs)
         if validation_only:
             mode = next(iter(runs))
             run_once(args.kernel, disks[mode], output / "functional", mode,

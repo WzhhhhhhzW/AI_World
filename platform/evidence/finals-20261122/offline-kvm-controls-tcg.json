@@ -1,0 +1,46 @@
+{
+  "scope": "Intel x86_64 WSL2 offline rehearsal, AArch64 guest under TCG; not D3000M/KVM",
+  "inputs": {
+    "kernel_sha256": "f3e070d203c9e2868ea4111379e22bd607547139389350efcc5eb13311f378ce",
+    "rootfs_sha256": "2817c7e2438075a42d8fc6d01d9e525164c9ea05d6696776d94ae26e901eeac4",
+    "guest_files_sha256": {
+      "index.html": "831cf28f3748940b450d1da325aa39a2dcaea2fee15b0532bf4111144d176b38",
+      "interaction.html": "58130daa4a2f426fd16b8bde93d964713f20e147da8af1537ab2d8b506d2fd58",
+      "layout.html": "a1b04f9aba81b4b7818be2e7a858d482d471bd0d625dee257f605b2129b8fc4c"
+    },
+    "upstream_commit": "0b6c59600a8782762a6112eb02cfd96347e496e6",
+    "host_kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "host_cpu": "Intel(R) Core(TM) Ultra 9 285H",
+    "host_memtotal": "MemTotal:       16115904 kB",
+    "qemu": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+    "run_order": [
+      [
+        "baseline"
+      ]
+    ],
+    "comparison": "controls",
+    "browser_mode": "baseline",
+    "prepared_assets": {
+      "browser_script_sha256": "c68ea39d6977316ba9e63af487984d446a9216548ad3c33767642d3fbda93541",
+      "renderer_watch_sha256": "55a276c86fa9ad1644289585e77195aaaa26e2269b7955a55f4ccfbf43e1abd7"
+    }
+  },
+  "configured_upstream": "nonexistent path intentionally used",
+  "qemu_exit": 0,
+  "renderer_pid": 87,
+  "native_inputs_and_two_tabs": true,
+  "manual_screendump_review": {
+    "javascript_core_passed": 6,
+    "css_layout_checks_passed": 6,
+    "keyboard_echo": "hello x-kernel"
+  },
+  "screenshots_sha256": {
+    "javascript.png": "0a477681ff02899b5856ce09e45df502bf7ff8575a468e77805cd83d7a5578bd",
+    "css-checks.png": "7566bb70f305e91422a0a5d1697d9638f54242275a12c0da8c3f690361b7a301",
+    "keyboard-echo.png": "8a0e8c14f6cec4235551e94ea863ea6b7bbb6fecfcd9681ffca1828d70eb21da",
+    "mouse-css.png": "407065bf7406069c77f361e0c35decc5009a98f12c006e47757cef239413cda8",
+    "tab-1-css.png": "4f02dc96c7b6fbe7a36ac5e001e61e269c228be9525c18418fd478cd720c9b49",
+    "tab-2-index.png": "9675b11a15dda9927e443f5fd4475553e67396b49310a3a2f7833e3977e22fb9"
+  },
+  "tampered_browser_script_rejected_before_qemu_launch": true
+}
