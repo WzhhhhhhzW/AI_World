@@ -10,6 +10,8 @@
 
 在 AArch64 银河麒麟 Linux 上使用 `platform/finals_benchmark.py --accel kvm` 运行本仓库的对照脚本。脚本要求 `/dev/kvm` 可读写、KVM API 版本为 12 和 QEMU 版本至少 8.0，并使用 `-accel kvm -cpu host`。各轮 `metrics.json` 保存 QMP `query-kvm`，其中 `present` 和 `enabled` 均为 `true` 才进入观测流程。KVM 模式取首张采样到的浏览器白窗或首页截图，报告 `browser_to_first_visible_s`。`inputs.json` 记录宿主 CPU、内存、内核、发行版和 QEMU 版本。[QEMU virt CPU 与图形设备](https://www.qemu.org/docs/master/system/arm/virt.html) · [QEMU QMP 加速状态](https://www.qemu.org/docs/master/interop/qemu-qmp-ref.html#command-QMP-query-kvm)
 
+KVM 模式的 `first-visible.ppm` 是触发首窗判定的同一张 QEMU 截图，`browser-window.png` 由其转换。`metrics.json` 附原图哈希、上一张未出图的请求时刻、本次请求与应答区间，以及浏览器串口标记在宿主的观察区间。首次看到 renderer 仍受客体进程扫描间隔影响。上述时间用于本地定位，现场按组委会脚本取值。`paired.json` 保存每组执行顺序、完成情况及候选减基线的逐组差值、中位数和范围，缺失的一侧保留原组号。
+
 现场可用 `--prepared-assets` 读取预先导出的 `guest-browser.sh` 和静态 AArch64 `renderer-watch`，省去克隆仓库和现场交叉编译。脚本校验浏览器启动脚本与固定提交的字节一致，并把两个离线文件的 SHA-256 写入 `inputs.json`。本地传输包包含已通过长稳的 CRC32C 版、同配置重建首版和 R20 对照的两份内核，附镜像与文件校验值。首版共同启动阶段使用 `--startup-only`，完整功能及长稳单独验证。
 
 ## 输入和计时口径
@@ -156,3 +158,5 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 ## 11 月 22 日 VirtIO 准入通知候选
 
 从 CRC32C 基线独立构建候选。每个准备好的请求少分配一个准入 `PollSet`，通过计数保留提前通知，需要等待时才保存唤醒器。终态完成流程保持原实现。137 项 AArch64 客体测试通过。用离线包入口运行候选，完成独立 renderer、双标签、键盘回显、鼠标跳转，以及 JS 和 CSS 各 6 项。本轮 TCG 用于确认功能，KVM 配对和 30 分钟长稳待实机验证。[源码、原始日志、截图及复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/c3a4b684ec90fb53e8ba375dfedac886473449d9/work/performance-20261122-finals-r21-admission)
+
+后续同盘五组交替 TCG 对照十次均完成。首页四组更快，配对差值中位 −0.715 秒，接近约 0.7 秒的取图间隔。首窗差值中位 +0.006 秒，renderer +0.195 秒，布局页 −0.005 秒，宿主 QEMU 峰值 RSS +2.922 MiB。保留当前长稳版为默认，候选继续用于 D3000M 复测。 [逐次原始指标](evidence/finals-20261122/virtio-block-admission-comparison.json) · [队友仓库复跑与数据](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/cb4945d15faafe7bb442de49d49f822fdf375eec/work/performance-20261122-finals-r21-admission)

@@ -30,7 +30,8 @@ PAGE_HASHES = {
     "layout.html": "a1b04f9aba81b4b7818be2e7a858d482d471bd0d625dee257f605b2129b8fc4c",
 }
 HOME_COLORS = ("e5534b", "2da44e", "bf8700", "8250df")
-STAGES = {b"VILLAGE_WESTON_READY": "weston_ready", b"ICT_BROWSER_START": "browser_start",
+BROWSER_START_MARKER = b"ICT_BROWSER_START"
+STAGES = {b"VILLAGE_WESTON_READY": "weston_ready", BROWSER_START_MARKER: "browser_start",
           b"FINALS_RENDERER_SEEN_FIRST pid=": "renderer_inventory_seen"}
 
 
@@ -175,16 +176,20 @@ class Monitor:
     def screenshot(self, path):
         self.call("screendump", filename=str(path), format="png")
 
-    def colors(self, path):
+    def colors(self, path, capture_times=None):
         from PIL import Image
-        width, height, rgb = self.display_pixels(path)
+        width, height, rgb = self.display_pixels(path, capture_times)
         histogram = {color: count for count, color in
                      Image.frombytes("RGB", (width, height), rgb).getcolors(width * height)}
         return {color: histogram.get(tuple(bytes.fromhex(color)), 0)
                 for color in (*HOME_COLORS, "ffffff", "dbeafe", "dafbe1")}
 
-    def display_pixels(self, path):
+    def display_pixels(self, path, capture_times=None):
+        if capture_times is not None:
+            capture_times.append(time.monotonic())
         self.call("screendump", filename=str(path))
+        if capture_times is not None:
+            capture_times.append(time.monotonic())
         magic, dimensions, scale, rgb = path.read_bytes().split(b"\n", 3)
         width, height = map(int, dimensions.split())
         if magic != b"P6" or scale != b"255" or len(rgb) != width * height * 3:
@@ -384,33 +389,68 @@ def soak(monitor, work, output, pid):
             "browser_pid": int(identity[0]), "weston_pid": int(identity[1])}
 
 
+def save_sample_image(monitor, probe, destination, is_kvm):
+    if is_kvm:
+        from PIL import Image
+        with Image.open(probe) as screenshot:
+            screenshot.save(destination)
+    else:
+        monitor.screenshot(destination)
+
+
 def measure(monitor, work, output, start, result, *, startup_only=False, accel="tcg"):
     stages = result["stages_s"]
-    first_frame = "window_visible" if accel == "kvm" else "window_white"
-    def mark(label):
+    is_kvm = accel == "kvm"
+    first_frame = "window_visible" if is_kvm else "window_white"
+    def mark(label, observed_at=None):
         if label not in stages:
-            stages[label] = round(time.monotonic() - start, 3)
+            stages[label] = round((time.monotonic() if observed_at is None else observed_at) - start, 3)
             print(f"{output.name} {label} {stages[label]:.3f}s", flush=True)
 
     next_frame = 0
+    probe = work / "probe.ppm"
+    previous_no_launch = None
+    previous_no_window = None
     raw = b""
     while time.monotonic() - start < 160:
+        serial_read_started = time.monotonic() if is_kvm else None
         raw = (work / "serial.log").read_bytes()
+        if is_kvm and "browser_start" not in stages:
+            if BROWSER_START_MARKER in raw:
+                result["launch_marker_host_observation_s"] = [previous_no_launch, round(time.monotonic() - start, 6)]
+            else:
+                previous_no_launch = round(serial_read_started - start, 6)
         for token, label in STAGES.items():
             if token in raw:
                 mark(label)
         if "browser_start" in stages and time.monotonic() >= next_frame:
             next_frame = time.monotonic() + .7
-            counts = monitor.colors(work / "probe.ppm")
-            result["frames"].append([round(time.monotonic() - start, 3), counts])
+            capture = [] if is_kvm else None
+            counts = monitor.colors(probe, capture) if is_kvm else monitor.colors(probe)
+            observed_at = capture[-1] if is_kvm else None
+            sample_time = observed_at if is_kvm else time.monotonic()
+            result["frames"].append([round(sample_time - start, 3), counts])
             white_visible = counts["ffffff"] > 250000
             home_visible = all(counts[c] > 3000 for c in HOME_COLORS)
-            if first_frame not in stages and (white_visible or (accel == "kvm" and home_visible)):
-                mark(first_frame)
-                monitor.screenshot(output / "browser-window.png")
+            if first_frame not in stages:
+                window_visible = white_visible or (is_kvm and home_visible)
+                if window_visible:
+                    mark(first_frame, observed_at)
+                    if is_kvm:
+                        native_frame = output / "first-visible.ppm"
+                        shutil.copyfile(probe, native_frame)
+                        result["first_visible_capture"] = {
+                            "previous_negative_request_s": previous_no_window,
+                            "positive_request_s": [round(point - start, 6) for point in capture],
+                            "used_home_colors": home_visible and not white_visible,
+                            "screendump_sha256": file_hash(native_frame),
+                        }
+                    save_sample_image(monitor, probe, output / "browser-window.png", is_kvm)
+                elif is_kvm:
+                    previous_no_window = round(capture[0] - start, 6)
             if home_visible and "home_colors" not in stages:
-                mark("home_colors")
-                monitor.screenshot(output / "home.png")
+                mark("home_colors", observed_at)
+                save_sample_image(monitor, probe, output / "home.png", is_kvm)
             if startup_only:
                 if home_visible and time.monotonic() - start >= stages["home_colors"] + STARTUP_OBSERVATION_SECONDS:
                     mark("startup_observation_complete")
@@ -421,8 +461,8 @@ def measure(monitor, work, output, start, result, *, startup_only=False, accel="
                 mark("return_css")
                 monitor.key("ret")
             elif "return_css" in stages and counts["dbeafe"] > 4000:
-                mark("css_visible")
-                monitor.screenshot(output / "css.png")
+                mark("css_visible", observed_at)
+                save_sample_image(monitor, probe, output / "css.png", is_kvm)
                 break
         time.sleep(.1)
     final_stage = "startup_observation_complete" if startup_only else "css_visible"
@@ -527,24 +567,54 @@ def run_once(kernel, disk, output, mode, *, check_controls=False, long_run=False
     return result
 
 
+def sample_metrics(run):
+    stages = run["stages_s"]
+    browser = stages["browser_start"]
+    if "window_visible" in stages:
+        first_frame = {"browser_to_first_visible_s": stages["window_visible"] - browser}
+    else:
+        first_frame = {"browser_to_window_s": stages["window_white"] - browser}
+    metrics = {**first_frame, "browser_to_home_s": stages["home_colors"] - browser,
+               "browser_to_renderer_observed_s": stages["renderer_inventory_seen"] - browser,
+               "qemu_maxrss_bytes": run["qemu_wait4"]["maxrss_bytes"]}
+    if "css_visible" in stages:
+        metrics["return_to_css_s"] = stages["css_visible"] - stages["return_css"]
+    return {key: round(value, 3) for key, value in metrics.items()}
+
+
+def metric_statistics(values):
+    return {"values": values, "median": statistics.median(values), "min": min(values), "max": max(values)}
+
+
 def summarize(runs):
     samplings = {}
     for run in runs:
-        stages = run["stages_s"]
-        browser = stages["browser_start"]
-        if "window_visible" in stages:
-            first_frame = {"browser_to_first_visible_s": stages["window_visible"] - browser}
-        else:
-            first_frame = {"browser_to_window_s": stages["window_white"] - browser}
-        metrics = {**first_frame, "browser_to_home_s": stages["home_colors"] - browser,
-                   "browser_to_renderer_observed_s": stages["renderer_inventory_seen"] - browser,
-                   "qemu_maxrss_bytes": run["qemu_wait4"]["maxrss_bytes"]}
-        if "css_visible" in stages:
-            metrics["return_to_css_s"] = stages["css_visible"] - stages["return_css"]
-        for key, value in metrics.items():
-            samplings.setdefault(run["mode"], {}).setdefault(key, []).append(round(value, 3))
-    return {mode: {k: {"values": v, "median": statistics.median(v), "min": min(v), "max": max(v)}
-                   for k, v in metrics.items()} for mode, metrics in samplings.items()}
+        for key, value in sample_metrics(run).items():
+            samplings.setdefault(run["mode"], {}).setdefault(key, []).append(value)
+    return {mode: {key: metric_statistics(values) for key, values in metrics.items()}
+            for mode, metrics in samplings.items()}
+
+
+def summarize_pairs(groups, samples):
+    reference, candidate = groups[0]
+    pairs = []
+    deltas = {}
+    complete = 0
+    for pair, measured in enumerate(samples, 1):
+        order = groups[pair - 1]
+        row = {"pair": pair, "order": order, "samples": measured,
+               "missing_observations": [label for label in order if label not in measured]}
+        if not row["missing_observations"]:
+            complete += 1
+            before, after = measured[reference], measured[candidate]
+            differences = {key: round(after[key] - value, 3) for key, value in before.items() if key in after}
+            row["candidate_minus_reference"] = differences
+            for key, value in differences.items():
+                deltas.setdefault(key, []).append(value)
+        pairs.append(row)
+    return {"reference": reference, "candidate": candidate, "planned_pairs": len(groups),
+            "complete_pairs": complete, "pairs": pairs,
+            "candidate_minus_reference": {key: metric_statistics(values) for key, values in deltas.items()}}
 
 
 def paired_order(labels, runs, order):
@@ -638,6 +708,7 @@ def main():
     write_json(output / "inputs.json", inputs)
     results = []
     failures = []
+    samples = []
     with tempfile.TemporaryDirectory() as tmp:
         disks, asset_hashes = prepare(args, Path(tmp), dict.fromkeys(mode for _, mode in runs.values()))
         if args.prepared_assets:
@@ -649,6 +720,7 @@ def main():
                      check_controls=args.controls, long_run=args.soak, accel=args.accel)
             return
         for pair, order in enumerate(groups, 1):
+            measured = {}
             for label in order:
                 kernel, mode = runs[label]
                 case = output / f"{pair:02}-{label}"
@@ -664,7 +736,10 @@ def main():
                     print(exc, file=sys.stderr, flush=True)
                     continue
                 results.append(result)
+                measured[label] = sample_metrics(result)
                 write_json(output / "summary.json", summarize(results))
+            samples.append(measured)
+            write_json(output / "paired.json", summarize_pairs(groups, samples))
         if failures:
             raise RuntimeError(f"{len(failures)} 次客体观测未完成，详见 {output / 'failures.json'}")
 
