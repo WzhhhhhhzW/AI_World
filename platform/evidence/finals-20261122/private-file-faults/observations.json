@@ -1,0 +1,731 @@
+{
+  "source_commit": "38d221e357d50e9c5b7dae5232a45c2ec8fa2b98",
+  "source_archive_sha256": "245b90f1837172cacc760998a846795daae4984c1303512faef6b005b66c9187",
+  "expanded_config_sha256": "42e8d16450352712d78813b5f78b7ca221dfb88fadc796f57ecf317d7e33f669",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "kernel_patch_sha256": "769e11f379a3b6b07b1bc66c65d716878d1442d84347c687f7793da740803036",
+  "host_probe_patch_sha256": "09e182ddc61fe6f4db5b5160e4593dea16c00b5d35300abc9c11d8716dcc4044",
+  "inputs": {
+    "kernel_sha256": "592722674ade95417c8bbafad5ccc4be4821f8d382bb1bf4dd11e172bae75823",
+    "rootfs_sha256": "2817c7e2438075a42d8fc6d01d9e525164c9ea05d6696776d94ae26e901eeac4",
+    "guest_files_sha256": {
+      "index.html": "831cf28f3748940b450d1da325aa39a2dcaea2fee15b0532bf4111144d176b38",
+      "interaction.html": "58130daa4a2f426fd16b8bde93d964713f20e147da8af1537ab2d8b506d2fd58",
+      "layout.html": "a1b04f9aba81b4b7818be2e7a858d482d471bd0d625dee257f605b2129b8fc4c"
+    },
+    "upstream_commit": "0b6c59600a8782762a6112eb02cfd96347e496e6",
+    "host_kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "host_cpu": "Intel(R) Core(TM) Ultra 9 285H",
+    "host_memtotal": "MemTotal:       16115904 kB",
+    "qemu": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+    "run_order": [
+      [
+        "baseline"
+      ],
+      [
+        "baseline"
+      ]
+    ],
+    "comparison": "private_fault_probe",
+    "measurement_scope": {
+      "navigation": "initial static home only",
+      "seconds_after_home_visible": 10,
+      "guest_snapshots": [
+        "before",
+        "renderer",
+        "home"
+      ]
+    },
+    "browser_mode": "baseline"
+  },
+  "samples": [
+    {
+      "run": "01-baseline",
+      "sample_stride": 64,
+      "timer_hz": 62500000,
+      "renderer_pid": 88,
+      "observed_guest_clock_ns": {
+        "before": {
+          "guest_read_start_ns": 3398634272,
+          "guest_read_end_ns": 3402881920,
+          "bytes": 521
+        },
+        "renderer": {
+          "guest_read_start_ns": 34698310048,
+          "guest_read_end_ns": 34701435584,
+          "bytes": 609
+        },
+        "home": {
+          "guest_read_start_ns": 61978763344,
+          "guest_read_end_ns": 61980673248,
+          "bytes": 627
+        }
+      },
+      "observed_host_phases_s": {
+        "weston_ready": 3.162,
+        "browser_start": 3.663,
+        "renderer_inventory_seen": 34.944,
+        "window_white": 58.374,
+        "home_colors": 61.954,
+        "startup_observation_complete": 72.643
+      },
+      "home_snapshot_host_request_s": [
+        61.954013370999746,
+        62.140568325000004
+      ],
+      "raw": {
+        "before": {
+          "file": "01-before.txt",
+          "sha256": "4fc42978bb2f4733a31b303d8a4668698d790e92c64810e0ab21f73417745316"
+        },
+        "renderer": {
+          "file": "01-renderer.txt",
+          "sha256": "a9b227f44b84e8b71100db45e25f7325a9e2203a57e3c5ee7dc2dd673e72d875"
+        },
+        "home": {
+          "file": "01-home.txt",
+          "sha256": "475fb6eb192e4bbe78dedc4bbdb23b4c0e3522272bc0e773f2f7f51dbe6e15a3"
+        }
+      },
+      "serial_sha256": "983fa1c32d191891faf903c01b9add175f325acee06cd201e94bdb6ee91e23d0",
+      "phases": {
+        "before_to_renderer_observation": {
+          "per_cpu": [
+            {
+              "cpu": 0,
+              "executable": false,
+              "attempts": 1493,
+              "pages": 1493,
+              "copied_bytes": 5855988,
+              "samples": 24,
+              "prepare_ticks": 17339,
+              "read_copy_ticks": 89734,
+              "map_commit_ticks": 22494,
+              "icache_ticks": 0
+            },
+            {
+              "cpu": 0,
+              "executable": true,
+              "attempts": 4795,
+              "pages": 4795,
+              "copied_bytes": 19637620,
+              "samples": 75,
+              "prepare_ticks": 134397,
+              "read_copy_ticks": 2079308,
+              "map_commit_ticks": 123832,
+              "icache_ticks": 389508
+            },
+            {
+              "cpu": 1,
+              "executable": false,
+              "attempts": 8698,
+              "pages": 8698,
+              "copied_bytes": 35270010,
+              "samples": 136,
+              "prepare_ticks": 151743,
+              "read_copy_ticks": 2356730,
+              "map_commit_ticks": 179653,
+              "icache_ticks": 0
+            },
+            {
+              "cpu": 1,
+              "executable": true,
+              "attempts": 7721,
+              "pages": 7722,
+              "copied_bytes": 31625064,
+              "samples": 121,
+              "prepare_ticks": 176944,
+              "read_copy_ticks": 2385631,
+              "map_commit_ticks": 223048,
+              "icache_ticks": 618015
+            },
+            {
+              "cpu": 2,
+              "executable": false,
+              "attempts": 6545,
+              "pages": 6545,
+              "copied_bytes": 26560462,
+              "samples": 102,
+              "prepare_ticks": 74985,
+              "read_copy_ticks": 1672970,
+              "map_commit_ticks": 186053,
+              "icache_ticks": 0
+            },
+            {
+              "cpu": 2,
+              "executable": true,
+              "attempts": 5459,
+              "pages": 5458,
+              "copied_bytes": 22350796,
+              "samples": 85,
+              "prepare_ticks": 129361,
+              "read_copy_ticks": 2069180,
+              "map_commit_ticks": 140646,
+              "icache_ticks": 503222
+            },
+            {
+              "cpu": 3,
+              "executable": false,
+              "attempts": 11170,
+              "pages": 11170,
+              "copied_bytes": 45268456,
+              "samples": 174,
+              "prepare_ticks": 153544,
+              "read_copy_ticks": 2091530,
+              "map_commit_ticks": 160319,
+              "icache_ticks": 0
+            },
+            {
+              "cpu": 3,
+              "executable": true,
+              "attempts": 9950,
+              "pages": 9950,
+              "copied_bytes": 40744628,
+              "samples": 156,
+              "prepare_ticks": 293955,
+              "read_copy_ticks": 2060543,
+              "map_commit_ticks": 302316,
+              "icache_ticks": 1111169
+            }
+          ],
+          "totals": {
+            "non_executable": {
+              "attempts": 27906,
+              "pages": 27906,
+              "copied_bytes": 112954916,
+              "samples": 436,
+              "prepare_ticks": 397611,
+              "read_copy_ticks": 6210964,
+              "map_commit_ticks": 548519,
+              "icache_ticks": 0,
+              "recorded_stage_total_ms": {
+                "prepare": 6.3618,
+                "read_copy": 99.3754,
+                "map_commit": 8.7763,
+                "icache": 0.0
+              },
+              "recorded_stage_mean_us_per_sample": {
+                "prepare": 14.5912,
+                "read_copy": 227.9253,
+                "map_commit": 20.1291,
+                "icache": 0.0
+              }
+            },
+            "executable": {
+              "attempts": 27925,
+              "pages": 27925,
+              "copied_bytes": 114358108,
+              "samples": 437,
+              "prepare_ticks": 734657,
+              "read_copy_ticks": 8594662,
+              "map_commit_ticks": 789842,
+              "icache_ticks": 2621914,
+              "recorded_stage_total_ms": {
+                "prepare": 11.7545,
+                "read_copy": 137.5146,
+                "map_commit": 12.6375,
+                "icache": 41.9506
+              },
+              "recorded_stage_mean_us_per_sample": {
+                "prepare": 26.8982,
+                "read_copy": 314.6787,
+                "map_commit": 28.9187,
+                "icache": 95.9969
+              }
+            }
+          }
+        },
+        "renderer_observation_to_home_capture": {
+          "per_cpu": [
+            {
+              "cpu": 0,
+              "executable": false,
+              "attempts": 2485,
+              "pages": 2485,
+              "copied_bytes": 9563464,
+              "samples": 39,
+              "prepare_ticks": 69487,
+              "read_copy_ticks": 101711,
+              "map_commit_ticks": 69302,
+              "icache_ticks": 0
+            },
+            {
+              "cpu": 0,
+              "executable": true,
+              "attempts": 6201,
+              "pages": 6201,
+              "copied_bytes": 25397748,
+              "samples": 97,
+              "prepare_ticks": 103594,
+              "read_copy_ticks": 2373262,
+              "map_commit_ticks": 151977,
+              "icache_ticks": 937910
+            },
+            {
+              "cpu": 1,
+              "executable": false,
+              "attempts": 4864,
+              "pages": 4864,
+              "copied_bytes": 19574829,
+              "samples": 76,
+              "prepare_ticks": 193108,
+              "read_copy_ticks": 235838,
+              "map_commit_ticks": 130004,
+              "icache_ticks": 0
+            },
+            {
+              "cpu": 1,
+              "executable": true,
+              "attempts": 8790,
+              "pages": 8790,
+              "copied_bytes": 35999988,
+              "samples": 137,
+              "prepare_ticks": 269881,
+              "read_copy_ticks": 2406226,
+              "map_commit_ticks": 164803,
+              "icache_ticks": 787393
+            },
+            {
+              "cpu": 2,
+              "executable": false,
+              "attempts": 3917,
+              "pages": 3917,
+              "copied_bytes": 15814217,
+              "samples": 62,
+              "prepare_ticks": 252445,
+              "read_copy_ticks": 458528,
+              "map_commit_ticks": 147169,
+              "icache_ticks": 0
+            },
+            {
+              "cpu": 2,
+              "executable": true,
+              "attempts": 7295,
+              "pages": 7296,
+              "copied_bytes": 29884416,
+              "samples": 114,
+              "prepare_ticks": 405697,
+              "read_copy_ticks": 5836473,
+              "map_commit_ticks": 451698,
+              "icache_ticks": 1078424
+            },
+            {
+              "cpu": 3,
+              "executable": false,
+              "attempts": 8787,
+              "pages": 8787,
+              "copied_bytes": 35520118,
+              "samples": 138,
+              "prepare_ticks": 236410,
+              "read_copy_ticks": 624396,
+              "map_commit_ticks": 287708,
+              "icache_ticks": 0
+            },
+            {
+              "cpu": 3,
+              "executable": true,
+              "attempts": 10136,
+              "pages": 10136,
+              "copied_bytes": 41513204,
+              "samples": 158,
+              "prepare_ticks": 197582,
+              "read_copy_ticks": 2854934,
+              "map_commit_ticks": 224702,
+              "icache_ticks": 804258
+            }
+          ],
+          "totals": {
+            "non_executable": {
+              "attempts": 20053,
+              "pages": 20053,
+              "copied_bytes": 80472628,
+              "samples": 315,
+              "prepare_ticks": 751450,
+              "read_copy_ticks": 1420473,
+              "map_commit_ticks": 634183,
+              "icache_ticks": 0,
+              "recorded_stage_total_ms": {
+                "prepare": 12.0232,
+                "read_copy": 22.7276,
+                "map_commit": 10.1469,
+                "icache": 0.0
+              },
+              "recorded_stage_mean_us_per_sample": {
+                "prepare": 38.1689,
+                "read_copy": 72.151,
+                "map_commit": 32.2125,
+                "icache": 0.0
+              }
+            },
+            "executable": {
+              "attempts": 32422,
+              "pages": 32423,
+              "copied_bytes": 132795356,
+              "samples": 506,
+              "prepare_ticks": 976754,
+              "read_copy_ticks": 13470895,
+              "map_commit_ticks": 993180,
+              "icache_ticks": 3607985,
+              "recorded_stage_total_ms": {
+                "prepare": 15.6281,
+                "read_copy": 215.5343,
+                "map_commit": 15.8909,
+                "icache": 57.7278
+              },
+              "recorded_stage_mean_us_per_sample": {
+                "prepare": 30.8855,
+                "read_copy": 425.9572,
+                "map_commit": 31.4049,
+                "icache": 114.0865
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "run": "02-baseline",
+      "sample_stride": 64,
+      "timer_hz": 62500000,
+      "renderer_pid": 88,
+      "observed_guest_clock_ns": {
+        "before": {
+          "guest_read_start_ns": 3394909904,
+          "guest_read_end_ns": 3400161248,
+          "bytes": 520
+        },
+        "renderer": {
+          "guest_read_start_ns": 36168850240,
+          "guest_read_end_ns": 36174868192,
+          "bytes": 608
+        },
+        "home": {
+          "guest_read_start_ns": 66217654832,
+          "guest_read_end_ns": 66219041152,
+          "bytes": 628
+        }
+      },
+      "observed_host_phases_s": {
+        "weston_ready": 3.117,
+        "browser_start": 3.619,
+        "renderer_inventory_seen": 36.372,
+        "window_white": 61.835,
+        "home_colors": 66.133,
+        "startup_observation_complete": 76.84
+      },
+      "home_snapshot_host_request_s": [
+        66.13301507400001,
+        66.33314456500011
+      ],
+      "raw": {
+        "before": {
+          "file": "02-before.txt",
+          "sha256": "960a725ad51f5d71c81c10886c7df7a982ee42f56db05175979bdc98eead5051"
+        },
+        "renderer": {
+          "file": "02-renderer.txt",
+          "sha256": "310da0bc5a99710fb27a45385c23b71bc23152c3c0557c5c6676d83b335ab9bb"
+        },
+        "home": {
+          "file": "02-home.txt",
+          "sha256": "67e241c234b3a7c9e64de8f943c8ba58e5fae6cea9092e7aa54618e8e58be6c6"
+        }
+      },
+      "serial_sha256": "9790920477d593a1702a4f5b356eda34785a95c12ea8254c8540fa050d1c0830",
+      "phases": {
+        "before_to_renderer_observation": {
+          "per_cpu": [
+            {
+              "cpu": 0,
+              "executable": false,
+              "attempts": 1711,
+              "pages": 1711,
+              "copied_bytes": 6759485,
+              "samples": 27,
+              "prepare_ticks": 19129,
+              "read_copy_ticks": 471552,
+              "map_commit_ticks": 46769,
+              "icache_ticks": 0
+            },
+            {
+              "cpu": 0,
+              "executable": true,
+              "attempts": 2875,
+              "pages": 2875,
+              "copied_bytes": 11774452,
+              "samples": 45,
+              "prepare_ticks": 38928,
+              "read_copy_ticks": 1530423,
+              "map_commit_ticks": 89144,
+              "icache_ticks": 235845
+            },
+            {
+              "cpu": 1,
+              "executable": false,
+              "attempts": 7025,
+              "pages": 7025,
+              "copied_bytes": 28515533,
+              "samples": 110,
+              "prepare_ticks": 135102,
+              "read_copy_ticks": 1553194,
+              "map_commit_ticks": 285238,
+              "icache_ticks": 0
+            },
+            {
+              "cpu": 1,
+              "executable": true,
+              "attempts": 9050,
+              "pages": 9050,
+              "copied_bytes": 37063004,
+              "samples": 142,
+              "prepare_ticks": 168953,
+              "read_copy_ticks": 3206681,
+              "map_commit_ticks": 228076,
+              "icache_ticks": 729323
+            },
+            {
+              "cpu": 2,
+              "executable": false,
+              "attempts": 10734,
+              "pages": 10734,
+              "copied_bytes": 43662871,
+              "samples": 167,
+              "prepare_ticks": 400058,
+              "read_copy_ticks": 2263496,
+              "map_commit_ticks": 215695,
+              "icache_ticks": 0
+            },
+            {
+              "cpu": 2,
+              "executable": true,
+              "attempts": 7238,
+              "pages": 7237,
+              "copied_bytes": 29636428,
+              "samples": 114,
+              "prepare_ticks": 130593,
+              "read_copy_ticks": 2147749,
+              "map_commit_ticks": 183467,
+              "icache_ticks": 558913
+            },
+            {
+              "cpu": 3,
+              "executable": false,
+              "attempts": 8402,
+              "pages": 8402,
+              "copied_bytes": 33890051,
+              "samples": 131,
+              "prepare_ticks": 129421,
+              "read_copy_ticks": 1582241,
+              "map_commit_ticks": 211265,
+              "icache_ticks": 0
+            },
+            {
+              "cpu": 3,
+              "executable": true,
+              "attempts": 8711,
+              "pages": 8711,
+              "copied_bytes": 35671232,
+              "samples": 137,
+              "prepare_ticks": 147511,
+              "read_copy_ticks": 3567276,
+              "map_commit_ticks": 184211,
+              "icache_ticks": 727834
+            }
+          ],
+          "totals": {
+            "non_executable": {
+              "attempts": 27872,
+              "pages": 27872,
+              "copied_bytes": 112827940,
+              "samples": 435,
+              "prepare_ticks": 683710,
+              "read_copy_ticks": 5870483,
+              "map_commit_ticks": 758967,
+              "icache_ticks": 0,
+              "recorded_stage_total_ms": {
+                "prepare": 10.9394,
+                "read_copy": 93.9277,
+                "map_commit": 12.1435,
+                "icache": 0.0
+              },
+              "recorded_stage_mean_us_per_sample": {
+                "prepare": 25.148,
+                "read_copy": 215.9258,
+                "map_commit": 27.916,
+                "icache": 0.0
+              }
+            },
+            "executable": {
+              "attempts": 27874,
+              "pages": 27873,
+              "copied_bytes": 114145116,
+              "samples": 438,
+              "prepare_ticks": 485985,
+              "read_copy_ticks": 10452129,
+              "map_commit_ticks": 684898,
+              "icache_ticks": 2251915,
+              "recorded_stage_total_ms": {
+                "prepare": 7.7758,
+                "read_copy": 167.2341,
+                "map_commit": 10.9584,
+                "icache": 36.0306
+              },
+              "recorded_stage_mean_us_per_sample": {
+                "prepare": 17.7529,
+                "read_copy": 381.8129,
+                "map_commit": 25.0191,
+                "icache": 82.2617
+              }
+            }
+          }
+        },
+        "renderer_observation_to_home_capture": {
+          "per_cpu": [
+            {
+              "cpu": 0,
+              "executable": false,
+              "attempts": 5716,
+              "pages": 5716,
+              "copied_bytes": 22853949,
+              "samples": 89,
+              "prepare_ticks": 141744,
+              "read_copy_ticks": 360732,
+              "map_commit_ticks": 99613,
+              "icache_ticks": 0
+            },
+            {
+              "cpu": 0,
+              "executable": true,
+              "attempts": 9056,
+              "pages": 9056,
+              "copied_bytes": 37090676,
+              "samples": 141,
+              "prepare_ticks": 242030,
+              "read_copy_ticks": 1932046,
+              "map_commit_ticks": 223976,
+              "icache_ticks": 1727045
+            },
+            {
+              "cpu": 1,
+              "executable": false,
+              "attempts": 1285,
+              "pages": 1285,
+              "copied_bytes": 5025792,
+              "samples": 20,
+              "prepare_ticks": 42449,
+              "read_copy_ticks": 531355,
+              "map_commit_ticks": 600917,
+              "icache_ticks": 0
+            },
+            {
+              "cpu": 1,
+              "executable": true,
+              "attempts": 5594,
+              "pages": 5594,
+              "copied_bytes": 22913024,
+              "samples": 87,
+              "prepare_ticks": 96763,
+              "read_copy_ticks": 5652550,
+              "map_commit_ticks": 159561,
+              "icache_ticks": 1294409
+            },
+            {
+              "cpu": 2,
+              "executable": false,
+              "attempts": 4628,
+              "pages": 4628,
+              "copied_bytes": 18621753,
+              "samples": 73,
+              "prepare_ticks": 94734,
+              "read_copy_ticks": 714828,
+              "map_commit_ticks": 107329,
+              "icache_ticks": 0
+            },
+            {
+              "cpu": 2,
+              "executable": true,
+              "attempts": 6640,
+              "pages": 6641,
+              "copied_bytes": 27200384,
+              "samples": 103,
+              "prepare_ticks": 317739,
+              "read_copy_ticks": 1596811,
+              "map_commit_ticks": 194588,
+              "icache_ticks": 3453945
+            },
+            {
+              "cpu": 3,
+              "executable": false,
+              "attempts": 8452,
+              "pages": 8452,
+              "copied_bytes": 34077630,
+              "samples": 132,
+              "prepare_ticks": 296152,
+              "read_copy_ticks": 355651,
+              "map_commit_ticks": 190974,
+              "icache_ticks": 0
+            },
+            {
+              "cpu": 3,
+              "executable": true,
+              "attempts": 11273,
+              "pages": 11273,
+              "copied_bytes": 46168808,
+              "samples": 176,
+              "prepare_ticks": 347828,
+              "read_copy_ticks": 2023806,
+              "map_commit_ticks": 311859,
+              "icache_ticks": 1344262
+            }
+          ],
+          "totals": {
+            "non_executable": {
+              "attempts": 20081,
+              "pages": 20081,
+              "copied_bytes": 80579124,
+              "samples": 314,
+              "prepare_ticks": 575079,
+              "read_copy_ticks": 1962566,
+              "map_commit_ticks": 998833,
+              "icache_ticks": 0,
+              "recorded_stage_total_ms": {
+                "prepare": 9.2013,
+                "read_copy": 31.4011,
+                "map_commit": 15.9813,
+                "icache": 0.0
+              },
+              "recorded_stage_mean_us_per_sample": {
+                "prepare": 29.3034,
+                "read_copy": 100.0034,
+                "map_commit": 50.8959,
+                "icache": 0.0
+              }
+            },
+            "executable": {
+              "attempts": 32563,
+              "pages": 32564,
+              "copied_bytes": 133372892,
+              "samples": 507,
+              "prepare_ticks": 1004360,
+              "read_copy_ticks": 11205213,
+              "map_commit_ticks": 889984,
+              "icache_ticks": 7819661,
+              "recorded_stage_total_ms": {
+                "prepare": 16.0698,
+                "read_copy": 179.2834,
+                "map_commit": 14.2397,
+                "icache": 125.1146
+              },
+              "recorded_stage_mean_us_per_sample": {
+                "prepare": 31.6958,
+                "read_copy": 353.6162,
+                "map_commit": 28.0863,
+                "icache": 246.7743
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

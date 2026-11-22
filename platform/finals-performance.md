@@ -107,4 +107,8 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 
 候选复用页项向量、跳过空子对象的冲突扫描，并在提交时直接移交页句柄。AArch64 客体 `anon`、`memspace`、`filemap` 合计 74 项通过，包括两项新增回滚测试。五组交替冷启动均完成。首窗和布局页中位数分别约 53.23 秒和 3.00 秒，基本持平。首页从 56.14 秒到 56.81 秒，两组慢约 2.85 秒，renderer 从 30.56 到 30.51 秒，宿主峰值从 1,175.21 到 1,177.50 MiB。此次采用决定仍为通过长稳的默认版本。[五组对照与测试明细](evidence/finals-20261122/private-fork-object-bookkeeping.json) · [队友分支补丁与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/c62ec79de2b47d847db60a6100b7d723afe18c9d/work/performance-20261122-finals-r12)
 
+## 11 月 22 日私有文件首次缺页抽样
+
+两次独立诊断冷启动各采集三份客体累计计数。启动前至首次观测 renderer 分别记录 55,831 和 55,745 次首次触页，各有 873 个计时样本。文件页获取及复制占样本累计计时的 74.4% 和 77.0%，在 renderer 至首页的区间仍是两次的最大分项。计时涵盖整个客体的首次私有文件缺页，包含可能重叠的任务区间和调度等待。继续分解缓存查找、锁等待、缓存未命中后的读取和内存复制。[快照与分阶段数据](evidence/finals-20261122/private-file-faults/observations.json) · [队友分支的诊断补丁与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/066d4ba7675ca4eaf77763590de7ce8c139d6df6/work/performance-20261122-finals-r13)
+
 诊断批次可用 `--keep-going` 保留观测超时时的画面和原始记录，并完成其他样本。任何样本超时，整批仍返回失败，时延汇总只包含完成观察的样本。
