@@ -152,3 +152,7 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 从已采用的 CRC32C 源码构建诊断版，用原 Chromium 参数和同一 Wayland 盘冷启动两次。renderer 观测前，同步数据读取占 ext4 `read_at` 抽样耗时 84.7% 和 91.3%，映射校验占 3.7% 和 6.4%。整个客体的 IRQ VirtIO 读样本无准入等待。完成结果发布至提交任务观察，在 renderer 前两轮平均约 405 微秒，renderer 至首页两轮平均约 1.08 和 1.32 毫秒。块请求与 ext4 缺页在同一边界独立抽样。优先试验单等待任务的终态唤醒特化，保留原 IRQ 回收和排空流程。[三个边界的原始计数](evidence/finals-20261122/private-file-fault-ext4-block/observations.json) · [队友分支诊断补丁和复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/bec76d677776b44eb4e502a635f80a4853b82415/work/performance-20261122-finals-r19)
 
 诊断批次可用 `--keep-going` 保留观测超时时的画面和原始记录，并完成其他样本。任何样本超时，整批仍返回失败，时延汇总只包含完成观察的样本。
+
+## 11 月 22 日 VirtIO 准入通知候选
+
+从 CRC32C 基线独立构建候选。每个准备好的请求少分配一个准入 `PollSet`，通过计数保留提前通知，需要等待时才保存唤醒器。终态完成流程保持原实现。137 项 AArch64 客体测试通过。用离线包入口运行候选，完成独立 renderer、双标签、键盘回显、鼠标跳转，以及 JS 和 CSS 各 6 项。本轮 TCG 用于确认功能，KVM 配对和 30 分钟长稳待实机验证。[源码、原始日志、截图及复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/c3a4b684ec90fb53e8ba375dfedac886473449d9/work/performance-20261122-finals-r21-admission)
