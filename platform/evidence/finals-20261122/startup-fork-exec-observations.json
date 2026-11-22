@@ -1,0 +1,802 @@
+{
+  "experiment": "guest startup diagnostic only",
+  "source_commit": "38d221e357d50e9c5b7dae5232a45c2ec8fa2b98",
+  "source_archive_sha256": "245b90f1837172cacc760998a846795daae4984c1303512faef6b005b66c9187",
+  "expanded_config_sha256": "42e8d16450352712d78813b5f78b7ca221dfb88fadc796f57ecf317d7e33f669",
+  "diagnostic_patch_sha256": "f399f19507b126ca92684df78080ad38a33ab1e3402f70a4994e0a0dd4870886",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "inputs": {
+    "kernel_sha256": "bd4c91d4a5bdc5c2b869441efdc6caff16005871c1063e7978af1181fc8384c9",
+    "rootfs_sha256": "2817c7e2438075a42d8fc6d01d9e525164c9ea05d6696776d94ae26e901eeac4",
+    "guest_files_sha256": {
+      "index.html": "831cf28f3748940b450d1da325aa39a2dcaea2fee15b0532bf4111144d176b38",
+      "interaction.html": "58130daa4a2f426fd16b8bde93d964713f20e147da8af1537ab2d8b506d2fd58",
+      "layout.html": "a1b04f9aba81b4b7818be2e7a858d482d471bd0d625dee257f605b2129b8fc4c"
+    },
+    "upstream_commit": "0b6c59600a8782762a6112eb02cfd96347e496e6",
+    "host_kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "host_cpu": "Intel(R) Core(TM) Ultra 9 285H",
+    "host_memtotal": "MemTotal:       16115904 kB",
+    "qemu": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+    "run_order": [
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ]
+    ],
+    "comparison": "kernels",
+    "measurement_scope": {
+      "navigation": "initial static home only",
+      "seconds_after_home_visible": 10
+    },
+    "candidate_kernel_sha256": "465e1cf572669ad0810bcd6c70c35cf5da06b20b044a44b75bfe592aa08de6d6",
+    "browser_mode": "baseline",
+    "incomplete_observation_policy": "record-and-continue"
+  },
+  "host_measurements": {
+    "baseline": {
+      "browser_to_window_s": {
+        "values": [
+          52.578,
+          53.929
+        ],
+        "median": 53.2535,
+        "min": 52.578,
+        "max": 53.929
+      },
+      "browser_to_home_s": {
+        "values": [
+          56.155,
+          56.795
+        ],
+        "median": 56.475,
+        "min": 56.155,
+        "max": 56.795
+      },
+      "browser_to_renderer_observed_s": {
+        "values": [
+          29.66,
+          30.303
+        ],
+        "median": 29.9815,
+        "min": 29.66,
+        "max": 30.303
+      },
+      "qemu_maxrss_bytes": {
+        "values": [
+          1214980096,
+          1210859520
+        ],
+        "median": 1212919808.0,
+        "min": 1210859520,
+        "max": 1214980096
+      }
+    },
+    "candidate": {
+      "browser_to_window_s": {
+        "values": [
+          52.518,
+          53.222
+        ],
+        "median": 52.870000000000005,
+        "min": 52.518,
+        "max": 53.222
+      },
+      "browser_to_home_s": {
+        "values": [
+          55.386,
+          56.088
+        ],
+        "median": 55.737,
+        "min": 55.386,
+        "max": 56.088
+      },
+      "browser_to_renderer_observed_s": {
+        "values": [
+          29.909,
+          30.001
+        ],
+        "median": 29.955,
+        "min": 29.909,
+        "max": 30.001
+      },
+      "qemu_maxrss_bytes": {
+        "values": [
+          1210990592,
+          1223348224
+        ],
+        "median": 1217169408.0,
+        "min": 1210990592,
+        "max": 1223348224
+      }
+    }
+  },
+  "samples": [
+    {
+      "sample": "01-baseline",
+      "valid_visual": true,
+      "renderer_pid": 88,
+      "stages_s_from_qemu_start": {
+        "weston_ready": 3.134,
+        "browser_start": 3.434,
+        "renderer_inventory_seen": 33.094,
+        "window_white": 56.012,
+        "home_colors": 59.589,
+        "startup_observation_complete": 70.297
+      },
+      "qemu_maxrss_bytes": 1214980096,
+      "serial_log_sha256": "a39b5eb6e474b9432efa7ee142cba7c740661f9a41770f681def4293c418ac5e"
+    },
+    {
+      "sample": "01-candidate",
+      "valid_visual": true,
+      "renderer_pid": 87,
+      "stages_s_from_qemu_start": {
+        "weston_ready": 3.139,
+        "browser_start": 3.44,
+        "renderer_inventory_seen": 33.349,
+        "window_white": 55.958,
+        "home_colors": 58.826,
+        "startup_observation_complete": 69.524
+      },
+      "qemu_maxrss_bytes": 1210990592,
+      "serial_log_sha256": "3b8f032bea31394299bdaf7716311dab80fb7df33e7edd614436672446f5c70d",
+      "guest_spans": {
+        "through_startup_observation": {
+          "events": 28,
+          "union_lock_or_work_ms": 6818.783088,
+          "scope": "guest-clock interval union across recorded tasks, not application critical path",
+          "FORK_ASPACE": {
+            "events": 14,
+            "lock_wait_median_ms": 0.0037920000000000002,
+            "lock_wait_max_ms": 2.374944,
+            "work_median_ms": 189.604008,
+            "work_max_ms": 960.624272,
+            "union_work_ms": 3805.34664
+          },
+          "EXEC_IMAGE": {
+            "events": 14,
+            "lock_wait_median_ms": 0.003856,
+            "lock_wait_max_ms": 0.025632,
+            "work_median_ms": 183.00836800000002,
+            "work_max_ms": 709.643616,
+            "union_work_ms": 3504.418256
+          }
+        },
+        "before_renderer_marker": {
+          "events": 23,
+          "union_lock_or_work_ms": 3278.051952,
+          "scope": "guest-clock interval union across recorded tasks, not application critical path",
+          "FORK_ASPACE": {
+            "events": 12,
+            "lock_wait_median_ms": 0.0037920000000000002,
+            "lock_wait_max_ms": 2.374944,
+            "work_median_ms": 153.80021599999998,
+            "work_max_ms": 489.5964,
+            "union_work_ms": 1973.600064
+          },
+          "EXEC_IMAGE": {
+            "events": 11,
+            "lock_wait_median_ms": 0.003056,
+            "lock_wait_max_ms": 0.025152,
+            "work_median_ms": 17.810416,
+            "work_max_ms": 496.85344,
+            "union_work_ms": 1694.428368
+          }
+        },
+        "observed_renderer_pid": 87,
+        "renderer_image_events": [
+          {
+            "line": 160,
+            "kind": "EXEC_IMAGE",
+            "pid": 87,
+            "start_ns": 32491158720,
+            "locked_ns": 32491183872,
+            "finish_ns": 32885651664,
+            "printed_before_renderer_observation": true
+          }
+        ],
+        "renderer_marker_scope": "serial output order around polling observation of renderer, not actual renderer creation time",
+        "events": [
+          {
+            "line": 131,
+            "kind": "EXEC_IMAGE",
+            "pid": 4,
+            "start_ns": 3254411328,
+            "locked_ns": 3254415264,
+            "finish_ns": 3272225680,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 132,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 3373906416,
+            "locked_ns": 3373910832,
+            "finish_ns": 3379518544,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 133,
+            "kind": "EXEC_IMAGE",
+            "pid": 31,
+            "start_ns": 3394264192,
+            "locked_ns": 3394266864,
+            "finish_ns": 3400098400,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 134,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 3453594752,
+            "locked_ns": 3453598224,
+            "finish_ns": 3462046480,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 135,
+            "kind": "EXEC_IMAGE",
+            "pid": 32,
+            "start_ns": 3472427296,
+            "locked_ns": 3472430352,
+            "finish_ns": 3485965840,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 136,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 3551969648,
+            "locked_ns": 3551972096,
+            "finish_ns": 3560259728,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 137,
+            "kind": "EXEC_IMAGE",
+            "pid": 33,
+            "start_ns": 3568320576,
+            "locked_ns": 3568322672,
+            "finish_ns": 3581222832,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 138,
+            "kind": "EXEC_IMAGE",
+            "pid": 4,
+            "start_ns": 3638269376,
+            "locked_ns": 3638271472,
+            "finish_ns": 3648436208,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 145,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 11601445696,
+            "locked_ns": 11601448832,
+            "finish_ns": 11778724896,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 146,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 11818047536,
+            "locked_ns": 11818051136,
+            "finish_ns": 12019983088,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 147,
+            "kind": "EXEC_IMAGE",
+            "pid": 35,
+            "start_ns": 12024740768,
+            "locked_ns": 12024743280,
+            "finish_ns": 12162934992,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 148,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 12485260368,
+            "locked_ns": 12485264064,
+            "finish_ns": 12493803664,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 149,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 12519913792,
+            "locked_ns": 12519917680,
+            "finish_ns": 12536326336,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 150,
+            "kind": "EXEC_IMAGE",
+            "pid": 37,
+            "start_ns": 12543162272,
+            "locked_ns": 12543164384,
+            "finish_ns": 12560074064,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 152,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 18970808064,
+            "locked_ns": 18970812048,
+            "finish_ns": 19101136416,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 153,
+            "kind": "EXEC_IMAGE",
+            "pid": 61,
+            "start_ns": 19173032320,
+            "locked_ns": 19173036096,
+            "finish_ns": 19400861120,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 154,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 19504292224,
+            "locked_ns": 19506288208,
+            "finish_ns": 19766549104,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 155,
+            "kind": "EXEC_IMAGE",
+            "pid": 63,
+            "start_ns": 19857739600,
+            "locked_ns": 19857743600,
+            "finish_ns": 20217681984,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 157,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 23262687504,
+            "locked_ns": 23265062448,
+            "finish_ns": 23693339792,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 158,
+            "kind": "EXEC_IMAGE",
+            "pid": 64,
+            "start_ns": 23800955280,
+            "locked_ns": 23800967184,
+            "finish_ns": 24297820624,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 159,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 32095384112,
+            "locked_ns": 32095434624,
+            "finish_ns": 32334075808,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 160,
+            "kind": "EXEC_IMAGE",
+            "pid": 87,
+            "start_ns": 32491158720,
+            "locked_ns": 32491183872,
+            "finish_ns": 32885651664,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 161,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 32476332928,
+            "locked_ns": 32476336000,
+            "finish_ns": 32965932400,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 163,
+            "kind": "EXEC_IMAGE",
+            "pid": 88,
+            "start_ns": 33132836912,
+            "locked_ns": 33132842768,
+            "finish_ns": 33593438864,
+            "printed_before_renderer_observation": false
+          },
+          {
+            "line": 165,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 37626105472,
+            "locked_ns": 37626154016,
+            "finish_ns": 38497276320,
+            "printed_before_renderer_observation": false
+          },
+          {
+            "line": 166,
+            "kind": "EXEC_IMAGE",
+            "pid": 89,
+            "start_ns": 38822237008,
+            "locked_ns": 38822262640,
+            "finish_ns": 39462012816,
+            "printed_before_renderer_observation": false
+          },
+          {
+            "line": 167,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 39360901728,
+            "locked_ns": 39360904272,
+            "finish_ns": 40321528544,
+            "printed_before_renderer_observation": false
+          },
+          {
+            "line": 168,
+            "kind": "EXEC_IMAGE",
+            "pid": 98,
+            "start_ns": 40807654064,
+            "locked_ns": 40807677248,
+            "finish_ns": 41517320864,
+            "printed_before_renderer_observation": false
+          }
+        ]
+      }
+    },
+    {
+      "sample": "02-candidate",
+      "valid_visual": true,
+      "renderer_pid": 87,
+      "stages_s_from_qemu_start": {
+        "weston_ready": 3.137,
+        "browser_start": 3.438,
+        "renderer_inventory_seen": 33.439,
+        "window_white": 56.66,
+        "home_colors": 59.526,
+        "startup_observation_complete": 70.228
+      },
+      "qemu_maxrss_bytes": 1223348224,
+      "serial_log_sha256": "8453b6ad03fa32c3915150ad274297d5bc8fdc9079ea676c7c4884ad587e5a8e",
+      "guest_spans": {
+        "through_startup_observation": {
+          "events": 28,
+          "union_lock_or_work_ms": 6976.683728,
+          "scope": "guest-clock interval union across recorded tasks, not application critical path",
+          "FORK_ASPACE": {
+            "events": 14,
+            "lock_wait_median_ms": 0.002848,
+            "lock_wait_max_ms": 7.193056,
+            "work_median_ms": 200.439608,
+            "work_max_ms": 858.403584,
+            "union_work_ms": 3860.52328
+          },
+          "EXEC_IMAGE": {
+            "events": 14,
+            "lock_wait_median_ms": 0.0044399999999999995,
+            "lock_wait_max_ms": 0.056976,
+            "work_median_ms": 213.07455199999998,
+            "work_max_ms": 615.032656,
+            "union_work_ms": 3447.280224
+          }
+        },
+        "before_renderer_marker": {
+          "events": 23,
+          "union_lock_or_work_ms": 3576.436032,
+          "scope": "guest-clock interval union across recorded tasks, not application critical path",
+          "FORK_ASPACE": {
+            "events": 12,
+            "lock_wait_median_ms": 0.002744,
+            "lock_wait_max_ms": 3.062368,
+            "work_median_ms": 175.539008,
+            "work_max_ms": 536.44224,
+            "union_work_ms": 2154.593808
+          },
+          "EXEC_IMAGE": {
+            "events": 11,
+            "lock_wait_median_ms": 0.002624,
+            "lock_wait_max_ms": 0.022208,
+            "work_median_ms": 24.13752,
+            "work_max_ms": 548.711536,
+            "union_work_ms": 1760.639072
+          }
+        },
+        "observed_renderer_pid": 87,
+        "renderer_image_events": [
+          {
+            "line": 160,
+            "kind": "EXEC_IMAGE",
+            "pid": 87,
+            "start_ns": 32671390688,
+            "locked_ns": 32671412896,
+            "finish_ns": 33015543808,
+            "printed_before_renderer_observation": true
+          }
+        ],
+        "renderer_marker_scope": "serial output order around polling observation of renderer, not actual renderer creation time",
+        "events": [
+          {
+            "line": 131,
+            "kind": "EXEC_IMAGE",
+            "pid": 4,
+            "start_ns": 3318637008,
+            "locked_ns": 3318639568,
+            "finish_ns": 3342777088,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 132,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 3431612704,
+            "locked_ns": 3431614672,
+            "finish_ns": 3437835968,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 133,
+            "kind": "EXEC_IMAGE",
+            "pid": 31,
+            "start_ns": 3448457600,
+            "locked_ns": 3448459904,
+            "finish_ns": 3453394144,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 134,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 3501163744,
+            "locked_ns": 3501166448,
+            "finish_ns": 3506430144,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 135,
+            "kind": "EXEC_IMAGE",
+            "pid": 32,
+            "start_ns": 3515064032,
+            "locked_ns": 3515066032,
+            "finish_ns": 3521024352,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 136,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 3580881360,
+            "locked_ns": 3580884016,
+            "finish_ns": 3586832768,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 137,
+            "kind": "EXEC_IMAGE",
+            "pid": 33,
+            "start_ns": 3596172208,
+            "locked_ns": 3596174496,
+            "finish_ns": 3605764832,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 138,
+            "kind": "EXEC_IMAGE",
+            "pid": 4,
+            "start_ns": 3655750160,
+            "locked_ns": 3655752784,
+            "finish_ns": 3671868256,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 145,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 11456188224,
+            "locked_ns": 11456191008,
+            "finish_ns": 11648800624,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 146,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 11678895088,
+            "locked_ns": 11678897504,
+            "finish_ns": 11887167104,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 147,
+            "kind": "EXEC_IMAGE",
+            "pid": 35,
+            "start_ns": 11896641472,
+            "locked_ns": 11896643456,
+            "finish_ns": 12047091616,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 148,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 12327487664,
+            "locked_ns": 12327489952,
+            "finish_ns": 12343323824,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 149,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 12367195120,
+            "locked_ns": 12367196960,
+            "finish_ns": 12378685312,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 150,
+            "kind": "EXEC_IMAGE",
+            "pid": 37,
+            "start_ns": 12384946016,
+            "locked_ns": 12384949936,
+            "finish_ns": 12400238752,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 152,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 18977376912,
+            "locked_ns": 18980439280,
+            "finish_ns": 19138907680,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 153,
+            "kind": "EXEC_IMAGE",
+            "pid": 61,
+            "start_ns": 19199579024,
+            "locked_ns": 19199585184,
+            "finish_ns": 19475286128,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 154,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 19653832992,
+            "locked_ns": 19653977296,
+            "finish_ns": 19975598816,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 155,
+            "kind": "EXEC_IMAGE",
+            "pid": 63,
+            "start_ns": 20132802304,
+            "locked_ns": 20132811424,
+            "finish_ns": 20498434240,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 157,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 23257633856,
+            "locked_ns": 23257636768,
+            "finish_ns": 23794079008,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 158,
+            "kind": "EXEC_IMAGE",
+            "pid": 64,
+            "start_ns": 23915390704,
+            "locked_ns": 23915395664,
+            "finish_ns": 24464107200,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 159,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 32274823040,
+            "locked_ns": 32274875552,
+            "finish_ns": 32532294640,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 160,
+            "kind": "EXEC_IMAGE",
+            "pid": 87,
+            "start_ns": 32671390688,
+            "locked_ns": 32671412896,
+            "finish_ns": 33015543808,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 161,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 32662665520,
+            "locked_ns": 32664682912,
+            "finish_ns": 33099690288,
+            "printed_before_renderer_observation": true
+          },
+          {
+            "line": 163,
+            "kind": "EXEC_IMAGE",
+            "pid": 88,
+            "start_ns": 33272968144,
+            "locked_ns": 33273025120,
+            "finish_ns": 33764952704,
+            "printed_before_renderer_observation": false
+          },
+          {
+            "line": 165,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 38008804256,
+            "locked_ns": 38015997312,
+            "finish_ns": 38863523200,
+            "printed_before_renderer_observation": false
+          },
+          {
+            "line": 166,
+            "kind": "EXEC_IMAGE",
+            "pid": 92,
+            "start_ns": 39057886688,
+            "locked_ns": 39057908544,
+            "finish_ns": 39637589456,
+            "printed_before_renderer_observation": false
+          },
+          {
+            "line": 167,
+            "kind": "FORK_ASPACE",
+            "pid": null,
+            "start_ns": 39679280256,
+            "locked_ns": 39679675168,
+            "finish_ns": 40538078752,
+            "printed_before_renderer_observation": false
+          },
+          {
+            "line": 168,
+            "kind": "EXEC_IMAGE",
+            "pid": 104,
+            "start_ns": 40884946032,
+            "locked_ns": 40884956304,
+            "finish_ns": 41499988960,
+            "printed_before_renderer_observation": false
+          }
+        ]
+      }
+    },
+    {
+      "sample": "02-baseline",
+      "valid_visual": true,
+      "renderer_pid": 87,
+      "stages_s_from_qemu_start": {
+        "weston_ready": 3.158,
+        "browser_start": 3.359,
+        "renderer_inventory_seen": 33.662,
+        "window_white": 57.288,
+        "home_colors": 60.154,
+        "startup_observation_complete": 70.156
+      },
+      "qemu_maxrss_bytes": 1210859520,
+      "serial_log_sha256": "2aa3374a4ced15bd197fea89ecb8336734bc50d6c97003e39f25d9dda7ff3d53"
+    }
+  ]
+}

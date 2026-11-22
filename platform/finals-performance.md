@@ -95,4 +95,8 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 
 从同一已采用源码 38d221e 分别构建默认和 ThinLTO，展开配置、Rust 版本、运行盘和 Chromium 原参数一致。AArch64 最终链接日志验证了两种配置。五组交替冷启动中，默认 5/5 完成，ThinLTO 4/5 完成。成功样本的首页中位数为 55.36 秒和 57.12 秒，宿主峰值为 1,176.61 和 1,175.05 MiB。超时的实际截图显示 Chromium 页面无响应。独立预试的另一次超时和反向复测均保留，当前采用默认构建。[逐轮对照](evidence/finals-20261122/thinlto-release-comparison.json) · [构建参数](evidence/finals-20261122/thinlto-build-proof.json) · [队友仓库与故障画面](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/d167aafa7f7fbbacd3d22921f9bce4924487f03e/work/performance-20261122-finals-r9)
 
+## 11 月 22 日启动复制与装载耗时定位
+
+基于 38d221e 构建默认版与独立诊断版。两组冷启动共四轮，按 AB、BA 交替，全部观测到首页、首窗和独立 renderer。两次诊断中，renderer 首次被观测前各记录 12 次私有地址空间复制和 11 次成功映像装载。两类区间并集分别为 3.278 和 3.576 秒。复制中位数为 153.80 和 175.54 毫秒，装载中位数为 17.81 和 24.14 毫秒，单次锁等待最长为 3.06 毫秒。计时使用客体时钟并扣除跨任务重叠，覆盖该窗口内客体任务。继续分解复制路径的匿名对象、页表和 VMA 环节。[逐轮结果](evidence/finals-20261122/startup-fork-exec-observations.json) · [队友仓库计时补丁与复跑步骤](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/b7b9ad36311e4db7095f22a38c3f52908955a121/work/performance-20261122-finals-r10)
+
 诊断批次可用 `--keep-going` 保留观测超时时的画面和原始记录，并完成其他样本。任何样本超时，整批仍返回失败，时延汇总只包含完成观察的样本。
