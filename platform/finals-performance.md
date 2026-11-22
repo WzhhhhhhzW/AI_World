@@ -172,3 +172,7 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 候选保留八页连续读取，每个文件最多标记 2,048 个可回收的未用私有预读邻页。五组交替 TCG 冷启动十次均完成，宿主峰值 RSS 五组均下降，配对中位少 31.109 MiB。首窗及首页配对中位分别慢 1.368 和 0.651 秒，首次看到 renderer 提前 2.983 秒。独立诊断中至布局页的客体根盘逻辑读取由 284.328 MiB 增至 447.465 MiB，客体受管内存峰值少 36.918 MiB。继续用已通过长稳的 CRC32C 版本作为默认。[逐次数据](evidence/finals-20261122/private-prefetch-budget-comparison.json)
 
 候选通过 653 项客体回归。独立 ext4 副本试验中，保留共享映射跨 1,023 个私有缺页窗口后写入并同步 `msync`。关机后宿主回读全 32 MiB 文件，只有指定 16 字节改变。[共享映射校验](evidence/finals-20261122/private-prefetch-budget-shared-mapping.json)
+
+## 11 月 22 日被淘汰预读邻页的再次缺页试验
+
+R24 保持 R23 的邻页预算。已淘汰的页再次缺页时，尝试单页读取，建立失败后在同一调用恢复原预读路径。658 项客体回归通过。与 R23 的两组 AB、BA 本机 TCG 诊断四次均完成，至布局页分别少读 12.85% 和 13.35%，读取请求分别增加 728 和 582。两组宿主峰值 RSS 差为 +3.695 和 −9.492 MiB。当前默认仍为已长稳的 CRC32C 版本。R24 留作诊断候选，待同条件标准五组及 D3000M KVM 验证。[逐次数据](evidence/finals-20261122/private-prefetch-refault-comparison.json)

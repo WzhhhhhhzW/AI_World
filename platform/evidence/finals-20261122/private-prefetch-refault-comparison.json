@@ -1,0 +1,1360 @@
+{
+  "scope": "local x86_64 WSL2 TCG, rooted in distinct diagnostic and stock timing runs",
+  "source_commit": "0645c8575e9251ba5acb6d77df126ac414145d12",
+  "source_archive_sha256": "9e98510237116ab926431e9c831562acfefe9818eb39b13dedcf6673ddb85b90",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "resolved_config_sha256": "42e8d16450352712d78813b5f78b7ca221dfb88fadc796f57ecf317d7e33f669",
+  "combined_patch_sha256": "03278e6b771b9db896b2e0dedbbb87535c65553f1520900eb73289d583096046",
+  "layer_patch_sha256": "30c24bd57403fb0608a1e2b2cba46f7fee0925fc637e480c5e444cfb1058721e",
+  "r23_kernel_sha256": "5eeb2a270abf23674a20dfe40ff4353ceabef6cafe7f8b15b7e306f681e8dfdc",
+  "crc_kernel_sha256": "da0dc9f6fc37fd1bdc01bfe35b4152ad2c2477b18e0b2eb33d94cf8d7d73a058",
+  "guest_unit_tests": {
+    "passed": 658,
+    "failed": 0,
+    "ignored": 0,
+    "serial_log_sha256": "850443aaa2009c3ef6b1849083dc4a957e0e0cd7d1b9dd4d503ee5eb2a85b2f1",
+    "names": [
+      "kvfs::node::device::tests::block_read_failure_prevents_read_modify_write",
+      "kvfs::node::device::tests::block_partial_backend_write_error_is_not_retried",
+      "kvfs::node::device::tests::block_aligned_extents_preserve_data_and_neighbors",
+      "kvfs::node::device::tests::block_special_file_io_crosses_blocks_and_obeys_capacity",
+      "kvfs::node::device::tests::block_unaligned_extents_preserve_read_modify_write_semantics",
+      "kvfs::node::device::tests::block_empty_eof_and_capacity_clipping_do_not_touch_outside_view",
+      "kvfs::super_block::tests::failed_fill_wakes_waiter_and_allows_retry",
+      "kvfs::super_block::tests::dying_superblock_wakes_waiter_after_shutdown",
+      "kvfs::super_block::tests::sget_dev_uses_canonical_device_object_identity",
+      "kvfs::super_block::tests::sget_dev_reuses_identity_and_rejects_readonly_mismatch",
+      "kvfs::super_block::tests::read_only_block_device_cannot_be_reconfigured_read_write",
+      "kvfs::super_block::tests::block_device_claim_rejects_a_different_filesystem_until_shutdown",
+      "kext4::balloc::component_tests::ext4_bitmap_tail_bits_are_marked_used",
+      "kext4::balloc::component_tests::bitmap_checksum_compare_uses_descriptor_width",
+      "filemap::shared::tests::shared_file_source_adapter_and_private_runtime_agree_on_file_object",
+      "filemap::runtime::tests::cached_file_sources_share_inode_owned_object_identity",
+      "filemap::private::tests::file_private_fork_child_keeps_lineage_and_splits_anon_object",
+      "kext4::balloc::component_tests::block_allocator_rejects_uninit_group_zero",
+      "filemap::shared::tests::cached_file_write_updates_inode_mapping",
+      "filemap::runtime::tests::private_runtime_from_reopened_file_uses_inode_owned_cached_object_identity",
+      "kext4::balloc::component_tests::block_allocator_rejects_initialized_bitmap_checksum_mismatch",
+      "filemap::shared::tests::shared_and_private_runtime_share_same_file_source_object",
+      "filemap::shared::tests::cached_file_read_observes_inode_mapping_write",
+      "kext4::bitmap_allocator::block::tests::allocation_uses_goal_when_available",
+      "kext4::bitmap_allocator::block::tests::run_allocation_stops_at_protected_blocks",
+      "kext4::bitmap_allocator::block::tests::allocation_skips_protected_blocks_and_wraps",
+      "kext4::bitmap_allocator::block::tests::run_allocation_uses_goal_and_marks_contiguous_bits",
+      "kext4::bitmap_allocator::block::tests::allocation_reports_no_space_without_mutating_bitmap",
+      "kext4::balloc::component_tests::block_allocator_rejects_initialized_bitmap_with_cleared_tail_bit",
+      "kext4::bitmap_allocator::block::tests::release_clears_allocated_block_and_rejects_duplicate_release",
+      "kext4::bitmap_allocator::block::tests::run_allocation_rejects_runs_shorter_than_minimum_without_mutating_bitmap",
+      "kext4::bitmap_allocator::inode::tests::inode_allocation_skips_reserved_inodes",
+      "kext4::balloc::component_tests::block_allocator_rejects_releasing_system_zone_without_consuming_credits",
+      "kext4::bitmap_allocator::block::tests::run_allocation_can_return_partial_run_above_minimum",
+      "kext4::bitmap_allocator::inode::tests::inode_release_rejects_reserved_and_duplicate_release",
+      "kext4::balloc::component_tests::block_allocator_releases_metadata_block_with_revoke_record",
+      "kext4::balloc::component_tests::block_allocator_rejects_initialized_bitmap_with_cleared_system_zone_bit",
+      "kext4::balloc::component_tests::block_allocator_rejects_insufficient_credits_before_metadata_access",
+      "filemap::private::tests::private_refault_rechecks_i_size_before_reusing_retained_cow_page",
+      "kext4::balloc::component_tests::block_allocator_skips_bitmap_checksum_without_metadata_csum",
+      "kext4::buffer::tests::checkpoint_committed_writes_frozen_snapshot_while_next_transaction_stays_dirty",
+      "kext4::buffer::tests::write_access_rejects_other_running_transaction",
+      "kext4::balloc::component_tests::block_allocator_release_rejects_initialized_bitmap_checksum_mismatch",
+      "kext4::buffer::tests::checkpoint_committed_writes_created_initialized_metadata_without_reading_old_block",
+      "kext4::buffer::tests::failed_reads_are_removed_and_can_be_retried",
+      "kext4::balloc::component_tests::block_allocator_uses_goal_group_and_falls_back_across_groups",
+      "kext4::balloc::component_tests::block_allocator_starts_scan_at_goal_inside_selected_group",
+      "kext4::buffer::tests::writeback_failure_records_buffer_error",
+      "kext4::buffer::tests::checkpoint_committed_writes_dirty_metadata_and_flushes",
+      "kext4::buffer::tests::metadata_io_forget_records_revoke_without_cached_buffer",
+      "filemap::private::tests::file_private_fork_madvise_then_write_fault_preserves_file_source_and_splits_anon_pages",
+      "kext4::buffer::tests::checkpoint_returns_dirty_buffer_to_clean_reclaimable_state",
+      "kext4::buffer::tests::write_access_pins_buffer_and_dirty_state_prevents_reclaim",
+      "kext4::balloc::component_tests::block_allocator_journals_bitmap_group_and_superblock_updates",
+      "kext4::buffer::tests::repeated_reads_share_one_cached_block_and_pins_prevent_reclaim",
+      "kext4::buffer::tests::metadata_io_write_access_consumes_journal_handle_credit",
+      "kext4::buffer::tests::metadata_io_forget_drops_cached_current_transaction_state",
+      "kext4::buffer::tests::journal_abort_does_not_rewind_successful_prior_metadata_update",
+      "kext4::buffer::tests::metadata_io_forget_suppresses_older_checkpoint_home_write",
+      "kext4::buffer::tests::create_access_skips_device_read_and_requires_full_initialization",
+      "kext4::buffer::tests::metadata_io_forget_rejects_in_flight_checkpoint_writeback",
+      "kext4::dir::tests::non_boundary_start_position_is_invalid",
+      "kext4::buffer::tests::metadata_io_forget_without_revoke_drops_current_transaction_update",
+      "kext4::buffer::tests::journal_commit_blocks_capture_transaction_owned_metadata_snapshot",
+      "kext4::buffer::tests::writeback_keeps_frozen_snapshot_while_next_transaction_updates_buffer",
+      "kext4::dirhash::unittests::effective_version_selects_signedness",
+      "kext4::buffer::tests::metadata_io_forget_keeps_cached_block_when_revoke_credit_is_missing",
+      "kext4::buffer::tests::concurrent_reads_coalesce_one_device_io",
+      "kext4::disk::checksum::tests::linux_crc32c_golden_vector",
+      "kext4::dirhash::unittests::orlov_ignores_htree_default_version_and_unsigned_variant",
+      "kext4::disk::checksum::tests::bitmap_checksum_matches_linux_seeded_bitmap_crc",
+      "kext4::disk::dir::unittests::htree_root_distinguishes_disk_and_derived_hash_versions",
+      "kext4::disk::features::tests::unknown_incompatible_bits_are_retained_and_rejected",
+      "kext4::buffer::tests::write_access_updates_cached_metadata_bytes_without_mutating_old_snapshots",
+      "kext4::buffer::tests::metadata_io_write_conflict_requires_transaction_abort_after_publication",
+      "kext4::dir::tests::unknown_dirent_file_type_scans_as_unknown",
+      "kext4::disk::group::tests::checked_u16_write_reports_offset_overflow",
+      "kext4::disk::group::tests::decodes_bitmap_checksums_and_itable_unused",
+      "kext4::dirhash::unittests::siphash_is_unsupported_instead_of_corrupt",
+      "kext4::disk::group::tests::inode_allocation_reduces_itable_unused_tail",
+      "kext4::disk::group::tests::non_64bit_counter_rejects_truncated_high_bits",
+      "kext4::disk::group::tests::checked_u16_write_reports_truncated_descriptor",
+      "kext4::buffer::tests::metadata_io_create_conflict_requires_transaction_abort_after_publication",
+      "kext4::disk::dir::unittests::special_record_lengths_follow_linux_encoding",
+      "kext4::disk::group::tests::decrements_64bit_group_free_blocks_and_updates_checksum",
+      "kext4::disk::features::tests::overlapping_feature_bits_remain_in_their_own_classes",
+      "kext4::disk::features::unittests::mount_negotiation_rejects_filesystem_without_extents",
+      "kext4::disk::superblock::tests::rejects_invalid_inode_geometry",
+      "kext4::disk::superblock::tests::decodes_and_updates_legacy_orphan_head",
+      "kext4::disk::superblock::tests::accepts_linux_64bit_descriptor_geometry",
+      "kext4::disk::superblock::tests::rejects_group_geometry_larger_than_bitmap",
+      "kext4::disk::superblock::tests::rejects_cluster_geometry_larger_than_bitmap",
+      "kext4::disk::superblock::tests::rejects_first_data_block_outside_filesystem",
+      "kext4::disk::superblock::tests::preserves_directory_hash_flags_as_disk_facts",
+      "kext4::disk::superblock::tests::decodes_out_of_range_orphan_head_for_recovery",
+      "kext4::buffer::tests::checkpoint_committed_releases_unchanged_journaled_buffer_without_write",
+      "kext4::disk::group::tests::increment_rejects_counter_overflow",
+      "kext4::disk::superblock::tests::derives_linux_default_effective_want_extra_isize",
+      "kext4::disk::superblock::tests::sets_recovery_feature_without_metadata_checksum",
+      "kext4::disk::superblock::tests::rejects_zero_first_data_block_for_one_kib_blocks",
+      "kext4::disk::superblock::tests::clears_recovery_feature_without_metadata_checksum",
+      "kext4::disk::superblock::tests::checksum_failure_precedes_mount_feature_negotiation",
+      "kext4::disk::superblock::tests::setting_unsigned_hash_flag_updates_metadata_checksum",
+      "kext4::disk::group::tests::updates_inode_bitmap_checksum_and_clears_uninit_flag",
+      "kext4::disk::superblock::tests::effective_want_extra_isize_includes_disk_requirements",
+      "kext4::disk::superblock::tests::decodes_non_extent_superblock_before_mount_negotiation",
+      "kext4::disk::inode::tests::decodes_owner_and_timestamp_fields",
+      "kext4::disk::superblock::tests::rejects_bigalloc_before_cluster_semantics_can_be_mounted",
+      "kext4::disk::superblock::tests::effective_want_extra_isize_ignores_disk_fields_without_feature",
+      "kext4::disk::group::tests::updates_block_bitmap_checksum_and_clears_uninit_flag",
+      "kext4::disk::group::tests::inode_allocation_treats_uninit_inode_bitmap_as_fully_unused",
+      "kext4::disk::superblock::tests::sets_recovery_feature_and_updates_metadata_checksum",
+      "kext4::disk::superblock::tests::rejects_non_power_of_two_64bit_descriptor_sizes",
+      "kext4::disk::superblock::tests::clears_recovery_feature_and_updates_metadata_checksum",
+      "kext4::buffer::tests::checkpoint_committed_preserves_multiple_frozen_transactions_in_order",
+      "kext4::disk::checksum::tests::crc32c_matches_bitwise_oracle_and_continues_across_chunks",
+      "kext4::buffer::tests::metadata_io_create_reuses_block_with_only_revoke_skipped_checkpoint_snapshot",
+      "kext4::extent::mutate::tests::local_split_balances_new_partitions",
+      "kext4::extent::mutate::tests::writeback_credit_budget_is_not_truncated",
+      "kext4::extent::mutate::tests::multi_block_writeback_scales_credit_budget",
+      "kext4::extent::mutate::tests::writeback_credit_budget_follows_mapping_work",
+      "kext4::extent::mutate::tests::single_block_writeback_covers_maximum_extent_path",
+      "kext4::balloc::component_tests::block_allocator_releases_allocated_block_through_same_metadata_path",
+      "kext4::extent::tests::insert_inline_extent_rejects_overlap",
+      "kext4::extent::mutate::tests::independent_block_preflight_preserves_separate_extent_entries",
+      "kext4::balloc::component_tests::block_allocator_lazy_initializes_nonzero_group_bitmap",
+      "kext4::extent::tests::max_file_sizes_match_linux_ext4_limits",
+      "kext4::extent::tests::insert_inline_extent_rejects_indexed_root",
+      "kext4::extent::tests::find_index_uses_first_child_before_first_key",
+      "kext4::extent::tests::map_leaf_caps_trailing_hole_at_parent_limit",
+      "kext4::extent::tests::validate_extent_entries_rejects_zero_length_extent",
+      "kext4::extent::tests::validate_extent_entries_rejects_overlapping_extents",
+      "kext4::extent::tests::validate_extent_entries_rejects_child_range_overflow",
+      "kext4::extent::tests::insert_inline_extent_keeps_leaf_order",
+      "kext4::extent::tests::insert_inline_extent_preserves_unwritten_state",
+      "kext4::extent::tests::insert_inline_extent_merges_adjacent_initialized_extents",
+      "kext4::extent::tests::insert_inline_extent_splits_run_larger_than_extent_entry",
+      "kext4::extent::tests::validate_extent_entries_rejects_physical_system_zone_overlap",
+      "kext4::extent::tests::insert_inline_extent_rejects_full_inline_root_without_merge",
+      "kext4::balloc::tests::allocation_goals_in_second_group_round_trip_accounting",
+      "kext4::extent::component_tests::inline_extent_mutation_journals_inode_table_update",
+      "kext4::extent::component_tests::extent_remove_range_splits_mapping_and_releases_data_blocks",
+      "kext4::extent::component_tests::extent_unwritten_conversion_splits_only_requested_range",
+      "kext4::extent::component_tests::extent_truncate_releases_tail_range",
+      "kext4::extent::component_tests::extent_remove_range_splits_full_inline_leaf",
+      "kext4::extent::component_tests::allocation_goal_after_previous_extent_uses_requested_logical_block",
+      "kext4::extent::component_tests::extent_root_grow_without_revoke_journals_only_live_leaf_block",
+      "kext4::extent::component_tests::extent_point_mutations_keep_existing_leaf_block",
+      "kext4::file::component_tests::delayed_allocation_rejects_legacy_inode_before_reserving_space",
+      "kext4::extent::legacy_tests::legacy_mapping_reads_all_indirection_boundaries_and_rejects_bad_pointers",
+      "kext4::file::component_tests::delayed_allocation_only_reserves_holes_between_allocated_blocks",
+      "kext4::file::component_tests::ordered_writeback_append_preserves_existing_partial_block_data",
+      "kext4::file::component_tests::ordered_writeback_credits_follow_fragmented_unwritten_runs",
+      "kext4::dir::tests::directory_stream_resumes_without_losing_entries_and_rejects_non_boundary",
+      "kext4::file::component_tests::aligned_file_read_uses_caller_buffer_and_preserves_eof_suffix",
+      "kext4::file::component_tests::mapped_full_metadata_writeback_fits_the_eight_credit_boundary",
+      "kext4::file::component_tests::delayed_allocation_range_updates_inode_and_mount_accounting_together",
+      "kext4::file::component_tests::delayed_allocation_reuses_existing_reservations_when_space_is_exhausted",
+      "kext4::file::component_tests::ordered_writeback_reuses_preallocated_unwritten_tail",
+      "kext4::file::tests::normalized_allocation_caps_random_requests",
+      "kext4::file::tests::normalized_allocation_keeps_single_block_writes_exact",
+      "kext4::file::tests::normalized_allocation_expands_streaming_requests_within_hole",
+      "kext4::file::unittests::hole_writeback_credits_grow_by_actual_allocation_run",
+      "kext4::file::unittests::mapped_writeback_does_not_grow_metadata_operation_credits",
+      "kext4::file::unittests::fragmented_unwritten_credits_follow_actual_conversion_count",
+      "kext4::file::unittests::writeback_cursor_carries_preallocation_budget_across_transactions",
+      "kext4::ialloc::component_tests::inode_allocator_rejects_uninit_group_zero",
+      "kext4::ialloc::component_tests::orlov_top_level_directories_spread_across_groups",
+      "kext4::ialloc::component_tests::orlov_directory_group_requires_free_blocks_inside_flex",
+      "kext4::ialloc::component_tests::inode_allocator_lazy_initializes_same_group_block_bitmap",
+      "kext4::file::component_tests::ordered_writeback_commits_disk_size_without_changing_visible_size",
+      "kext4::ialloc::component_tests::regular_inode_allocator_keeps_parent_flex_group_locality",
+      "kext4::ialloc::component_tests::inode_allocator_skips_bitmap_checksum_without_metadata_csum",
+      "kext4::file::component_tests::failed_split_writeback_publishes_only_the_durable_prefix",
+      "kext4::ialloc::component_tests::inode_allocator_skips_group_with_cleared_reserved_inode_bit",
+      "kext4::file::component_tests::aligned_sparse_file_read_keeps_extent_offsets_and_zeroes_holes",
+      "kext4::ialloc::component_tests::inode_allocator_rejects_initialized_bitmap_checksum_mismatch",
+      "kext4::ialloc::component_tests::inode_allocator_journals_bitmap_group_and_superblock_updates",
+      "kext4::file::component_tests::ordered_writeback_preallocates_and_discards_unwritten_tail",
+      "kext4::ialloc::component_tests::concurrent_allocator_round_trip_keeps_accounting_invariant",
+      "kext4::ialloc::component_tests::inode_allocator_rejects_initialized_bitmap_with_cleared_tail_bit",
+      "kext4::file::component_tests::regular_file_mutation_rejects_inode_using_huge_file_accounting",
+      "kext4::ialloc::component_tests::inode_allocator_release_rejects_initialized_bitmap_checksum_mismatch",
+      "kext4::ialloc::component_tests::inode_allocator_rejects_releasing_reserved_inode_without_consuming_credits",
+      "kext4::ialloc::component_tests::inode_allocator_updates_directory_count_and_release_reverses_it",
+      "kext4::ialloc::component_tests::inode_allocator_rejects_insufficient_credits_before_metadata_access",
+      "kext4::inode::tests::rejects_zero_length_fast_symlink",
+      "kext4::inode::tests::encodes_timestamp_without_extra_field",
+      "kext4::inode::tests::decodes_new_device_id_from_i_block_one",
+      "kext4::inode::tests::decodes_old_device_id_from_i_block_zero",
+      "kext4::inode::tests::rejects_timestamp_with_invalid_nanoseconds",
+      "kext4::inode::tests::rejects_device_id_outside_ext4_new_encoding",
+      "kext4::inode::tests::clamps_seconds_without_extra_timestamp_field",
+      "kext4::inode::tests::decodes_signed_timestamp_without_extra_epoch",
+      "kext4::inode::tests::exposes_immutable_and_append_only_inode_flags",
+      "kext4::inode::tests::decodes_timestamp_with_extra_epoch_and_nanoseconds",
+      "kext4::inode::tests::encodes_timestamp_with_extra_epoch_and_nanoseconds",
+      "kext4::inode::tests::rejects_fast_symlink_with_embedded_nul_before_size",
+      "kext4::inode::tests::excludes_xattr_blocks_from_fast_symlink_data_blocks",
+      "kext4::inode::tests::rejects_fast_symlink_size_that_reaches_past_i_block",
+      "kext4::inode::tests::rejects_fast_symlink_without_nul_terminator_at_size",
+      "kext4::inode::tests::truncates_nanoseconds_without_extra_timestamp_field",
+      "kext4::inode::tests::classifies_fast_symlink_by_data_blocks_not_size_only",
+      "kext4::inode::tests::classifies_short_block_mapped_symlink_as_block_mapped",
+      "kext4::inode::tests::delayed_allocation_extents_merge_split_and_count_blocks",
+      "kext4::inode::tests::special_inode_initialization_rejects_unencodable_device_id",
+      "kext4::inode::tests::ignores_inode_ea_inode_flag_when_filesystem_feature_is_absent",
+      "kext4::inode::tests::extra_isize_expansion_failure_state_is_resident_and_resettable",
+      "kext4::inode::tests::classifies_symlink_with_filesystem_ea_inode_feature_not_inode_flag",
+      "kext4::inode::component_tests::newly_allocated_inode_preserves_extended_timestamp",
+      "kext4::inode::component_tests::newly_allocated_inode_starts_at_effective_want_extra_isize",
+      "kext4::inode::unittests::initialized_overwrites_survive_timestamp_updates",
+      "kext4::inode::unittests::timestamp_limits_track_inode_extra_field_capacity",
+      "kext4::inode::unittests::inode_state_accessors_reflect_metadata_fields",
+      "kext4::inode::unittests::initialized_legacy_inode_clamps_post_2038_timestamp",
+      "kext4::inode::unittests::update_state_publishes_mutation_to_later_readers",
+      "kext4::inode::unittests::initialized_extended_inode_preserves_epoch_and_nanoseconds",
+      "kext4::inode::unittests::extent_status_merges_written_ranges_at_maximum_block_boundary",
+      "kext4::inode::unittests::initialized_ranges_cover_random_overwrites_without_bridging_holes",
+      "kext4::inode::unittests::orphan_truncation_classifies_inode_kind_and_symlink_storage",
+      "kext4::inode::unittests::with_state_exposes_consistent_size_pair_and_passes_result_through",
+      "kext4::inode::unittests::initialized_overwrites_are_invalidated_by_shrink_and_mapping_changes",
+      "kext4::inode::unittests::initialized_range_cache_is_bounded_and_eviction_requires_revalidation",
+      "kext4::inode::unittests::initialized_overwrites_exclude_extensions_and_pending_reservations",
+      "kext4::inode::unittests::concurrent::with_state_allows_concurrent_readers",
+      "kext4::inode::unittests::concurrent::update_state_serializes_concurrent_writers",
+      "kext4::io::tests::rejects_partial_contiguous_filesystem_block_write",
+      "kext4::io::tests::replay_writer_writes_one_block_and_flushes",
+      "kext4::io::tests::writes_filesystem_blocks_through_device_block_mapping",
+      "kext4::inode::component_tests::inode_metadata_mutation_updates_the_inode_component_in_place",
+      "kext4::jbd2::commit::tests::rejects_blocks_that_do_not_match_commit_record",
+      "kext4::jbd2::commit::tests::append_space_keeps_one_block_between_head_and_tail",
+      "kext4::ialloc::component_tests::inode_allocator_uses_parent_group_for_regular_inode_and_spreads_directories",
+      "kext4::jbd2::commit::tests::wraps_written_transaction_across_log_end",
+      "kext4::jbd2::commit::tests::refuses_to_write_revoke_block_without_revoke_feature",
+      "kext4::file::component_tests::unaligned_and_partial_eof_reads_keep_bounce_buffer_and_exact_bytes",
+      "kext4::jbd2::commit::tests::writes_scannable_descriptor_data_and_commit_blocks",
+      "kext4::jbd2::commit::tests::splits_revoke_records_across_multiple_revoke_blocks",
+      "kext4::inode::unittests::concurrent::with_state_never_tears_paired_size_update",
+      "kext4::jbd2::commit::tests::writes_online_revoke_block_that_suppresses_older_replay",
+      "kext4::jbd2::commit::tests::persisted_commit_marks_journal_active_and_recoverable",
+      "kext4::jbd2::commit::tests::writes_v3_checksummed_transaction_that_replay_can_apply",
+      "kext4::jbd2::commit::tests::appends_commits_and_advances_checkpoint_tail_in_order",
+      "kext4::jbd2::commit::tests::persist_commit_rejects_active_journal_without_latest_commit",
+      "kext4::jbd2::commit::tests::checkpoint_finish_marks_journal_empty_after_persisted_commit",
+      "kext4::jbd2::commit::tests::writes_64bit_revoke_entries_without_truncating_block_numbers",
+      "kext4::jbd2::log::tests::rejects_first_tag_without_uuid",
+      "kext4::jbd2::commit::tests::escapes_jbd2_magic_in_logged_data_and_replay_restores_it",
+      "kext4::jbd2::log::tests::rejects_v3_revoke_checksum_mismatch",
+      "kext4::jbd2::log::tests::rejects_v2_revoke_checksum_mismatch",
+      "kext4::jbd2::commit::tests::power_loss_after_first_activation_does_not_look_like_a_clean_journal",
+      "kext4::jbd2::log::tests::scan_limit_reports_journal_too_large",
+      "kext4::jbd2::log::tests::rejects_deleted_descriptor_tag",
+      "kext4::jbd2::log::tests::verifies_v3_control_and_data_checksums",
+      "kext4::jbd2::log::tests::rejects_v3_commit_checksum_mismatch",
+      "kext4::jbd2::log::tests::rejects_v3_descriptor_checksum_mismatch",
+      "kext4::jbd2::log::tests::scans_v2_checksum_tags_with_64bit_targets",
+      "kext4::jbd2::log::tests::scans_committed_updates_and_revokes",
+      "kext4::jbd2::log::tests::scans_transaction_sequence_wraparound",
+      "kext4::jbd2::log::tests::scans_v3_checksum_tags_with_64bit_targets",
+      "kext4::jbd2::log::tests::rejects_revoke_block_without_revoke_feature",
+      "kext4::jbd2::log::tests::wraps_descriptor_data_and_commit_across_log_end",
+      "kext4::jbd2::log::tests::leaves_transaction_uncommitted_at_sequence_boundary",
+      "kext4::jbd2::log::tests::rejects_unknown_control_block_type_with_matching_sequence",
+      "kext4::jbd2::log::tests::scans_v2_checksum_64bit_same_uuid_tags_without_padding",
+      "kext4::jbd2::log::tests::scans_v2_checksum_tags_with_32bit_targets_and_uuid",
+      "kext4::jbd2::log::tests::scans_v2_checksum_same_uuid_tags_without_padding",
+      "kext4::jbd2::replay::tests::executes_replay_plan_and_flushes_writer",
+      "kext4::jbd2::replay::tests::reads_escaped_replay_update_with_restored_magic",
+      "kext4::jbd2::replay::tests::later_update_after_revoke_still_replays",
+      "kext4::jbd2::superblock::tests::decodes_zero_start_v2_journal",
+      "kext4::jbd2::superblock::tests::marks_journal_superblock_empty",
+      "kext4::jbd2::replay::tests::plans_committed_updates_in_log_order",
+      "kext4::jbd2::replay::tests::ignores_uncommitted_transaction_updates_and_revokes",
+      "kext4::jbd2::superblock::tests::rejects_out_of_range_log_start",
+      "kext4::jbd2::replay::tests::committed_revoke_suppresses_same_or_earlier_transaction_update",
+      "kext4::jbd2::superblock::tests::enables_revoke_feature_on_v2_journal",
+      "kext4::jbd2::superblock::tests::marks_journal_superblock_active",
+      "kext4::jbd2::superblock::tests::rejects_conflicting_checksum_features",
+      "kext4::jbd2::replay::tests::executes_scanned_replay_and_flushes_writer_without_plan_vector",
+      "kext4::jbd2::superblock::tests::reports_complete_raw_feature_bitmaps",
+      "kext4::jbd2::superblock::tests::leaves_v1_journal_without_feature_bitmap_unchanged",
+      "kext4::jbd2::superblock::tests::verifies_v3_superblock_checksum",
+      "kext4::jbd2::superblock::tests::preserves_complete_journal_block_image",
+      "kext4::jbd2::superblock::tests::enabling_revoke_rejects_active_journal",
+      "kext4::jbd2::superblock::tests::rejects_async_commit_until_recovery_semantics_are_supported",
+      "kext4::jbd2::superblock::tests::marks_v3_journal_superblock_active_and_updates_checksum",
+      "kext4::ialloc::component_tests::regular_inode_allocator_uses_quadratic_probe_before_linear_fallback",
+      "kext4::jbd2::superblock::tests::marks_v3_journal_superblock_empty_and_updates_checksum",
+      "kext4::jbd2::superblock::tests::enabling_revoke_updates_v3_superblock_checksum",
+      "kext4::jbd2::transaction::tests::handle_stop_returns_unused_credits",
+      "kext4::jbd2::transaction::tests::abort_blocks_new_and_existing_handles",
+      "kext4::jbd2::transaction::tests::commit_requires_all_handles_to_close",
+      "kext4::jbd2::superblock::tests::preserves_nonzero_log_start_without_calling_it_recovery",
+      "kext4::jbd2::superblock::tests::active_journal_superblock_rejects_out_of_range_log_positions",
+      "kext4::jbd2::transaction::tests::repeated_metadata_block_consumes_one_credit",
+      "kext4::jbd2::transaction::tests::reserve_more_extends_handle_credit_budget",
+      "kext4::jbd2::transaction::tests::admission_rejects_one_handle_that_exceeds_limit",
+      "kext4::jbd2::superblock::tests::marks_v3_journal_superblock_empty_inside_larger_filesystem_block",
+      "kext4::jbd2::transaction::tests::reserve_more_rejects_transaction_limit_overflow",
+      "kext4::jbd2::transaction::tests::checkpoint_rejects_out_of_order_transaction",
+      "kext4::jbd2::transaction::tests::empty_handle_can_close_and_commit_without_metadata",
+      "kext4::jbd2::transaction::tests::revoke_metadata_block_consumes_one_credit_once",
+      "kext4::jbd2::transaction::tests::one_handle_can_finish_while_another_handle_is_open",
+      "kext4::jbd2::transaction::tests::commit_records_metadata_blocks_and_used_credits",
+      "kext4::jbd2::transaction::tests::metadata_update_cancels_revoke_in_same_transaction",
+      "kext4::jbd2::transaction::tests::force_commit_returns_the_same_committing_transaction",
+      "kext4::jbd2::transaction::tests::revoke_replaces_metadata_update_in_same_transaction",
+      "kext4::jbd2::transaction::tests::handles_share_running_transaction_and_consume_credits",
+      "kext4::jbd2::transaction::tests::checkpoint_watermark_advances_across_transaction_wrap",
+      "kext4::jbd2::transaction::tests::completion_requests_commit_only_after_the_last_handle_closes",
+      "kext4::jbd2::transaction::tests::completed_checkpoints_release_committed_transactions",
+      "kext4::jbd2::transaction::tests::runtime_transaction_is_one_object_across_all_phases",
+      "kext4::jbd2::transaction::tests::abort_preserves_running_transaction_accounting_until_handles_stop",
+      "kext4::jbd2::transaction::tests::committing_transaction_rejects_a_foreign_journal_object",
+      "kext4::jbd2::transaction::tests::shared_metadata_access_marks_each_handle_without_duplicate_membership",
+      "kext4::jbd2::transaction::tests::running_transaction_trigger_accounts_for_outstanding_credits",
+      "kext4::jbd2::transaction::tests::admission_allows_active_handles_below_limit_and_waits_at_limit",
+      "kext4::jbd2::transaction::tests::wait_checkpoint_wakes_when_journal_aborts",
+      "kext4::file::component_tests::file_read_propagates_partial_device_error_without_exceeding_destination",
+      "kext4::jbd2::transaction::tests::wait_checkpoint_blocks_until_checkpoint_finishes",
+      "kext4::journal::component_tests::sync_filesystem_propagates_flush_error",
+      "kext4::journal::component_tests::sync_filesystem_flushes_device_and_reclaims_clean_metadata",
+      "kext4::jbd2::commit::tests::bounds_journal_write_batches",
+      "kext4::file::component_tests::ordered_writeback_restarts_across_hole_mapped_and_unwritten_runs",
+      "kext4::file::component_tests::ordered_writeback_prealloc_budget_zero_allocates_only_dirty_blocks",
+      "kext4::file::component_tests::regular_file_mutation_accepts_huge_file_feature_for_sector_accounted_inode",
+      "kext4::file::component_tests::ordered_writeback_preserves_prealloc_budget_across_five_restarts",
+      "kext4::file::component_tests::ordered_writeback_restarts_transaction_for_actual_allocation_runs",
+      "kext4::file::component_tests::ordered_writeback_converts_unwritten_extent_and_zero_fills_partial_block",
+      "kext4::extent::component_tests::extent_mutation_splits_multiple_leaf_blocks",
+      "kext4::journal::component_tests::successful_handle_can_finish_while_another_handle_remains_active",
+      "kext4::journal::component_tests::failed_handle_reusing_shared_metadata_aborts_mount_journal",
+      "kext4::extent::component_tests::extent_leaf_split_leaves_space_in_reused_leaf",
+      "kext4::journal::component_tests::explicit_sync_commit_failure_aborts_mount_journal",
+      "kext4::journal::recovery_tests::recovers_persisted_allocator_journal_commit_before_checkpoint",
+      "kext4::journal::recovery_tests::symlink_data_block_recovers_after_journal_replay",
+      "kext4::journal::component_tests::expected_error_on_empty_handle_does_not_abort_other_active_handle",
+      "kext4::journal::component_tests::commit_failure_after_metadata_publication_aborts_mount_journal",
+      "kext4::journal::component_tests::expected_error_after_metadata_access_aborts_without_rewinding_state",
+      "kext4::mballoc::component_tests::mballoc_rejects_exact_request_with_smaller_minimum",
+      "kext4::mballoc::component_tests::mballoc_returns_explicit_partial_run_when_fragmented",
+      "kext4::mballoc::component_tests::mballoc_allocates_goal_aligned_contiguous_run",
+      "kext4::journal::recovery_tests::recovery_rebases_transaction_sequence_before_regular_orphan_cleanup",
+      "kext4::mballoc::tests::free_extent_cache_tracks_allocate_and_release",
+      "kext4::mballoc::tests::free_extent_cache_suggests_goal_inside_free_run",
+      "kext4::mballoc::tests::free_extent_cache_uses_order_buckets_for_best_extent",
+      "kext4::mballoc::tests::free_extent_cache_prefers_expected_run_over_short_goal_tail",
+      "kext4::mballoc::component_tests::mballoc_falls_back_when_group_cannot_satisfy_minimum_run",
+      "kext4::journal::component_tests::expected_error_before_metadata_access_does_not_poison_mount_journal",
+      "kext4::mballoc::component_tests::mballoc_run_allocation_lazy_initializes_nonzero_group_bitmap",
+      "kext4::journal::tests::sync_filesystem_drains_pending_metadata_checkpoint",
+      "kext4::journal::tests::failed_checkpoint_worker_keeps_pending_work",
+      "kext4::journal::tests::successful_operations_share_running_transaction_until_sync",
+      "kext4::journal::tests::inode_sync_conservatively_commits_the_current_running_transaction",
+      "kext4::namei::tests::corrupt_htree_checksum_identifies_directory_and_logical_block",
+      "kext4::orphan::component_tests::cleanup_orphans_rejects_orphan_file_pending_feature",
+      "kext4::journal::recovery_tests::recovery_selection_uses_ext4_flag_and_clears_empty_journal",
+      "kext4::orphan::component_tests::removing_orphan_tail_does_not_restore_stale_predecessor_next",
+      "kext4::namei::component_tests::eviction_release_batch_no_data_blocks_fast_path",
+      "kext4::orphan::file_tests::full_orphan_file_falls_back_to_legacy_list",
+      "kext4::namei::tests::symlink_delete_releases_data_block_through_metadata_forget",
+      "kext4::orphan::file_tests::recovery_orphan_propagates_unsupported_inode_format",
+      "kext4::orphan::file_tests::orphan_block_checksum_matches_linux_seed_and_block_order",
+      "kext4::orphan::file_tests::orphan_file_empty_rejects_uninitialized_feature_state",
+      "kext4::orphan::file_tests::orphan_file_add_remove_updates_slot_checksum_and_free_count",
+      "kext4::orphan::component_tests::legacy_orphan_cleanup_preserving_recovery_evicts_zero_link_inode",
+      "kext4::superblock::tests::journal_mapping_records_complete_mapped_ranges",
+      "kext4::superblock::tests::mutable_state_reload_revalidates_mount_features",
+      "kext4::superblock::tests::mount_rejects_non_extent_after_superblock_decode",
+      "kext4::superblock::tests::recover_rejects_orphan_file_without_backing_inode",
+      "kext4::superblock::tests::journal_mapping_requires_every_block_to_be_written",
+      "kext4::superblock::tests::reload_rejects_replayed_descriptor_address_changes",
+      "kext4::superblock::tests::indexed_hash_policy_initialization_does_not_persist",
+      "kext4::superblock::tests::journal_location_preserves_external_device_and_uuid",
+      "kext4::superblock::tests::mount_validates_checksums_and_device_geometry",
+      "kext4::superblock::tests::orlov_top_level_directory_uses_child_name_hash_start",
+      "kext4::superblock::tests::mounted_journal_rejects_mapping_shorter_than_s_maxlen",
+      "kext4::orphan::tests::recovery_rejects_reserved_out_of_range_and_unallocated_heads",
+      "kext4::superblock::tests::writable_mount_finalization_persists_unsigned_default",
+      "kext4::superblock::tests::mounted_journal_rejects_extent_beyond_filesystem_device",
+      "kext4::namei::tests::namespace_removal_tracks_orphan_file_until_final_eviction",
+      "kext4::superblock::tests::mounted_journal_accepts_inode_capacity_larger_than_s_maxlen",
+      "kext4::superblock::tests::physical_block_validation_rejects_filesystem_metadata_zones",
+      "kext4::superblock::tests::journal_location_rejects_ambiguous_or_missing_journal_fields",
+      "kext4::superblock::tests::recover_rejects_clean_legacy_orphan_without_a_journal",
+      "kext4::superblock::tests::orlov_hash_ignores_htree_default_version_and_unsigned_policy",
+      "kext4::superblock::unittests::mount_hash_policy_matches_linux_signedness_order",
+      "kext4::superblock::unittests::mount_hash_policy_rejects_invalid_default_hash",
+      "kext4::orphan::component_tests::orphan_cleanup_finishes_committed_shrink_after_crash_point",
+      "kext4::superblock::tests::mount_rejects_clean_legacy_orphan_head_without_recovery",
+      "kext4::namei::component_tests::eviction_release_batch_single_batch_empties_tree",
+      "kext4::superblock::tests::public_inode_load_rejects_reserved_internal_journal",
+      "kext4::vfs::tests::last_statfs_mount_option_wins",
+      "kext4::vfs::tests::fiemap_reports_separate_delayed_runs",
+      "kext4::vfs::tests::statfs_mount_options_default_to_bsddf",
+      "kext4::vfs::tests::unsupported_mount_options_are_rejected",
+      "kext4::vfs::tests::fiemap_clips_mapping_runs_to_the_query_end",
+      "kext4::vfs::tests::fiemap_merges_contiguous_legacy_block_runs",
+      "kext4::vfs::tests::bytes_after_mount_data_terminator_are_ignored",
+      "kext4::vfs::tests::setattr_result_uses_post_encoding_inode_values",
+      "kext4::vfs::tests::xattr_set_flags_preserve_all_four_combinations",
+      "kext4::vfs::tests::rename_support_is_limited_to_move_and_noreplace",
+      "kext4::vfs::tests::xattr_name_mapping_accepts_public_ext4_namespaces",
+      "kext4::vfs::tests::fiemap_does_not_mark_a_full_partial_result_as_last",
+      "kext4::vfs::tests::linux_default_acl_and_user_xattr_options_are_accepted",
+      "kext4::vfs::tests::fiemap_reports_delayed_allocation_with_unknown_location",
+      "kext4::vfs::tests::fiemap_reports_mapped_and_unwritten_extents_but_skips_holes",
+      "kext4::namei::component_tests::eviction_release_batch_partial_extent_split",
+      "kext4::truncate::component_tests::truncate_grow_zeroes_mapped_old_eof_tail",
+      "kext4::journal::recovery_tests::recover_keeps_recovery_feature_when_regular_orphan_cleanup_fails",
+      "kext4::xattr::component_tests::corrupt_external_xattr_checksum_identifies_inode_and_physical_block",
+      "kext4::xattr::tests::external_xattr_entries_must_be_sorted",
+      "kext4::xattr::tests::xattr_entry_names_reject_embedded_nul",
+      "kext4::xattr::tests::xattr_value_ranges_allow_shared_value",
+      "kext4::xattr::tests::xattr_value_ranges_reject_partial_overlap",
+      "kext4::xattr::tests::inline_xattr_listing_emits_only_borrowed_names",
+      "kext4::xattr::tests::inline_xattr_set_replace_and_remove_round_trips",
+      "kext4::xattr::tests::replacing_an_identical_xattr_value_is_unchanged",
+      "kext4::xattr::tests::storage_plan_rejects_internal_extra_isize_shrink",
+      "kext4::xattr::tests::xattr_mutation_credits_follow_storage_transition",
+      "kext4::xattr::tests::xattr_remove_preserves_unrelated_storage_regions",
+      "kext4::xattr::tests::external_xattr_zero_entry_hash_disables_block_hash",
+      "kext4::xattr::tests::external_xattr_header_allows_nonzero_reserved_words",
+      "kext4::xattr::tests::inline_xattr_encode_orders_entries_for_linux_lookup",
+      "kext4::xattr::tests::extra_isize_expansion_uses_linux_last_entry_fallback",
+      "kext4::xattr::tests::xattr_set_mode_enforces_create_and_replace_atomically",
+      "kext4::truncate::component_tests::truncate_grow_keeps_new_range_sparse_and_zero_reading",
+      "kext4::xattr::tests::settable_xattr_validation_rejects_unsupported_namespace",
+      "kext4::xattr::tests::extra_isize_expansion_keeps_system_data_in_the_inode_body",
+      "kext4::xattr::tests::extra_isize_layout_falls_back_to_minimum_then_current_size",
+      "kext4::xattr::tests::inline_xattr_encode_reports_external_block_requirement",
+      "kext4::xattr::tests::xattr_set_keeps_current_extra_isize_when_value_moves_external",
+      "kext4::truncate::component_tests::truncate_shrink_releases_tail_blocks_and_zeroes_partial_eof_block",
+      "kext4::xattr::tests::external_xattr_encode_matches_linux_hashes_for_multiple_entries",
+      "kext4::xattr::tests::extra_isize_expansion_does_not_rebalance_existing_external_xattrs",
+      "kext4::xattr::tests::xattr_mutation_reuses_unchanged_shared_external_block_when_disk_is_full",
+      "kext4::xattr::unittests::mutation_marks_new_external_block_for_preallocation",
+      "kext4::xattr::tests::xattr_set_uses_inode_and_external_block_without_rebalancing",
+      "kvfs::address_space::tests::address_space_identity_is_owned_by_address_space",
+      "kext4::xattr::tests::extra_isize_expansion_moves_the_smallest_entry_that_frees_enough_space",
+      "kext4::xattr::unittests::mutation_reuses_unchanged_shared_external_block_when_disk_is_full",
+      "kvfs::address_space::tests::readahead::in_memory_files_skip_speculative_reads",
+      "kvfs::address_space::tests::readahead::prefetch_failure_preserves_successful_demand_read_and_its_error",
+      "kext4::truncate::component_tests::truncate_releases_delalloc_beyond_visible_eof_even_without_disk_shrink",
+      "kvfs::address_space::tests::readahead::prefetch_preserves_dirty_neighbours_and_zeroes_partial_eof_tail",
+      "kext4::xattr::component_tests::xattr_mutation_defers_extra_isize_expansion_to_inode_dirty",
+      "kvfs::address_space::tests::readahead::adjacent_demand_reads_preserve_contents_without_repeating_backing_io",
+      "kvfs::address_space::tests::truncate::evict_discards_dirty_folios_without_writeback",
+      "kvfs::address_space::tests::truncate::evict_on_clean_address_space_writes_back_zero_folios",
+      "kvfs::address_space::tests::truncate::truncate_partial_page_growth_zeros_cached_old_eof",
+      "kvfs::address_space::tests::truncate::truncate_publishes_i_size_before_two_mapping_invalidations",
+      "kvfs::address_space::tests::truncate::truncate_shrink_then_regrow_does_not_reveal_discarded_cache",
+      "kext4::namei::tests::symlink_create_delete_recreate_cycle_reads_current_target",
+      "kvfs::fiemap::tests::fill_next_extent_adds_implied_flags",
+      "kvfs::fiemap::tests::zero_capacity_counts_until_last_extent",
+      "kvfs::fiemap::tests::fill_next_extent_rejects_invalid_ranges",
+      "kvfs::address_space::tests::writeback::single_folio_failure_preserves_control_progress_for_retry",
+      "kvfs::file::tests::fsync_keeps_legacy_backend_default_success",
+      "kvfs::address_space::tests::writeback::failed_prefix_writeback_redirties_and_retry_converges",
+      "kvfs::file::tests::pipe_and_fifo_operation_tables_reject_sync",
+      "kvfs::libfs::tests::simple_empty_accepts_negative_dentry",
+      "kvfs::file::tests::fsync_preserves_sync_intent_and_backend_errors_on_readonly_file",
+      "kvfs::file::tests::fsync_path_only_file_returns_ebadf_without_calling_backend",
+      "kvfs::libfs::tests::simple_rename_noreplace_rejects_positive_target",
+      "kvfs::libfs::tests::simple_rename_rejects_unsupported_flags",
+      "kvfs::libfs::tests::simple_rename_replaces_positive_target",
+      "kvfs::lookup::tests::lookup_flags_encode_follow_policy",
+      "kvfs::lookup::tests::lookup_flags_encode_magic_link_rejection",
+      "kvfs::mount::tests::test_mount_flags_combine",
+      "kvfs::mount::tests::test_statfs_flags_values",
+      "kvfs::mount::tests::test_mount_flags_relatime",
+      "kvfs::mount::tests::test_mountpoint_thread_safety",
+      "kvfs::libfs::tests::simple_rename_directory_to_negative_target_updates_parent_links",
+      "kvfs::mount::tests::test_mount_flags_constants_values",
+      "kvfs::mount::tests::test_root_mount_can_be_readonly",
+      "kvfs::libfs::tests::simple_rename_rejects_noreplace_exchange_combination",
+      "kvfs::mount::tests::test_readonly_mount_blocks_create",
+      "kvfs::mount::tests::test_readonly_mount_blocks_rename",
+      "kvfs::mount::tests::test_readonly_mount_blocks_unlink",
+      "kvfs::mount::tests::test_root_mount_defaults_to_writable",
+      "kvfs::mount::tests::test_unmount_rejects_non_mount_root_path",
+      "kvfs::mount::tests::test_metadata_uses_synthetic_device_identity",
+      "kvfs::mount::tests::test_metadata_owner_and_group_authorization",
+      "kvfs::mount::tests::test_render_from_reports_unreachable_mount_tree",
+      "kvfs::mount::tests::test_bind_mount_unmount_preserves_source_dentry",
+      "kvfs::mount::tests::test_child_mount_flags_are_independent_from_parent",
+      "kvfs::mount::tests::test_unmount_all_recursively_clears_nested_mounts",
+      "kvfs::mount::tests::test_unmount_rejects_mount_with_nested_children",
+      "kvfs::mount::tests::test_make_mount_private_rejects_non_mount_root_path",
+      "kvfs::mount::tests::test_sticky_directory_rejects_unrelated_user_delete",
+      "kvfs::mount::tests::test_make_mount_private_accepts_visible_initial_root",
+      "kext4::truncate::component_tests::prepared_regular_shrink_leaves_visible_size_for_vfs_pagecache",
+      "kvfs::mount::tests::test_overmount_hides_previous_and_restores_on_unmount",
+      "kvfs::mount::tests::test_nested_mount_root_dotdot_crosses_to_parent_mount",
+      "kvfs::mount::tests::test_reconfigure_rw_rejects_backend_readonly_superblock",
+      "kvfs::mount::tests::test_stat_rdonly_combined_with_mount_rdonly_is_readonly",
+      "kvfs::mount::tests::test_hidden_mount_cannot_be_unmounted_while_overmounted",
+      "kvfs::mount::tests::test_writable_mount_allows_operations_to_reach_filesystem",
+      "kvfs::mount::tests::test_remount_updates_mount_and_shared_superblock_flags",
+      "kvfs::mount::tests::test_mountpoint_child_tracking_updates_for_mount_and_unmount",
+      "kvfs::mount::tests::test_mount_root_keeps_root_dentry_name_and_dotdot_crosses_mount",
+      "kvfs::mount::tests::test_filesystem_stat_readonly_makes_location_effectively_readonly",
+      "kvfs::mount::tests::test_initial_namespace_layers_visible_root_over_structural_root",
+      "kvfs::mount::tests::test_mount_namespace_clone_copies_tree_and_retargets_paths",
+      "kvfs::mount::tests::test_timestamp_authorization_distinguishes_current_and_explicit_values",
+      "kvfs::mount::tests::test_mkdir_strips_requested_setid_bits_before_owner_initialization",
+      "kvfs::namei::tests::lookup_flags_are_typed_not_raw_bools",
+      "kvfs::namei::tests::mkdir_at_reports_existing_root",
+      "kvfs::namei::tests::parent_at_preserves_root_final_type",
+      "kvfs::namei::tests::magic_link_follow_uses_lookup_intent",
+      "kext4::journal::tests::journal_queue_appends_two_commits_and_advances_tail",
+      "kvfs::namei::tests::final_symlink_follow_policy_is_typed",
+      "kvfs::namei::tests::o_path_directory_rejects_non_directory",
+      "kvfs::namei::tests::non_final_magic_link_is_followed_by_namei",
+      "kvfs::namei::tests::may_mknod_assigns_linux_errors_to_decoded_types",
+      "kvfs::namei::tests::mknod_at_preserves_linux_error_precedence",
+      "kvfs::namei::tests::mkdir_at_uses_locked_vfs_mode_preparation",
+      "kvfs::namei::tests::negative_cached_dentry_is_not_a_pathwalk_target",
+      "kvfs::namei::tests::create_operations_preserve_trailing_slash_policy",
+      "kvfs::namei::tests::open_create_uses_shared_vfs_mode_preparation",
+      "kvfs::namei::tests::writable_open_lifetime_updates_inode_write_count",
+      "kvfs::namei::tests::open_create_existing_precedes_create_only_errors",
+      "kvfs::namei::tests::open_magic_link_uses_object_instead_of_display_path",
+      "kvfs::namei::tests::mknod_at_strips_setgid_like_linux_vfs_prepare_mode",
+      "kvfs::namei::tests::open_checks_final_inode_and_captures_opening_credential",
+      "kvfs::namei::tests::magic_link_no_follow_and_readlink_do_not_follow_target",
+      "kvfs::namei::tests::non_final_symlink_is_followed_even_when_final_no_follow",
+      "kvfs::namei::tests::mknod_at_dispatches_types_and_prepares_callback_arguments",
+      "kvfs::namei::tests::fifo_open_preserves_resolved_path_and_inode_identity",
+      "kvfs::node::dentry::tests_dentry::test_dentry_rejects_invalid_child_names",
+      "kvfs::namei::tests::pathname_walk_requires_search_permission_on_intermediate_directory",
+      "kvfs::namei::tests::o_path_trailing_slash_follows_symlink_and_requires_directory",
+      "kvfs::node::dentry::tests_dentry::test_dentry_key_uniqueness",
+      "kvfs::node::dentry::tests_dentry::test_remove_rejects_parent_inode_as_victim",
+      "kvfs::node::dentry::tests_dentry::test_dentry_positive_and_negative_helpers",
+      "kvfs::namei::tests::magic_link_rejection_applies_to_final_and_non_final_components",
+      "kvfs::node::dentry::tests_dentry::test_dentry_file_helpers_and_private_data",
+      "kvfs::node::dentry::tests_dentry::test_direntry_read_link_and_downcast_paths",
+      "kvfs::node::dentry::tests_dentry::test_directory_inode_rejects_second_live_alias",
+      "kvfs::node::dentry::tests_dentry::test_rmdir_uses_directory_removal_callback",
+      "kvfs::node::dentry::tests_dentry::test_lookup_non_cacheable_positive_retracts",
+      "kvfs::node::dentry::tests_dentry::test_direntry_parent_path_and_ancestor_helpers",
+      "kvfs::node::dentry::tests_dentry::test_unlink_validator_observes_callback_victim",
+      "kvfs::node::dentry::tests_dentry::test_lookup_non_cacheable_negative_retracts",
+      "kvfs::node::dentry::tests_dentry::test_create_instantiates_cached_lookup_miss",
+      "kvfs::node::dentry::tests_dentry::test_replace_lookup_candidate_preserves_replacer",
+      "kvfs::node::dentry::tests_dentry::test_rename_replace_keeps_source_inode_identity",
+      "kvfs::node::dentry::tests_dentry::test_cross_directory_rename_moves_source_dentry",
+      "kvfs::node::dentry::tests_dentry::test_superblock_inode_cache_reuses_live_identity",
+      "kvfs::node::dentry::tests_dentry::test_rename_rejects_directory_move_into_descendant",
+      "kvfs::node::dentry::tests_dentry::test_rename_rejects_noreplace_exchange_combination",
+      "kvfs::node::dentry::tests_dentry::test_invalidate_cached_child_handles_negative_dentry",
+      "kvfs::node::dentry::tests_dentry::test_distinct_entries_create_distinct_inode_identities",
+      "kvfs::node::dentry::tests_dentry::test_rename_noreplace_rejects_target_with_source_inode",
+      "kvfs::node::dentry::tests_dentry::test_directory_constructor_reuses_alias_at_same_location",
+      "kvfs::node::dentry::tests_dentry::test_failed_root_initialization_drops_nascent_superblock",
+      "kvfs::node::dentry::tests_dentry::test_rename_target_ancestor_uses_linux_trap_errors",
+      "kvfs::node::dentry::tests_dentry::test_bind_super_block_skips_non_cacheable_children",
+      "kvfs::node::dentry::tests_dentry::test_rename_directory_emptiness_is_filesystem_owned",
+      "kvfs::node::dentry::tests_dentry::test_dentry_backing_metadata_refresh_validates_entry_state",
+      "kvfs::node::dentry::tests_dentry::test_rename_moves_cache_entry_without_changing_inode_identity",
+      "kvfs::node::dentry::tests_dentry::test_hashed_child_without_external_reference_keeps_directory_nonempty",
+      "kvfs::node::dentry::tests_dentry::test_superblock_inode_cache_isolates_equal_inode_numbers",
+      "kvfs::node::dentry::tests_dentry::test_rename_exchange_swaps_cache_entries_without_changing_inode_identity",
+      "kvfs::node::inode::tests::special_inodes_preserve_rdev",
+      "kvfs::node::dentry::tests_dentry::test_dentry_cache_retains_hashed_children_and_preserves_parent_lifetime",
+      "kvfs::node::inode::tests::inode_link_count_helpers_update_link_count",
+      "kvfs::node::device::tests::cdev_del_clears_inode_cdev",
+      "kvfs::node::dentry::tests_dentry::test_rename_noreplace_rejects_existing_target_before_filesystem_callback",
+      "kvfs::node::inode::tests::backing_metadata_refresh_updates_mutable_cached_attributes",
+      "kvfs::node::inode::tests::filesystem_attribute_operations_are_the_vfs_inode_state",
+      "kvfs::open_flags::tests::exclusive_without_create_does_not_set_create_intent",
+      "kvfs::path::tests::test_path_normalization",
+      "kvfs::path::tests::test_path_normalization_complex",
+      "kvfs::permission::tests::test_owner_rw_allowed",
+      "kvfs::node::inode::tests::inode_time_updates_use_superblock_timestamp_limits",
+      "kvfs::permission::tests::test_other_read_allowed",
+      "kvfs::node::inode::tests::resident_timestamps_follow_values_returned_by_filesystem",
+      "kvfs::permission::tests::test_owner_exec_allowed",
+      "kvfs::permission::tests::test_owner_read_allowed",
+      "kvfs::nullfs::tests::nullfs_is_empty_internal_anchor",
+      "kvfs::permission::tests::test_other_exec_allowed",
+      "kvfs::permission::tests::test_group_read_allowed_via_gid",
+      "kvfs::permission::tests::test_group_write_allowed_via_gid",
+      "kvfs::permission::tests::test_dir_search_allowed_for_owner",
+      "kvfs::open_flags::tests::exclusive_create_sets_intent_and_disables_final_symlink_following",
+      "kvfs::permission::tests::test_empty_request_always_allowed",
+      "kvfs::permission::tests::test_root_read_bypasses_zero_mode",
+      "kvfs::permission::tests::test_root_write_bypasses_zero_mode",
+      "kvfs::permission::tests::test_other_exec_denied_when_bit_clear",
+      "kvfs::permission::tests::test_owner_read_denied_when_bit_clear",
+      "kvfs::permission::tests::test_group_read_denied_when_not_member",
+      "kvfs::permission::tests::test_other_write_denied_when_bit_clear",
+      "kvfs::permission::tests::test_root_exec_denied_when_no_exec_bit",
+      "kvfs::permission::tests::test_group_exec_allowed_via_supplementary",
+      "kvfs::permission::tests::test_owner_write_allowed",
+      "kvfs::permission::tests::test_dir_search_denied_when_exec_bit_clear",
+      "kvfs::permission::tests::test_root_exec_allowed_when_any_exec_bit_set",
+      "kvfs::permission::tests::test_root_dir_search_bypasses_missing_exec_bit",
+      "kvfs::permission::tests::test_owner_bits_used_when_uid_matches_even_if_group_denies",
+      "kvfs::seq_file::tests::test_seq_file_rewinds_on_zero_offset",
+      "kvfs::pipe::tests::fifo_partner_counter_records_completed_rendezvous",
+      "kvfs::seq_file::tests::test_seq_file_reads_across_multiple_entries",
+      "kvfs::seq_file::tests::test_seq_file_rewinds_and_seeks_from_middle_offset",
+      "kvfs::permission::tests::test_group_read_allowed_via_supplementary",
+      "kvfs::types::tests::test_vfs_error_types",
+      "kvfs::types::tests::test_node_type_conversion",
+      "kvfs::types::tests::test_node_permission_bitflags",
+      "kvfs::types::tests::mknod_node_type_decodes_linux_type_field",
+      "kvfs::types::tests::test_super_block_handle_type_constraints",
+      "kvfs::seq_file::tests::test_seq_file_seeks_forward_from_beginning",
+      "kvfs::super_block::tests::superblock_separates_operations_from_private_state",
+      "kvfs::xattr::tests::security_namespace_mutations_require_privilege",
+      "kvfs::xattr::tests::immutable_and_append_only_inodes_reject_all_xattr_mutations",
+      "kvfs::xattr::tests::trusted_and_sticky_user_namespaces_require_privilege_or_owner",
+      "kvfs::xattr::tests::validates_xattr_names",
+      "kvfs::xattr::tests::user_namespace_follows_inode_type_and_dac",
+      "pagecache::filemap::private_prefetch_tests::prefetch_budget_replaces_distant_neighbours_and_preserves_demand_and_duplicates",
+      "pagecache::filemap::private_prefetch_tests::prefetch_budget_retains_referenced_or_busy_victim_if_index_is_stale",
+      "pagecache::filemap::private_prefetch_tests::prefetch_budget_retires_truncated_marks_and_preserves_modified_tails",
+      "pagecache::readahead::tests::private_refault_tags_are_exact_bounded_and_one_shot",
+      "pagecache::filemap::private_prefetch_tests::private_refault_records_only_removals_and_clears_on_resize_or_teardown",
+      "pagecache::filemap::private_prefetch_tests::prefetch_budget_promotes_before_callback_and_never_retires_exposed_frame",
+      "pagecache::tests::mapping_pages::cache_storage_does_not_own_visible_length",
+      "pagecache::tests::truncate::final_truncate_discards_dirty_folios",
+      "pagecache::tests::mapping_pages::cached_folio_roundtrip",
+      "pagecache::tests::truncate::growth_zeros_cached_tail_and_marks_it_dirty",
+      "pagecache::tests::truncate::shrink_drops_full_folios_and_zeros_surviving_tail",
+      "pagecache::tests::writeback::failed_writeback_restores_dirty_state",
+      "pagecache::tests::writeback::writeback_uses_owner_supplied_visible_length",
+      "kvfs::simple_file::tests::command_file_consumes_each_write_independently_of_offset",
+      "pagecache::tests::writeback::clean_folio_with_stale_dirty_tag_is_not_written",
+      "pagecache::tests::writeback::batched_writeback_failure_restores_dirty_index",
+      "pagecache::tests::writeback::batched_writeback_preserves_concurrent_redirty",
+      "pagecache::tests::writeback::failed_writeback_does_not_redirty_detached_folio",
+      "pagecache::tests::writeback::writeback_until_respects_dirty_index_and_page_budget",
+      "pagecache::tests::writeback::skipped_and_completed_pages_remain_accounted_after_error",
+      "pagecache::tests::writeback::batched_writeback_failure_cleans_only_complete_prefix_folios",
+      "pagecache::tests::truncate::shrink_and_final_teardown_remove_multiple_sparse_batches",
+      "pagecache::tests::writeback::stale_collected_folio_is_not_written_or_tagged_as_replacement",
+      "pagecache::tests::writeback::batch_prefix_validation_preserves_progress_and_finishes_all_folios",
+      "pagecache::tests::writeback::writeback_scans_sparse_windows_without_pinning_the_whole_range",
+      "pagecache::tests::writeback::batched_writeback_budget_stops_inside_second_window",
+      "pagecache::tests::writeback::redirty_in_previous_window_is_left_for_the_next_pass",
+      "kext4::namei::component_tests::eviction_release_batch_multi_batch_drains_tree",
+      "pagecache::tests::writeback::batched_writeback_bounds_submissions_and_completes_eof_tail",
+      "pagecache::tests::writeback::second_batch_error_finishes_prefix_and_leaves_unvisited_pages_dirty",
+      "kext4::journal::recovery_tests::clean_orphan_recovery_flush_failure_preserves_evidence_and_retries",
+      "kext4::journal::recovery_tests::invalid_orphan_head_recovery_failure_preserves_evidence_and_retries",
+      "kvfs::address_space::tests::readahead::private_refault_recovers_in_same_call_if_single_read_fails_and_window_succeeds",
+      "kvfs::address_space::tests::readahead::private_refault_propagates_callback_error_without_readahead_or_replay",
+      "kvfs::address_space::tests::readahead::private_refault_propagates_final_materialization_failure_without_callback",
+      "kext4::journal::recovery_tests::recovery_evicts_clean_zero_link_orphan_with_huge_file",
+      "kext4::journal::recovery_tests::partial_replay_write_failure_keeps_completed_block_and_recovery_evidence",
+      "kext4::xattr::component_tests::inline_and_external_xattr_persist_noop_and_opaque_acl_accounting",
+      "kext4::journal::recovery_tests::replay_barrier_failures_preserve_durable_blocks_and_recovery_evidence",
+      "kext4::xattr::component_tests::external_xattr_write_and_flush_failures_preserve_old_state_and_allow_retry"
+    ]
+  },
+  "diagnostic_r23_vs_r24": {
+    "inputs": {
+      "kernel_sha256": "5eeb2a270abf23674a20dfe40ff4353ceabef6cafe7f8b15b7e306f681e8dfdc",
+      "rootfs_sha256": "2817c7e2438075a42d8fc6d01d9e525164c9ea05d6696776d94ae26e901eeac4",
+      "guest_files_sha256": {
+        "index.html": "831cf28f3748940b450d1da325aa39a2dcaea2fee15b0532bf4111144d176b38",
+        "interaction.html": "58130daa4a2f426fd16b8bde93d964713f20e147da8af1537ab2d8b506d2fd58",
+        "layout.html": "a1b04f9aba81b4b7818be2e7a858d482d471bd0d625dee257f605b2129b8fc4c"
+      },
+      "upstream_commit": "0b6c59600a8782762a6112eb02cfd96347e496e6",
+      "host_kernel": "6.6.87.2-microsoft-standard-WSL2",
+      "host_cpu": "Intel(R) Core(TM) Ultra 9 285H",
+      "host_memtotal": "MemTotal:       16115904 kB",
+      "qemu": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+      "run_order": [
+        [
+          "baseline",
+          "candidate"
+        ],
+        [
+          "candidate",
+          "baseline"
+        ]
+      ],
+      "comparison": "kernels",
+      "measurement_scope": {
+        "root_block_read_probe": "QMP device disk0, cumulative logical reads",
+        "root_block_read_stages": [
+          "browser_start",
+          "renderer_inventory_seen",
+          "home_colors",
+          "css_visible"
+        ]
+      },
+      "candidate_kernel_sha256": "37e537960e71082a5f2e34eea62e61754d0adb6c8d5962856b3aaddea724930a",
+      "browser_mode": "baseline",
+      "incomplete_observation_policy": "record-and-continue",
+      "prepared_assets": {
+        "browser_script_sha256": "c68ea39d6977316ba9e63af487984d446a9216548ad3c33767642d3fbda93541",
+        "renderer_watch_sha256": "55a276c86fa9ad1644289585e77195aaaa26e2269b7955a55f4ccfbf43e1abd7"
+      }
+    },
+    "fixed_command": [
+      "qemu-system-aarch64",
+      "-machine",
+      "virt,gic-version=3",
+      "-cpu",
+      "cortex-a76",
+      "-accel",
+      "tcg,tb-size=160",
+      "-m",
+      "2048",
+      "-smp",
+      "4",
+      "-kernel",
+      "<kernel>",
+      "-drive",
+      "if=none,id=disk0,format=raw,snapshot=on,file=<cache>/3513c91023f7b432a6488478fcfd0f3d5fd5426bc040bdf36d742fc1ed5919ba.img",
+      "-device",
+      "virtio-blk-pci,drive=disk0",
+      "-netdev",
+      "user,id=net0,restrict=on",
+      "-device",
+      "virtio-net-pci,netdev=net0,romfile=",
+      "-device",
+      "virtio-gpu-pci",
+      "-device",
+      "virtio-keyboard-pci",
+      "-device",
+      "virtio-mouse-pci",
+      "-device",
+      "virtio-rng-pci",
+      "-vga",
+      "none",
+      "-no-reboot",
+      "-monitor",
+      "none",
+      "-chardev",
+      "socket,id=console,path=<workspace>/serial.sock,server=on,wait=off,logfile=<workspace>/serial.log",
+      "-serial",
+      "chardev:console",
+      "-qmp",
+      "unix:<workspace>/monitor.sock,server=on,wait=off",
+      "-display",
+      "none"
+    ],
+    "failures": [],
+    "summary": {
+      "baseline": {
+        "browser_to_window_s": {
+          "values": [
+            66.962,
+            69.751
+          ],
+          "median": 68.35650000000001,
+          "min": 66.962,
+          "max": 69.751
+        },
+        "browser_to_home_s": {
+          "values": [
+            71.261,
+            74.09
+          ],
+          "median": 72.6755,
+          "min": 71.261,
+          "max": 74.09
+        },
+        "browser_to_renderer_observed_s": {
+          "values": [
+            37.373,
+            38.222
+          ],
+          "median": 37.7975,
+          "min": 37.373,
+          "max": 38.222
+        },
+        "qemu_maxrss_bytes": {
+          "values": [
+            1187254272,
+            1195171840
+          ],
+          "median": 1191213056.0,
+          "min": 1187254272,
+          "max": 1195171840
+        },
+        "return_to_css_s": {
+          "values": [
+            3.715,
+            3.72
+          ],
+          "median": 3.7175000000000002,
+          "min": 3.715,
+          "max": 3.72
+        }
+      },
+      "candidate": {
+        "browser_to_window_s": {
+          "values": [
+            58.304,
+            59.019
+          ],
+          "median": 58.661500000000004,
+          "min": 58.304,
+          "max": 59.019
+        },
+        "browser_to_home_s": {
+          "values": [
+            61.895,
+            62.604
+          ],
+          "median": 62.2495,
+          "min": 61.895,
+          "max": 62.604
+        },
+        "browser_to_renderer_observed_s": {
+          "values": [
+            32.5,
+            32.811
+          ],
+          "median": 32.6555,
+          "min": 32.5,
+          "max": 32.811
+        },
+        "qemu_maxrss_bytes": {
+          "values": [
+            1191129088,
+            1185218560
+          ],
+          "median": 1188173824.0,
+          "min": 1185218560,
+          "max": 1191129088
+        },
+        "return_to_css_s": {
+          "values": [
+            3.717,
+            3.716
+          ],
+          "median": 3.7165,
+          "min": 3.716,
+          "max": 3.717
+        }
+      }
+    },
+    "comparison": {
+      "reference": "baseline",
+      "candidate": "candidate",
+      "planned_pairs": 2,
+      "complete_pairs": 2,
+      "pairs": [
+        {
+          "pair": 1,
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "samples": {
+            "baseline": {
+              "browser_to_window_s": 66.962,
+              "browser_to_home_s": 71.261,
+              "browser_to_renderer_observed_s": 37.373,
+              "qemu_maxrss_bytes": 1187254272,
+              "return_to_css_s": 3.715
+            },
+            "candidate": {
+              "browser_to_window_s": 58.304,
+              "browser_to_home_s": 61.895,
+              "browser_to_renderer_observed_s": 32.5,
+              "qemu_maxrss_bytes": 1191129088,
+              "return_to_css_s": 3.717
+            }
+          },
+          "missing_observations": [],
+          "candidate_minus_reference": {
+            "browser_to_window_s": -8.658,
+            "browser_to_home_s": -9.366,
+            "browser_to_renderer_observed_s": -4.873,
+            "qemu_maxrss_bytes": 3874816,
+            "return_to_css_s": 0.002
+          }
+        },
+        {
+          "pair": 2,
+          "order": [
+            "candidate",
+            "baseline"
+          ],
+          "samples": {
+            "candidate": {
+              "browser_to_window_s": 59.019,
+              "browser_to_home_s": 62.604,
+              "browser_to_renderer_observed_s": 32.811,
+              "qemu_maxrss_bytes": 1185218560,
+              "return_to_css_s": 3.716
+            },
+            "baseline": {
+              "browser_to_window_s": 69.751,
+              "browser_to_home_s": 74.09,
+              "browser_to_renderer_observed_s": 38.222,
+              "qemu_maxrss_bytes": 1195171840,
+              "return_to_css_s": 3.72
+            }
+          },
+          "missing_observations": [],
+          "candidate_minus_reference": {
+            "browser_to_window_s": -10.732,
+            "browser_to_home_s": -11.486,
+            "browser_to_renderer_observed_s": -5.411,
+            "qemu_maxrss_bytes": -9953280,
+            "return_to_css_s": -0.004
+          }
+        }
+      ],
+      "candidate_minus_reference": {
+        "browser_to_window_s": {
+          "values": [
+            -8.658,
+            -10.732
+          ],
+          "median": -9.695,
+          "min": -10.732,
+          "max": -8.658
+        },
+        "browser_to_home_s": {
+          "values": [
+            -9.366,
+            -11.486
+          ],
+          "median": -10.426,
+          "min": -11.486,
+          "max": -9.366
+        },
+        "browser_to_renderer_observed_s": {
+          "values": [
+            -4.873,
+            -5.411
+          ],
+          "median": -5.1419999999999995,
+          "min": -5.411,
+          "max": -4.873
+        },
+        "qemu_maxrss_bytes": {
+          "values": [
+            3874816,
+            -9953280
+          ],
+          "median": -3039232.0,
+          "min": -9953280,
+          "max": 3874816
+        },
+        "return_to_css_s": {
+          "values": [
+            0.002,
+            -0.004
+          ],
+          "median": -0.001,
+          "min": -0.004,
+          "max": 0.002
+        }
+      }
+    },
+    "cases": [
+      {
+        "run": "01-baseline",
+        "stages_s": {
+          "weston_ready": 4.048,
+          "browser_start": 4.349,
+          "renderer_inventory_seen": 41.722,
+          "window_white": 71.311,
+          "home_colors": 75.61,
+          "return_css": 81.457,
+          "css_visible": 85.172
+        },
+        "renderer_pid": 90,
+        "qemu_wait4": {
+          "exit": 0,
+          "maxrss_bytes": 1187254272,
+          "user_s": 151.652212,
+          "system_s": 35.82507
+        },
+        "metrics_sha256": "0e83a66c5094a1b439aabfb2b9e5d316c126ccba68c4d496510cb7f64173dc9c",
+        "serial_sha256": "ae3795f46da3ced7cd85597509709c8ea3fba3634af8ec975382707149da3767",
+        "root_block_reads": {
+          "browser_start": {
+            "request_s": [
+              4.349308,
+              4.350161
+            ],
+            "rd_bytes": 6800384,
+            "rd_operations": 521,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "renderer_inventory_seen": {
+            "request_s": [
+              41.722124,
+              41.722838
+            ],
+            "rd_bytes": 286323712,
+            "rd_operations": 10403,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "home_colors": {
+            "request_s": [
+              75.610088,
+              75.610781
+            ],
+            "rd_bytes": 463524864,
+            "rd_operations": 19266,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "css_visible": {
+            "request_s": [
+              85.172026,
+              85.172676
+            ],
+            "rd_bytes": 473904128,
+            "rd_operations": 19706,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          }
+        },
+        "browser_start_to_stage_root_reads": {
+          "renderer_inventory_seen": {
+            "rd_bytes": 279523328,
+            "rd_operations": 9882,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "home_colors": {
+            "rd_bytes": 456724480,
+            "rd_operations": 18745,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "css_visible": {
+            "rd_bytes": 467103744,
+            "rd_operations": 19185,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          }
+        }
+      },
+      {
+        "run": "01-candidate",
+        "stages_s": {
+          "weston_ready": 2.839,
+          "browser_start": 3.24,
+          "renderer_inventory_seen": 35.74,
+          "window_white": 61.544,
+          "home_colors": 65.135,
+          "return_css": 70.991,
+          "css_visible": 74.708
+        },
+        "renderer_pid": 86,
+        "qemu_wait4": {
+          "exit": 0,
+          "maxrss_bytes": 1191129088,
+          "user_s": 135.734097,
+          "system_s": 34.820622
+        },
+        "metrics_sha256": "76bbc8bb03739922c72d4b605fccfc203f4b7d1df5556be6e588de7720742024",
+        "serial_sha256": "665caf18e0a2584bd807faa3929d70ee49c3cdd33a2daed91cb07508abad3cfb",
+        "root_block_reads": {
+          "browser_start": {
+            "request_s": [
+              3.24001,
+              3.240599
+            ],
+            "rd_bytes": 7091200,
+            "rd_operations": 534,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "renderer_inventory_seen": {
+            "request_s": [
+              35.7402,
+              35.740793
+            ],
+            "rd_bytes": 260367360,
+            "rd_operations": 11081,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "home_colors": {
+            "request_s": [
+              65.134993,
+              65.135629
+            ],
+            "rd_bytes": 405492736,
+            "rd_operations": 19999,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "css_visible": {
+            "request_s": [
+              74.707566,
+              74.708187
+            ],
+            "rd_bytes": 414155776,
+            "rd_operations": 20447,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          }
+        },
+        "browser_start_to_stage_root_reads": {
+          "renderer_inventory_seen": {
+            "rd_bytes": 253276160,
+            "rd_operations": 10547,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "home_colors": {
+            "rd_bytes": 398401536,
+            "rd_operations": 19465,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "css_visible": {
+            "rd_bytes": 407064576,
+            "rd_operations": 19913,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          }
+        }
+      },
+      {
+        "run": "02-candidate",
+        "stages_s": {
+          "weston_ready": 3.141,
+          "browser_start": 3.442,
+          "renderer_inventory_seen": 36.253,
+          "window_white": 62.461,
+          "home_colors": 66.046,
+          "return_css": 71.898,
+          "css_visible": 75.614
+        },
+        "renderer_pid": 87,
+        "qemu_wait4": {
+          "exit": 0,
+          "maxrss_bytes": 1185218560,
+          "user_s": 138.300633,
+          "system_s": 34.382023
+        },
+        "metrics_sha256": "0d7298b93e138c3982458577b57cd6c83208c48b91d1baa422f2d408f83dd4c8",
+        "serial_sha256": "f2e03ca60024c70b91ece179799aa5e66a97d5b4d5681a5dbbc2d10b3a8a5108",
+        "root_block_reads": {
+          "browser_start": {
+            "request_s": [
+              3.441732,
+              3.442309
+            ],
+            "rd_bytes": 7402496,
+            "rd_operations": 565,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "renderer_inventory_seen": {
+            "request_s": [
+              36.253037,
+              36.253635
+            ],
+            "rd_bytes": 261309440,
+            "rd_operations": 11123,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "home_colors": {
+            "request_s": [
+              66.046019,
+              66.046742
+            ],
+            "rd_bytes": 405529600,
+            "rd_operations": 20037,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "css_visible": {
+            "request_s": [
+              75.614316,
+              75.615042
+            ],
+            "rd_bytes": 414131200,
+            "rd_operations": 20491,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          }
+        },
+        "browser_start_to_stage_root_reads": {
+          "renderer_inventory_seen": {
+            "rd_bytes": 253906944,
+            "rd_operations": 10558,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "home_colors": {
+            "rd_bytes": 398127104,
+            "rd_operations": 19472,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "css_visible": {
+            "rd_bytes": 406728704,
+            "rd_operations": 19926,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          }
+        }
+      },
+      {
+        "run": "02-baseline",
+        "stages_s": {
+          "weston_ready": 3.234,
+          "browser_start": 3.535,
+          "renderer_inventory_seen": 41.757,
+          "window_white": 73.286,
+          "home_colors": 77.625,
+          "return_css": 83.481,
+          "css_visible": 87.201
+        },
+        "renderer_pid": 88,
+        "qemu_wait4": {
+          "exit": 0,
+          "maxrss_bytes": 1195171840,
+          "user_s": 155.969981,
+          "system_s": 37.352844
+        },
+        "metrics_sha256": "858d55fa21541823ed96882a124074c5cc972f2654457628ab4cea514d7c6c64",
+        "serial_sha256": "e8a06139f9caaa7bbad3b78013682212be9eaa896e1a27d09f9df01126c6a3a4",
+        "root_block_reads": {
+          "browser_start": {
+            "request_s": [
+              3.534755,
+              3.535481
+            ],
+            "rd_bytes": 6747136,
+            "rd_operations": 516,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "renderer_inventory_seen": {
+            "request_s": [
+              41.756871,
+              41.75768
+            ],
+            "rd_bytes": 294581248,
+            "rd_operations": 10742,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "home_colors": {
+            "request_s": [
+              77.62554,
+              77.626324
+            ],
+            "rd_bytes": 466007040,
+            "rd_operations": 19427,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "css_visible": {
+            "request_s": [
+              87.200846,
+              87.201561
+            ],
+            "rd_bytes": 476156928,
+            "rd_operations": 19860,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          }
+        },
+        "browser_start_to_stage_root_reads": {
+          "renderer_inventory_seen": {
+            "rd_bytes": 287834112,
+            "rd_operations": 10226,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "home_colors": {
+            "rd_bytes": 459259904,
+            "rd_operations": 18911,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "css_visible": {
+            "rd_bytes": 469409792,
+            "rd_operations": 19344,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          }
+        }
+      }
+    ],
+    "paired_root_read_deltas": [
+      {
+        "pair": 1,
+        "candidate_minus_reference": {
+          "renderer_inventory_seen": {
+            "rd_bytes": -26247168,
+            "rd_operations": 665,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "home_colors": {
+            "rd_bytes": -58322944,
+            "rd_operations": 720,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "css_visible": {
+            "rd_bytes": -60039168,
+            "rd_operations": 728,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          }
+        }
+      },
+      {
+        "pair": 2,
+        "candidate_minus_reference": {
+          "renderer_inventory_seen": {
+            "rd_bytes": -33927168,
+            "rd_operations": 332,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "home_colors": {
+            "rd_bytes": -61132800,
+            "rd_operations": 561,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          },
+          "css_visible": {
+            "rd_bytes": -62681088,
+            "rd_operations": 582,
+            "failed_rd_operations": 0,
+            "invalid_rd_operations": 0
+          }
+        }
+      }
+    ]
+  }
+}
