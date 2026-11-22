@@ -1,0 +1,10 @@
+private_fault_io format=3 sample_stride=64 time_unit=ticks timer_hz=62500000
+cpu exec samples calls file_hits file_misses bypass prefetch_calls prefetch_pages_requested prefetch_errors invalidate_ticks probe_ticks prefetch_ticks get_ticks callback_copy_ticks return_ticks prefetch_pages_completed prefetch_pages_inserted prefetch_pages_duplicate prefetch_duplicate_suffix_pages ext4_requests ext4_read_bytes ext4_buffer_ticks ext4_read_at_ticks ext4_publish_ticks
+0 0 1 1 1 0 0 0 0 0 63 298 0 3185 602 262 0 0 0 0 0 0 0 0 0
+0 1 8 8 8 0 0 0 0 0 901 3373 0 14132 29852 2508 0 0 0 0 0 0 0 0 0
+1 0 1 1 1 0 0 0 0 0 45 390 0 460 573 172 0 0 0 0 0 0 0 0 0
+1 1 5 5 5 0 0 0 0 0 445 2561 0 3036 37437 3756 0 0 0 0 0 0 0 0 0
+2 0 2 2 1 1 0 1 2 0 72 569 72877 609 627 785 2 2 0 0 1 6680 720 69518 2332
+2 1 18 18 17 1 0 1 8 0 5183 26698 125951 38836 300731 10228 8 8 0 0 1 32768 2746 88530 27062
+3 0 3 3 2 1 0 1 2 0 179 994 40729 1357 1559 1115 2 1 1 1 1 6072 623 36622 3077
+3 1 14 14 11 3 0 3 24 0 1120 5150 236443 8057 46109 6137 24 8 16 16 3 98304 5232 148612 80649

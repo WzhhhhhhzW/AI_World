@@ -123,4 +123,8 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 
 两组同探针交替诊断均完成。renderer 观测前抽样预读页数分别从 771 到 583、从 877 到 514，减少 24.4% 和 41.4%。同步预读累计耗时分别从 200.69 到 204.04 毫秒、从 214.93 到 204.94 毫秒。两组对耗时的影响方向不同。计时可含任务重叠，且同步预读区间不含裁剪判断的页缓存查询。继续测量 ext4 每次读取、缓冲分配和缓存完成的开销。[逐轮计数及快照](evidence/finals-20261122/readahead-tail-io-probe/observations.json) · [队友分支的补丁与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/e169ba30177621ded937cebc1eeacd46627d23d9/work/performance-20261122-finals-r16)
 
+## 11 月 22 日 ext4 预读细分
+
+两轮诊断均完成。首次观测 renderer 前，两轮分别抽到 103 和 102 次 ext4 预读。`read_at` 累计 148.04 和 198.26 毫秒，占三个 ext4 分项的 77.4% 和 80.6%。缓冲区分配及清零仅占 2.6% 和 2.2%。`read_at` 覆盖挂载锁、extent 查找校验和同步块请求。只读运行盘的 Chromium 主程序使用一个带校验的 4 KiB extent 叶节点。因此优先验证保留完整校验语义的 CRC32C 查表读路径，实际启动收益另行对照。[分核数据和原始快照](evidence/finals-20261122/private-file-fault-ext4/observations.json) · [队友分支补丁与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/e41fea879114ed4db496a4c9a336ce99c56e67de/work/performance-20261122-finals-r17)
+
 诊断批次可用 `--keep-going` 保留观测超时时的画面和原始记录，并完成其他样本。任何样本超时，整批仍返回失败，时延汇总只包含完成观察的样本。
