@@ -41,6 +41,34 @@ def write_json(path, data):
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def kvm_preflight():
+    if sys.platform != "linux" or os.uname().machine.lower() not in ("aarch64", "arm64"):
+        raise ValueError("--accel kvm 需要原生 AArch64 Linux 宿主")
+    import fcntl
+    import stat
+
+    try:
+        with open("/dev/kvm", "r+b", buffering=0) as device:
+            if not stat.S_ISCHR(os.fstat(device.fileno()).st_mode):
+                raise ValueError("/dev/kvm 不是字符设备")
+            # Linux KVM UAPI: KVM_GET_API_VERSION = _IO(0xAE, 0x00).
+            version = fcntl.ioctl(device.fileno(), 0xAE00)
+    except OSError as exc:
+        raise ValueError(f"无法以读写方式使用 /dev/kvm：{exc}") from exc
+    if version != 12:
+        raise ValueError(f"/dev/kvm 返回不支持的 KVM API 版本 {version}")
+    return {"device": "/dev/kvm", "api_version": version, "host_machine": os.uname().machine}
+
+
+def verify_kvm(monitor, evidence):
+    state = monitor.call("query-kvm")
+    evidence["query_kvm"] = state
+    if (not isinstance(state, dict) or state.get("enabled") is not True
+            or state.get("present") is not True):
+        raise RuntimeError(f"QMP 未确认 KVM 已启用：{state!r}")
+    evidence["verified"] = True
+
+
 def file_hash(path):
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -347,8 +375,9 @@ def soak(monitor, work, output, pid):
             "browser_pid": int(identity[0]), "weston_pid": int(identity[1])}
 
 
-def measure(monitor, work, output, start, result, *, startup_only=False):
+def measure(monitor, work, output, start, result, *, startup_only=False, accel="tcg"):
     stages = result["stages_s"]
+    first_frame = "window_visible" if accel == "kvm" else "window_white"
     def mark(label):
         if label not in stages:
             stages[label] = round(time.monotonic() - start, 3)
@@ -365,10 +394,11 @@ def measure(monitor, work, output, start, result, *, startup_only=False):
             next_frame = time.monotonic() + .7
             counts = monitor.colors(work / "probe.ppm")
             result["frames"].append([round(time.monotonic() - start, 3), counts])
-            if counts["ffffff"] > 250000 and "window_white" not in stages:
-                mark("window_white")
-                monitor.screenshot(output / "browser-window.png")
+            white_visible = counts["ffffff"] > 250000
             home_visible = all(counts[c] > 3000 for c in HOME_COLORS)
+            if first_frame not in stages and (white_visible or (accel == "kvm" and home_visible)):
+                mark(first_frame)
+                monitor.screenshot(output / "browser-window.png")
             if home_visible and "home_colors" not in stages:
                 mark("home_colors")
                 monitor.screenshot(output / "home.png")
@@ -392,7 +422,7 @@ def measure(monitor, work, output, start, result, *, startup_only=False):
     matched = re.search(rb"FINALS_RENDERER_SEEN_FIRST pid=(\d+)", raw)
     if matched:
         result["renderer_pid"] = int(matched[1])
-    if not result["valid_visual"] or not result["renderer_pid"] or "window_white" not in stages:
+    if not result["valid_visual"] or not result["renderer_pid"] or first_frame not in stages:
         with contextlib.suppress(OSError, RuntimeError, ValueError):
             monitor.screenshot(output / "observation-timeout.png")
         raise IncompleteObservation(f"客体观测不完整，已保留运行记录：{output}")
@@ -431,12 +461,14 @@ def capture_guest_memory(work, output, pid):
 
 
 def run_once(kernel, disk, output, mode, *, check_controls=False, long_run=False,
-             startup_only=False, memory_probe=False):
+             startup_only=False, memory_probe=False, accel="tcg"):
     output.mkdir()
     result = {"mode": mode, "stages_s": {}, "frames": []}
+    if accel == "kvm":
+        result["acceleration"] = {"requested": "kvm", "verified": False}
     with tempfile.TemporaryDirectory(prefix="finals-qemu-") as directory:
         work = Path(directory)
-        command = emulator_command(kernel, disk, work)
+        command = emulator_command(kernel, disk, work, accel=accel)
         write_json(output / "command.json", command)
         with (output / "qemu.log").open("wb") as log:
             start = time.monotonic()
@@ -451,7 +483,9 @@ def run_once(kernel, disk, output, mode, *, check_controls=False, long_run=False
                 with sock.makefile("rwb") as stream:
                     monitor = Monitor(stream)
                     try:
-                        measure(monitor, work, output, start, result, startup_only=startup_only)
+                        if accel == "kvm":
+                            verify_kvm(monitor, result["acceleration"])
+                        measure(monitor, work, output, start, result, startup_only=startup_only, accel=accel)
                         if memory_probe:
                             capture_guest_memory(work, output, emulator.pid)
                         if check_controls:
@@ -489,8 +523,11 @@ def summarize(runs):
     for run in runs:
         stages = run["stages_s"]
         browser = stages["browser_start"]
-        metrics = {"browser_to_window_s": stages["window_white"] - browser,
-                   "browser_to_home_s": stages["home_colors"] - browser,
+        if "window_visible" in stages:
+            first_frame = {"browser_to_first_visible_s": stages["window_visible"] - browser}
+        else:
+            first_frame = {"browser_to_window_s": stages["window_white"] - browser}
+        metrics = {**first_frame, "browser_to_home_s": stages["home_colors"] - browser,
                    "browser_to_renderer_observed_s": stages["renderer_inventory_seen"] - browser,
                    "qemu_maxrss_bytes": run["qemu_wait4"]["maxrss_bytes"]}
         if "css_visible" in stages:
@@ -512,6 +549,8 @@ def main():
     parser.add_argument("--upstream", type=Path, default=PROJECT / ".git/kernelbridge-source",
                         help="本地队友 KernelBridge Git 仓库，需含固定提交")
     parser.add_argument("--kernel", type=Path, default=PROJECT / "data/platform/candidate/kernel.bin")
+    parser.add_argument("--accel", choices=("tcg", "kvm"), default="tcg",
+                        help="默认使用 TCG；原生 AArch64 Linux 可显式选择 KVM")
     parser.add_argument("--candidate-kernel", type=Path,
                         help="与 --kernel 在同一运行盘、同一浏览器设置下进行内核对照")
     parser.add_argument("--browser-mode", choices=("baseline", "lowend"),
@@ -531,6 +570,7 @@ def main():
     validation.add_argument("--memory-probe", action="store_true",
                             help="单独采集浏览器启动前和布局页出图后的客体内存快照")
     args = parser.parse_args()
+    kvm_host = kvm_preflight() if args.accel == "kvm" else None
     validation_only = args.controls or args.soak
     if args.runs < 1:
         parser.error("--runs 至少为 1")
@@ -549,10 +589,10 @@ def main():
         browser_modes = (args.browser_mode or "lowend",) if validation_only else ("baseline", "lowend")
         runs = {mode: (args.kernel, mode) for mode in browser_modes}
     output = args.output.resolve()
-    output.mkdir(parents=True)
     version = subprocess.check_output(["qemu-system-aarch64", "--version"], text=True).splitlines()[0]
     if not re.search(r"version (?:[89]|[1-9]\d+)\.", version):
         parser.error("需要 QEMU 8.0 或以上")
+    output.mkdir(parents=True)
     cpu = next((x.split(":", 1)[1].strip() for x in Path("/proc/cpuinfo").read_text().splitlines()
                 if x.startswith("model name")), os.uname().machine)
     groups = [list(runs)] if validation_only else paired_order(runs, args.runs, args.order)
@@ -561,6 +601,11 @@ def main():
                "upstream_commit": COMMIT, "host_kernel": os.uname().release, "host_cpu": cpu,
                "host_memtotal": Path("/proc/meminfo").read_text().splitlines()[0], "qemu": version,
                "run_order": groups, "comparison": "kernels" if args.candidate_kernel else "browser_modes"}
+    if kvm_host:
+        inputs["acceleration"] = {"requested": "kvm", "preflight": kvm_host}
+        os_release = Path("/etc/os-release")
+        if os_release.is_file():
+            inputs["host_os_release"] = os_release.read_text(encoding="utf-8").splitlines()
     if args.startup_only:
         inputs["measurement_scope"] = {
             "navigation": "initial static home only",
@@ -587,7 +632,7 @@ def main():
         if validation_only:
             mode = next(iter(runs))
             run_once(args.kernel, disks[mode], output / "functional", mode,
-                     check_controls=args.controls, long_run=args.soak)
+                     check_controls=args.controls, long_run=args.soak, accel=args.accel)
             return
         for pair, order in enumerate(groups, 1):
             for label in order:
@@ -595,7 +640,8 @@ def main():
                 case = output / f"{pair:02}-{label}"
                 try:
                     result = run_once(kernel, disks[mode], case, label,
-                                      startup_only=args.startup_only, memory_probe=args.memory_probe)
+                                      startup_only=args.startup_only, memory_probe=args.memory_probe,
+                                      accel=args.accel)
                 except IncompleteObservation as exc:
                     if not args.keep_going:
                         raise

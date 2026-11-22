@@ -97,14 +97,18 @@ def report_guest_stages(emulator, serial_log, started):
 
 
 def emulator_command(kernel, disk, work, *, network="user,id=net0,restrict=on",
-                     cpus=4, memory=2048, headless=True, append=None):
+                     cpus=4, memory=2048, headless=True, append=None, accel="tcg"):
+    if accel not in ("tcg", "kvm"):
+        raise ValueError(f"不支持的 QEMU 加速模式：{accel}")
     monitor = work / "monitor.sock"
     serial = work / "serial.sock"
     # Double commas encode literal commas in QEMU option strings.
     drive = f"if=none,id=disk0,format=raw,snapshot=on,file={str(disk).replace(',', ',,')}"
     command = [
-        "qemu-system-aarch64", "-machine", "virt,gic-version=3", "-cpu", "cortex-a76",
-        "-accel", "tcg,tb-size=160", "-m", str(memory), "-smp", str(cpus),
+        "qemu-system-aarch64", "-machine", "virt,gic-version=3",
+        "-cpu", "host" if accel == "kvm" else "cortex-a76",
+        "-accel", "kvm" if accel == "kvm" else "tcg,tb-size=160",
+        "-m", str(memory), "-smp", str(cpus),
         "-kernel", str(kernel), "-drive", drive, "-device", "virtio-blk-pci,drive=disk0",
         "-netdev", network,
         "-device", "virtio-net-pci,netdev=net0,romfile=",

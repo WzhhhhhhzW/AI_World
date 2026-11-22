@@ -2,6 +2,14 @@
 
 赛题性能与资源消耗共 20 分。指定页完成加载且峰值内存不超过 1.5G 是资格线，占 4 分。其余 16 分按统一主机实测排名，分为启动首帧 5 分、页加载 5 分、renderer 创建 3 分、峰值内存 3 分。稳定运行和浏览器功能完整度各有独立的 20 分。测量规范要求至少五次，报告中位数、波动范围和宿主环境。来源为《附件 2》赛题六第六、七节。
 
+## 决赛平台补充
+
+据队员转达的官方补充，决赛统一机为飞腾 D3000M、银河麒麟 Linux 笔记本，允许 KVM 加速。这一补充更新原文第七节第（一）款第 2 项对决赛的纯 TCG 要求。决赛沿用 AArch64 QEMU 8.0 及以上、x-kernel `kplat-aarch64` 和组委会提供的 `qemu_defconfig`、设备组合、rootfs、测试页、Chromium 参数与统一评分脚本。功能验收证据使用 QEMU `screendump`。初赛仍按原文使用纯 TCG。
+
+优先在决赛机确认指定页面、峰值内存资格线、键鼠和双标签、30 分钟长稳与 10 次周期加载；基准内核和候选内核使用相同 KVM 配置交替冷启动至少五组。跨层优化评分另外使用队伍首个可运行版本的 Git 标签做基线，保留原始数据。以下 Intel/WSL2 的 TCG 样本属于开发对照；首窗抓图、首次观察到 renderer 和宿主 QEMU RSS 以组委会脚本口径复核。已准备 KVM 复测入口，待 D3000M 实机验证。
+
+在 AArch64 银河麒麟 Linux 上使用 `platform/finals_benchmark.py --accel kvm` 运行本仓库的对照脚本。脚本要求 `/dev/kvm` 可读写、KVM API 版本为 12 和 QEMU 版本至少 8.0，并使用 `-accel kvm -cpu host`。各轮 `metrics.json` 保存 QMP `query-kvm`，其中 `present` 和 `enabled` 均为 `true` 才进入观测流程。KVM 模式取首张采样到的浏览器白窗或首页截图，报告 `browser_to_first_visible_s`。`inputs.json` 记录宿主 CPU、内存、内核、发行版和 QEMU 版本。[QEMU virt CPU 与图形设备](https://www.qemu.org/docs/master/system/arm/virt.html) · [QEMU QMP 加速状态](https://www.qemu.org/docs/master/interop/qemu-qmp-ref.html#command-QMP-query-kvm)
+
 ## 输入和计时口径
 
 - 主机为 Intel Core Ultra 9 285H、32 GB 内存、Windows 11 与 WSL2 Ubuntu，QEMU 8.2.2。AArch64 客体使用 Cortex-A76、4 vCPU、2 GiB、纯 TCG。图形管线为 Weston、Wayland 和 Chromium 142.0.7444.59。QEMU 宿主侧以无窗口方式运行，客体通过 virtio-gpu 正常渲染。
