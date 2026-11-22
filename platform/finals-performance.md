@@ -80,3 +80,9 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 ## 11 月 22 日固定八页下的缓存命中对照
 
 预读保持固定八页，只去掉命中缓存之后的重复查询。五组交替冷启动的首页中位数从 58.22 秒变为 57.51 秒，峰值内存从 1,179.75 MiB 变为 1,167.88 MiB。首页三组快、两组慢，其中一个候选样本慢 7.88 秒。峰值内存同样有两组上升，renderer 中位数近似持平。当前决赛配置沿用已验证内核。[逐轮数据](evidence/finals-20261122/fault-folio-hit-only.json) · [队友仓库与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/00c041b7a9b6bf1142633b557aaf1a64c0783153/work/performance-20261122-finals-r7)
+
+## 11 月 22 日进程复制页表优化
+
+候选跳过相同非空父页权限的重复更新，保留可写页降权、子映射和失败回滚。AArch64 客体 memspace 的 53 项全部通过。五组同盘、原 Chromium 参数交替冷启动中，首窗中位从 53.97 秒降到 52.49 秒，首页从 58.97 秒降到 56.06 秒，renderer 从 30.97 秒降到 29.58 秒，宿主峰值从 1,167.38 MiB 到 1,168.86 MiB。三组首页和 renderer 更快，另两组首页各慢约 0.7 秒。
+
+候选已通过键盘输入与回显、鼠标链接、双标签切换、JS 和 CSS 各 6 项。长稳阶段在原 Chromium 参数下单独进行。[逐轮和功能记录](evidence/finals-20261122/fork-skip-protect.json) · [队友仓库与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/e7e5367d68f2a4edb9f71b92d34165d0cc837f25/work/performance-20261122-finals-r8)
