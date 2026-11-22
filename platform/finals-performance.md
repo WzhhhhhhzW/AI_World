@@ -119,4 +119,8 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 
 候选仅在文件私有缺页预读中裁去连续驻留尾页，保留中间缺页、脏页、EOF 和错误回退。AArch64 客体 `kvfs`、`pagecache`、`filemap` 和 `kext4` 共 650 项通过。五组两版均完成。首页中位数从 56.858 到 56.804 秒，其中一组候选慢 2.124 秒。renderer 四组更早，配对差值中位数为 −0.407 秒，接近约 0.5 秒扫描间隔。首窗、布局页近乎持平，宿主峰值中位数从 1,179.05 到 1,180.14 MiB。当前仍采用已通过长稳的默认内核。[逐轮对照与测试明细](evidence/finals-20261122/readahead-tail-comparison.json) · [队友分支的候选补丁与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/158ff41de0064edecec2163dc449dddc284b8ca8/work/performance-20261122-finals-r15)
 
+## 11 月 22 日预读尾段裁剪计数复核
+
+两组同探针交替诊断均完成。renderer 观测前抽样预读页数分别从 771 到 583、从 877 到 514，减少 24.4% 和 41.4%。同步预读累计耗时分别从 200.69 到 204.04 毫秒、从 214.93 到 204.94 毫秒。两组对耗时的影响方向不同。计时可含任务重叠，且同步预读区间不含裁剪判断的页缓存查询。继续测量 ext4 每次读取、缓冲分配和缓存完成的开销。[逐轮计数及快照](evidence/finals-20261122/readahead-tail-io-probe/observations.json) · [队友分支的补丁与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/e169ba30177621ded937cebc1eeacd46627d23d9/work/performance-20261122-finals-r16)
+
 诊断批次可用 `--keep-going` 保留观测超时时的画面和原始记录，并完成其他样本。任何样本超时，整批仍返回失败，时延汇总只包含完成观察的样本。
