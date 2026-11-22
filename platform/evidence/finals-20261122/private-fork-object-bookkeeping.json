@@ -1,0 +1,565 @@
+{
+  "source_commit": "38d221e357d50e9c5b7dae5232a45c2ec8fa2b98",
+  "source_archive_sha256": "245b90f1837172cacc760998a846795daae4984c1303512faef6b005b66c9187",
+  "expanded_config_sha256": "42e8d16450352712d78813b5f78b7ca221dfb88fadc796f57ecf317d7e33f669",
+  "candidate_patch_sha256": "db8713182f5ee96144db5bc1c6335c3ccad9f8225cf06b8c1332a7924e973778",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "guest_unittests": {
+    "crates": [
+      "anon",
+      "memspace",
+      "filemap"
+    ],
+    "log_sha256": "d658d9d7262bacf8723f14b0421ebbb33390d70752a9450a4af5965538de7e79",
+    "passed": 74,
+    "failed": 0,
+    "ignored": 0,
+    "cases": [
+      "anon::private::tests::anon_private_detach_rolls_back_when_not_finalized",
+      "anon::private::tests::anon_private_first_touch_prepare_commits_page_slot",
+      "anon::private::tests::anon_private_first_touch_commit_revalidates_empty_slot",
+      "anon::private::tests::anon_private_fork_child_keeps_lineage_and_gets_new_identity",
+      "anon::private::tests::anon_private_fork_prepare_rolls_back_without_commit",
+      "anon::private::tests::anon_private_page_state_fork_and_discard_work",
+      "anon::shared::tests::anon_shared_registers_views_and_emits_object_hits",
+      "anon::private::tests::anon_private_fork_commit_rechecks_late_collision_before_any_insert",
+      "anon::private::tests::anon_private_registers_views_and_emits_object_hits",
+      "anon::private::tests::anon_private_replace_if_same_rejects_changed_slot",
+      "anon::shared::tests::anon_objects_use_typed_anon_identity",
+      "memspace::aarch64_asid::tests::test_unpin_context_releases_last_pin",
+      "memspace::aarch64_asid::tests::test_rollover_keeps_pinned_asids_reserved",
+      "memspace::aarch64_asid::tests::test_rollover_preserves_active_asids_and_marks_pending_flush",
+      "anon::private::tests::anon_private_fork_prepare_releases_only_retained_prefix_on_overflow",
+      "memspace::aspace::tests::fault_adapter_treats_retry_outcomes_as_handled",
+      "memspace::aspace::tests::invalidate_sink_removes_exact_enqueued_request",
+      "memspace::aarch64_asid::tests::test_new_context_reuses_reserved_asid_across_generation",
+      "memspace::aspace::tests::futex_backing_rejects_unaligned_or_unmapped_addresses",
+      "memspace::aspace::tests::clear_tolerates_zapped_linear_mapping",
+      "memspace::aarch64_asid::tests::test_pin_context_reuses_same_asid_after_rollover",
+      "memspace::aarch64_asid::tests::test_prepare_switch_updates_stale_context_and_consumes_flush",
+      "memspace::aspace::tests::futex_backing_preserves_shared_object_offset_after_vma_trim",
+      "memspace::aspace::tests::map_with_max_flags_allows_protection_raise_within_may_permissions",
+      "memspace::aspace::tests::test_map_protect_and_access_checks_follow_permissions",
+      "memspace::aspace::tests::test_extend_area_grows_existing_mapping_and_rejects_missing_start",
+      "memspace::aspace::tests::futex_backing_uses_mm_identity_for_private_mappings",
+      "memspace::aspace::tests::test_mmap_resolve_addr_honors_fixed_and_no_replace_policies",
+      "memspace::aspace::tests::mm_pin_does_not_keep_user_mappings_alive_after_last_user_release",
+      "memspace::backend::private::tests::private_cow_write_fault_reports_retry_when_pte_changed",
+      "memspace::aspace::tests::madvise_dontneed_requires_fully_mapped_range",
+      "memspace::aspace::tests::test_move_pages_preserves_contents_and_clears_source_mapping",
+      "memspace::backend::private::tests::private_backend_madvise_then_same_mapping_refaults_zero_page",
+      "memspace::backend::shared::tests::shared_backend_reuses_explicit_shared_owner_identity",
+      "filemap::runtime::tests::cached_file_sources_share_inode_owned_object_identity",
+      "filemap::private::tests::file_private_fork_child_keeps_lineage_and_splits_anon_object",
+      "memspace::cpu_residency::tests_cpu_residency::test_snapshot_initially_empty",
+      "memspace::fault::tests::fault_input_preserves_trap_address_and_access",
+      "memspace::fault::tests::fault_outcome_classifies_success_retry_and_bus",
+      "memspace::aspace::tests::relocated_private_mapping_keeps_object_contents_after_source_metadata_drop",
+      "memspace::tests_memspace::test_mem_to_mapping_flags_empty",
+      "memspace::tests_memspace::test_mem_to_mapping_flags_device_uncached",
+      "memspace::backend::private::tests::private_fork_rolls_back_parent_write_protect_when_child_map_fails",
+      "memspace::cpu_residency::tests_cpu_residency::test_set_and_clear_cpu",
+      "memspace::tests_memspace::test_mem_to_mapping_flags_basic",
+      "memspace::backend::private::tests::private_backend_madvise_then_fork_then_write_fault_refaults_clean_child_page",
+      "memspace::cpu_residency::tests_cpu_residency::test_reset_to_cpu",
+      "memspace::vma::tests::vma_set_unmap_preserves_file_metadata_offsets",
+      "memspace::vma::tests::vma_set_semantic_merge_rejects_backing_mismatch",
+      "memspace::backend::private::tests::private_cow_unmapped_write_fault_reports_retry_when_child_map_conflicts",
+      "memspace::vma::tests::vma_set_middle_unmap_splits_and_preserves_offsets",
+      "memspace::vma::tests::vma_set_semantic_merge_rejects_permission_mismatch",
+      "filemap::shared::tests::shared_file_source_adapter_and_private_runtime_agree_on_file_object",
+      "memspace::vma::tests::vma_set_semantic_merge_rejects_inheritance_mismatch",
+      "memspace::vma::tests::vma_set_rejects_overlapping_insert",
+      "filemap::shared::tests::cached_file_write_updates_inode_mapping",
+      "memspace::vma::tests::vma_set_exact_unmap_removes_only_target_area",
+      "memspace::vma::tests::vma_set_semantic_merge_rejects_max_permission_mismatch",
+      "memspace::vma::tests::vma_set_semantic_merge_accepts_matching_adjacent_vmas",
+      "memspace::vma::tests::vma_set_front_and_back_unmap_preserve_remaining_metadata",
+      "filemap::runtime::tests::private_runtime_from_reopened_file_uses_inode_owned_cached_object_identity",
+      "memspace::vma::tests::vma_set_merge_adjacent_uses_caller_predicate",
+      "memspace::backend::private::tests::private_cow_write_fault_replaces_parent_and_preserves_child_page",
+      "filemap::shared::tests::shared_and_private_runtime_share_same_file_source_object",
+      "memspace::vma::tests::vma_set_semantic_merge_rejects_object_offset_gap",
+      "memspace::vma::tests::vma_set_semantic_merge_rejects_file_metadata_gap",
+      "memspace::vma::tests::vma_set_semantic_merge_rejects_unknown_runtime_kind",
+      "memspace::vma::tests::vma_set_semantic_merge_rejects_runtime_kind_mismatch",
+      "memspace::vma::tests::vma_set_protect_preserves_file_metadata_offsets",
+      "memspace::vma::tests::vma_set_protect_middle_preserves_non_permission_metadata",
+      "filemap::shared::tests::cached_file_read_observes_inode_mapping_write",
+      "memspace::backend::private::tests::sparse_private_unmap_removes_shared_cow_ptes_and_preserves_neighbors",
+      "filemap::private::tests::private_refault_rechecks_i_size_before_reusing_retained_cow_page",
+      "filemap::private::tests::file_private_fork_madvise_then_write_fault_preserves_file_source_and_splits_anon_pages"
+    ]
+  },
+  "inputs": {
+    "kernel_sha256": "bd4c91d4a5bdc5c2b869441efdc6caff16005871c1063e7978af1181fc8384c9",
+    "rootfs_sha256": "2817c7e2438075a42d8fc6d01d9e525164c9ea05d6696776d94ae26e901eeac4",
+    "guest_files_sha256": {
+      "index.html": "831cf28f3748940b450d1da325aa39a2dcaea2fee15b0532bf4111144d176b38",
+      "interaction.html": "58130daa4a2f426fd16b8bde93d964713f20e147da8af1537ab2d8b506d2fd58",
+      "layout.html": "a1b04f9aba81b4b7818be2e7a858d482d471bd0d625dee257f605b2129b8fc4c"
+    },
+    "upstream_commit": "0b6c59600a8782762a6112eb02cfd96347e496e6",
+    "host_kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "host_cpu": "Intel(R) Core(TM) Ultra 9 285H",
+    "host_memtotal": "MemTotal:       16115904 kB",
+    "qemu": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+    "run_order": [
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ],
+      [
+        "baseline",
+        "candidate"
+      ]
+    ],
+    "comparison": "kernels",
+    "candidate_kernel_sha256": "f9ab87ad7b2ae6646c529aafff8b158a2ab328120d6cf73cbde44dbed4362eef",
+    "browser_mode": "baseline",
+    "incomplete_observation_policy": "record-and-continue"
+  },
+  "host_measurements": {
+    "baseline": {
+      "browser_to_window_s": {
+        "values": [
+          53.279,
+          53.229,
+          52.513,
+          53.943,
+          51.809
+        ],
+        "median": 53.229,
+        "min": 51.809,
+        "max": 53.943
+      },
+      "browser_to_home_s": {
+        "values": [
+          56.143,
+          56.806,
+          55.382,
+          58.24,
+          53.966
+        ],
+        "median": 56.143,
+        "min": 53.966,
+        "max": 58.24
+      },
+      "browser_to_renderer_observed_s": {
+        "values": [
+          30.558,
+          30.617,
+          29.393,
+          30.62,
+          29.298
+        ],
+        "median": 30.558,
+        "min": 29.298,
+        "max": 30.62
+      },
+      "qemu_maxrss_bytes": {
+        "values": [
+          1234169856,
+          1226825728,
+          1232297984,
+          1237254144,
+          1230344192
+        ],
+        "median": 1232297984,
+        "min": 1226825728,
+        "max": 1237254144
+      },
+      "return_to_css_s": {
+        "values": [
+          2.996,
+          3.71,
+          2.996,
+          3.71,
+          2.998
+        ],
+        "median": 2.998,
+        "min": 2.996,
+        "max": 3.71
+      }
+    },
+    "candidate": {
+      "browser_to_window_s": {
+        "values": [
+          53.236,
+          52.518,
+          54.661,
+          53.234,
+          53.233
+        ],
+        "median": 53.234,
+        "min": 52.518,
+        "max": 54.661
+      },
+      "browser_to_home_s": {
+        "values": [
+          56.103,
+          55.383,
+          58.245,
+          58.242,
+          56.814
+        ],
+        "median": 56.814,
+        "min": 55.383,
+        "max": 58.245
+      },
+      "browser_to_renderer_observed_s": {
+        "values": [
+          30.213,
+          29.901,
+          30.926,
+          30.62,
+          30.508
+        ],
+        "median": 30.508,
+        "min": 29.901,
+        "max": 30.926
+      },
+      "qemu_maxrss_bytes": {
+        "values": [
+          1238769664,
+          1239851008,
+          1229950976,
+          1234112512,
+          1234698240
+        ],
+        "median": 1234698240,
+        "min": 1229950976,
+        "max": 1239851008
+      },
+      "return_to_css_s": {
+        "values": [
+          2.997,
+          2.996,
+          2.998,
+          3.709,
+          3.709
+        ],
+        "median": 2.998,
+        "min": 2.996,
+        "max": 3.709
+      }
+    }
+  },
+  "failure_records": [],
+  "paired_deltas": {
+    "browser_to_window_s": {
+      "values": [
+        -0.043,
+        -0.711,
+        2.148,
+        -0.709,
+        1.424
+      ],
+      "signed_median": -0.043
+    },
+    "browser_to_home_s": {
+      "values": [
+        -0.04,
+        -1.423,
+        2.863,
+        0.002,
+        2.848
+      ],
+      "signed_median": 0.002
+    },
+    "browser_to_renderer_observed_s": {
+      "values": [
+        -0.345,
+        -0.716,
+        1.533,
+        0.0,
+        1.21
+      ],
+      "signed_median": 0.0
+    },
+    "return_to_css_s": {
+      "values": [
+        0.001,
+        -0.714,
+        0.002,
+        -0.001,
+        0.711
+      ],
+      "signed_median": 0.001
+    },
+    "qemu_maxrss_mib": {
+      "values": [
+        4.3867,
+        12.4219,
+        -2.2382,
+        -2.9961,
+        4.1523
+      ],
+      "signed_median": 4.1523
+    }
+  },
+  "pairs": [
+    {
+      "pair": 1,
+      "baseline": {
+        "valid_visual": true,
+        "renderer_pid": 87,
+        "qemu_exit": 0,
+        "observed_phases_s": {
+          "weston_ready": 3.124,
+          "browser_start": 3.424,
+          "renderer_inventory_seen": 33.982,
+          "window_white": 56.703,
+          "home_colors": 59.567,
+          "return_css": 65.406,
+          "css_visible": 68.402
+        },
+        "serial_sha256": "f53606bd64641a9c2b7f2fdb8697a072efd3556961622d450f351faa171cd7df",
+        "qemu_maxrss_mib": 1176.9961,
+        "browser_to_window_s": 53.279,
+        "browser_to_home_s": 56.143,
+        "browser_to_renderer_observed_s": 30.558,
+        "return_to_css_s": 2.996
+      },
+      "candidate": {
+        "valid_visual": true,
+        "renderer_pid": 87,
+        "qemu_exit": 0,
+        "observed_phases_s": {
+          "weston_ready": 3.141,
+          "browser_start": 3.442,
+          "renderer_inventory_seen": 33.655,
+          "window_white": 56.678,
+          "home_colors": 59.545,
+          "return_css": 65.38,
+          "css_visible": 68.377
+        },
+        "serial_sha256": "a4402b45c40d4ab5cdafd0140f8d0c541a336be1f8f4314aec0df0cfb121ec8b",
+        "qemu_maxrss_mib": 1181.3828,
+        "browser_to_window_s": 53.236,
+        "browser_to_home_s": 56.103,
+        "browser_to_renderer_observed_s": 30.213,
+        "return_to_css_s": 2.997
+      },
+      "candidate_minus_baseline": {
+        "browser_to_window_s": -0.043,
+        "browser_to_home_s": -0.04,
+        "browser_to_renderer_observed_s": -0.345,
+        "return_to_css_s": 0.001,
+        "qemu_maxrss_mib": 4.3867
+      }
+    },
+    {
+      "pair": 2,
+      "baseline": {
+        "valid_visual": true,
+        "renderer_pid": 87,
+        "qemu_exit": 0,
+        "observed_phases_s": {
+          "weston_ready": 3.233,
+          "browser_start": 3.534,
+          "renderer_inventory_seen": 34.151,
+          "window_white": 56.763,
+          "home_colors": 60.34,
+          "return_css": 66.18,
+          "css_visible": 69.89
+        },
+        "serial_sha256": "d3740c73c81bb342f0d01edc6fb6694bc0f478cfd1a3b83d333829c283de0799",
+        "qemu_maxrss_mib": 1169.9922,
+        "browser_to_window_s": 53.229,
+        "browser_to_home_s": 56.806,
+        "browser_to_renderer_observed_s": 30.617,
+        "return_to_css_s": 3.71
+      },
+      "candidate": {
+        "valid_visual": true,
+        "renderer_pid": 87,
+        "qemu_exit": 0,
+        "observed_phases_s": {
+          "weston_ready": 3.048,
+          "browser_start": 3.349,
+          "renderer_inventory_seen": 33.25,
+          "window_white": 55.867,
+          "home_colors": 58.732,
+          "return_css": 64.567,
+          "css_visible": 67.563
+        },
+        "serial_sha256": "9885e273ce75b764334712c8e0660723a168b57b08351555f0ddaa9897e0604e",
+        "qemu_maxrss_mib": 1182.4141,
+        "browser_to_window_s": 52.518,
+        "browser_to_home_s": 55.383,
+        "browser_to_renderer_observed_s": 29.901,
+        "return_to_css_s": 2.996
+      },
+      "candidate_minus_baseline": {
+        "browser_to_window_s": -0.711,
+        "browser_to_home_s": -1.423,
+        "browser_to_renderer_observed_s": -0.716,
+        "return_to_css_s": -0.714,
+        "qemu_maxrss_mib": 12.4219
+      }
+    },
+    {
+      "pair": 3,
+      "baseline": {
+        "valid_visual": true,
+        "renderer_pid": 88,
+        "qemu_exit": 0,
+        "observed_phases_s": {
+          "weston_ready": 3.138,
+          "browser_start": 3.439,
+          "renderer_inventory_seen": 32.832,
+          "window_white": 55.952,
+          "home_colors": 58.821,
+          "return_css": 64.66,
+          "css_visible": 67.656
+        },
+        "serial_sha256": "b7caa2f007b52f098364c3a28de38db3b80be285a5b91842b6d43eb5bb0f2654",
+        "qemu_maxrss_mib": 1175.2109,
+        "browser_to_window_s": 52.513,
+        "browser_to_home_s": 55.382,
+        "browser_to_renderer_observed_s": 29.393,
+        "return_to_css_s": 2.996
+      },
+      "candidate": {
+        "valid_visual": true,
+        "renderer_pid": 86,
+        "qemu_exit": 0,
+        "observed_phases_s": {
+          "weston_ready": 2.912,
+          "browser_start": 3.213,
+          "renderer_inventory_seen": 34.139,
+          "window_white": 57.874,
+          "home_colors": 61.458,
+          "return_css": 67.293,
+          "css_visible": 70.291
+        },
+        "serial_sha256": "1ef12dcef6e0417125a67d6a639c97165aafd598e4f24cd2ad7c74c0f2628ae2",
+        "qemu_maxrss_mib": 1172.9727,
+        "browser_to_window_s": 54.661,
+        "browser_to_home_s": 58.245,
+        "browser_to_renderer_observed_s": 30.926,
+        "return_to_css_s": 2.998
+      },
+      "candidate_minus_baseline": {
+        "browser_to_window_s": 2.148,
+        "browser_to_home_s": 2.863,
+        "browser_to_renderer_observed_s": 1.533,
+        "return_to_css_s": 0.002,
+        "qemu_maxrss_mib": -2.2382
+      }
+    },
+    {
+      "pair": 4,
+      "baseline": {
+        "valid_visual": true,
+        "renderer_pid": 87,
+        "qemu_exit": 0,
+        "observed_phases_s": {
+          "weston_ready": 3.123,
+          "browser_start": 3.424,
+          "renderer_inventory_seen": 34.044,
+          "window_white": 57.367,
+          "home_colors": 61.664,
+          "return_css": 67.498,
+          "css_visible": 71.208
+        },
+        "serial_sha256": "5e8772045d95e9ee9928064f9a9f7ab0dc86a13de968e7e0cacba3d5b4f57261",
+        "qemu_maxrss_mib": 1179.9375,
+        "browser_to_window_s": 53.943,
+        "browser_to_home_s": 58.24,
+        "browser_to_renderer_observed_s": 30.62,
+        "return_to_css_s": 3.71
+      },
+      "candidate": {
+        "valid_visual": true,
+        "renderer_pid": 87,
+        "qemu_exit": 0,
+        "observed_phases_s": {
+          "weston_ready": 3.157,
+          "browser_start": 3.458,
+          "renderer_inventory_seen": 34.078,
+          "window_white": 56.692,
+          "home_colors": 61.7,
+          "return_css": 67.538,
+          "css_visible": 71.247
+        },
+        "serial_sha256": "855f47d6384af3199d1ba017d4d828895f8c744e0846613a8eab39d9e20acdc0",
+        "qemu_maxrss_mib": 1176.9414,
+        "browser_to_window_s": 53.234,
+        "browser_to_home_s": 58.242,
+        "browser_to_renderer_observed_s": 30.62,
+        "return_to_css_s": 3.709
+      },
+      "candidate_minus_baseline": {
+        "browser_to_window_s": -0.709,
+        "browser_to_home_s": 0.002,
+        "browser_to_renderer_observed_s": 0.0,
+        "return_to_css_s": -0.001,
+        "qemu_maxrss_mib": -2.9961
+      }
+    },
+    {
+      "pair": 5,
+      "baseline": {
+        "valid_visual": true,
+        "renderer_pid": 87,
+        "qemu_exit": 0,
+        "observed_phases_s": {
+          "weston_ready": 3.122,
+          "browser_start": 3.423,
+          "renderer_inventory_seen": 32.721,
+          "window_white": 55.232,
+          "home_colors": 57.389,
+          "return_css": 63.226,
+          "css_visible": 66.224
+        },
+        "serial_sha256": "bb5de5a21e2c6a9c2668ccb50e9ad6418c84040a142ea629c76930f327b6bcfa",
+        "qemu_maxrss_mib": 1173.3477,
+        "browser_to_window_s": 51.809,
+        "browser_to_home_s": 53.966,
+        "browser_to_renderer_observed_s": 29.298,
+        "return_to_css_s": 2.998
+      },
+      "candidate": {
+        "valid_visual": true,
+        "renderer_pid": 87,
+        "qemu_exit": 0,
+        "observed_phases_s": {
+          "weston_ready": 3.028,
+          "browser_start": 3.329,
+          "renderer_inventory_seen": 33.837,
+          "window_white": 56.562,
+          "home_colors": 60.143,
+          "return_css": 65.994,
+          "css_visible": 69.703
+        },
+        "serial_sha256": "7c3c2136d42f3280d8f585a5103028aa26cd555e92f1b1044d8855cecbfab180",
+        "qemu_maxrss_mib": 1177.5,
+        "browser_to_window_s": 53.233,
+        "browser_to_home_s": 56.814,
+        "browser_to_renderer_observed_s": 30.508,
+        "return_to_css_s": 3.709
+      },
+      "candidate_minus_baseline": {
+        "browser_to_window_s": 1.424,
+        "browser_to_home_s": 2.848,
+        "browser_to_renderer_observed_s": 1.21,
+        "return_to_css_s": 0.711,
+        "qemu_maxrss_mib": 4.1523
+      }
+    }
+  ]
+}

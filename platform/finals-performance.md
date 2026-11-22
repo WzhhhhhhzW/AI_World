@@ -103,4 +103,8 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 
 同一发布源码的默认版和分段诊断版各运行两次，共四次原参数冷启动，均观察到首窗、首页和 renderer。renderer 首次被观测前，两次诊断各记录 12 次私有复制。对象准备与提交合计为 822.01 和 936.36 毫秒，均约占复制记录总时长的 39%。准备和提交分别检查了约 10.2 万个空子对象中的页项。父页只在约 6.5% 的页项上降权。先测试能复用准备向量、跳过空子对象重复扫描并直接移交页句柄的候选。观察使用客体单调时钟，跨任务区间可能重叠。[逐轮分段数据](evidence/finals-20261122/private-fork-stages.json) · [队友分支补丁与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/2b9380c00182c479a68e8b2020a9e6cb3ef8b71a/work/performance-20261122-finals-r11)
 
+## 11 月 22 日私有复制页对象分配对照
+
+候选复用页项向量、跳过空子对象的冲突扫描，并在提交时直接移交页句柄。AArch64 客体 `anon`、`memspace`、`filemap` 合计 74 项通过，包括两项新增回滚测试。五组交替冷启动均完成。首窗和布局页中位数分别约 53.23 秒和 3.00 秒，基本持平。首页从 56.14 秒到 56.81 秒，两组慢约 2.85 秒，renderer 从 30.56 到 30.51 秒，宿主峰值从 1,175.21 到 1,177.50 MiB。此次采用决定仍为通过长稳的默认版本。[五组对照与测试明细](evidence/finals-20261122/private-fork-object-bookkeeping.json) · [队友分支补丁与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/c62ec79de2b47d847db60a6100b7d723afe18c9d/work/performance-20261122-finals-r12)
+
 诊断批次可用 `--keep-going` 保留观测超时时的画面和原始记录，并完成其他样本。任何样本超时，整批仍返回失败，时延汇总只包含完成观察的样本。
