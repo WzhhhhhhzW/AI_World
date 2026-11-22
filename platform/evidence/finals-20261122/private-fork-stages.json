@@ -1,0 +1,1165 @@
+{
+  "experiment": "guest instrumentation, not a release candidate",
+  "source_commit": "38d221e357d50e9c5b7dae5232a45c2ec8fa2b98",
+  "source_archive_sha256": "245b90f1837172cacc760998a846795daae4984c1303512faef6b005b66c9187",
+  "expanded_config_sha256": "42e8d16450352712d78813b5f78b7ca221dfb88fadc796f57ecf317d7e33f669",
+  "diagnostic_patch_sha256": "b78d91f44175cc6fccd4b10bf7540cd36aef560ce5c7b4c2c0e2ed1b127cc872",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "inputs": {
+    "kernel_sha256": "bd4c91d4a5bdc5c2b869441efdc6caff16005871c1063e7978af1181fc8384c9",
+    "rootfs_sha256": "2817c7e2438075a42d8fc6d01d9e525164c9ea05d6696776d94ae26e901eeac4",
+    "guest_files_sha256": {
+      "index.html": "831cf28f3748940b450d1da325aa39a2dcaea2fee15b0532bf4111144d176b38",
+      "interaction.html": "58130daa4a2f426fd16b8bde93d964713f20e147da8af1537ab2d8b506d2fd58",
+      "layout.html": "a1b04f9aba81b4b7818be2e7a858d482d471bd0d625dee257f605b2129b8fc4c"
+    },
+    "upstream_commit": "0b6c59600a8782762a6112eb02cfd96347e496e6",
+    "host_kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "host_cpu": "Intel(R) Core(TM) Ultra 9 285H",
+    "host_memtotal": "MemTotal:       16115904 kB",
+    "qemu": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+    "run_order": [
+      [
+        "baseline",
+        "candidate"
+      ],
+      [
+        "candidate",
+        "baseline"
+      ]
+    ],
+    "comparison": "kernels",
+    "measurement_scope": {
+      "navigation": "initial static home only",
+      "seconds_after_home_visible": 10
+    },
+    "candidate_kernel_sha256": "11e76ff665eefd218d23e5f9043ddbf8cf3be54977381e7d6202b24a3711f59e",
+    "browser_mode": "baseline",
+    "incomplete_observation_policy": "record-and-continue"
+  },
+  "host_measurements": {
+    "baseline": {
+      "browser_to_window_s": {
+        "values": [
+          51.844,
+          53.22
+        ],
+        "median": 52.532,
+        "min": 51.844,
+        "max": 53.22
+      },
+      "browser_to_home_s": {
+        "values": [
+          56.129,
+          57.509
+        ],
+        "median": 56.819,
+        "min": 56.129,
+        "max": 57.509
+      },
+      "browser_to_renderer_observed_s": {
+        "values": [
+          29.845,
+          30.713
+        ],
+        "median": 30.279,
+        "min": 29.845,
+        "max": 30.713
+      },
+      "qemu_maxrss_bytes": {
+        "values": [
+          1208856576,
+          1221881856
+        ],
+        "median": 1215369216.0,
+        "min": 1208856576,
+        "max": 1221881856
+      }
+    },
+    "candidate": {
+      "browser_to_window_s": {
+        "values": [
+          51.791,
+          53.24
+        ],
+        "median": 52.5155,
+        "min": 51.791,
+        "max": 53.24
+      },
+      "browser_to_home_s": {
+        "values": [
+          55.367,
+          56.109
+        ],
+        "median": 55.738,
+        "min": 55.367,
+        "max": 56.109
+      },
+      "browser_to_renderer_observed_s": {
+        "values": [
+          29.687,
+          30.63
+        ],
+        "median": 30.1585,
+        "min": 29.687,
+        "max": 30.63
+      },
+      "qemu_maxrss_bytes": {
+        "values": [
+          1219657728,
+          1219936256
+        ],
+        "median": 1219796992.0,
+        "min": 1219657728,
+        "max": 1219936256
+      }
+    }
+  },
+  "failure_records": [],
+  "samples": [
+    {
+      "sample": "01-baseline",
+      "stage_observations_s": {
+        "weston_ready": 3.146,
+        "browser_start": 3.446,
+        "renderer_inventory_seen": 33.291,
+        "window_white": 55.29,
+        "home_colors": 59.575,
+        "startup_observation_complete": 70.272
+      },
+      "renderer_pid": 87,
+      "valid_visual": true,
+      "qemu_maxrss_bytes": 1208856576,
+      "serial_sha256": "0daf3a099a10e5ffe60df08bfac3503b84bb8b63f7b375f468a8e67047dd689b"
+    },
+    {
+      "sample": "01-candidate",
+      "stage_observations_s": {
+        "weston_ready": 2.915,
+        "browser_start": 3.216,
+        "renderer_inventory_seen": 32.903,
+        "window_white": 55.007,
+        "home_colors": 58.583,
+        "startup_observation_complete": 69.292
+      },
+      "renderer_pid": 86,
+      "valid_visual": true,
+      "qemu_maxrss_bytes": 1219657728,
+      "serial_sha256": "8efb563a7cf7a48418cb69fbc95232265816bb1c4c3fac2e9445aca75c5c5db6",
+      "fork_stages": {
+        "before_renderer_marker": {
+          "forks": 12,
+          "counts": {
+            "vmas": 6910,
+            "private_vmas": 6778,
+            "prepared_pages": 101580,
+            "protected_pages": 6549,
+            "child_maps": 101580,
+            "prepare_empty_slots": 101580,
+            "commit_empty_slots": 101580
+          },
+          "stages_ms": {
+            "setup_ns": {
+              "sum": 13.324016,
+              "median": 0.755224,
+              "max": 4.131712
+            },
+            "backend_ns": {
+              "sum": 1878.600992,
+              "median": 146.953192,
+              "max": 492.271536
+            },
+            "install_ns": {
+              "sum": 202.601776,
+              "median": 11.923,
+              "max": 53.907184
+            },
+            "prepare_ns": {
+              "sum": 543.47592,
+              "median": 37.420776,
+              "max": 163.466288
+            },
+            "walk_ns": {
+              "sum": 425.486384,
+              "median": 28.236912,
+              "max": 133.575392
+            },
+            "parent_finish_ns": {
+              "sum": 64.657008,
+              "median": 3.451528,
+              "max": 15.362032
+            },
+            "child_finish_ns": {
+              "sum": 261.124048,
+              "median": 21.38864,
+              "max": 78.83688
+            },
+            "commit_ns": {
+              "sum": 278.534192,
+              "median": 22.984192,
+              "max": 69.255376
+            },
+            "work_ns": {
+              "sum": 2101.8192,
+              "median": 162.150032,
+              "max": 539.027536
+            },
+            "outer_residual_ns": {
+              "sum": 7.292416,
+              "median": 0.48224,
+              "max": 1.33024
+            },
+            "backend_residual_ns": {
+              "sum": 305.32344,
+              "median": 25.926784,
+              "max": 73.8312
+            }
+          }
+        },
+        "through_startup_observation": {
+          "forks": 14,
+          "counts": {
+            "vmas": 10155,
+            "private_vmas": 9890,
+            "prepared_pages": 149713,
+            "protected_pages": 9603,
+            "child_maps": 149713,
+            "prepare_empty_slots": 149713,
+            "commit_empty_slots": 149713
+          },
+          "stages_ms": {
+            "setup_ns": {
+              "sum": 20.19272,
+              "median": 0.976624,
+              "max": 4.204048
+            },
+            "backend_ns": {
+              "sum": 3687.250032,
+              "median": 176.46844,
+              "max": 914.430256
+            },
+            "install_ns": {
+              "sum": 442.255104,
+              "median": 14.3762,
+              "max": 125.570672
+            },
+            "prepare_ns": {
+              "sum": 1153.457104,
+              "median": 48.1178,
+              "max": 316.411792
+            },
+            "walk_ns": {
+              "sum": 905.374064,
+              "median": 33.967896,
+              "max": 262.348848
+            },
+            "parent_finish_ns": {
+              "sum": 145.758304,
+              "median": 5.853416,
+              "max": 63.547328
+            },
+            "child_finish_ns": {
+              "sum": 419.684416,
+              "median": 23.957504,
+              "max": 79.42488
+            },
+            "commit_ns": {
+              "sum": 533.830864,
+              "median": 24.555304,
+              "max": 128.0144
+            },
+            "work_ns": {
+              "sum": 4163.761344,
+              "median": 189.441712,
+              "max": 1047.53648
+            },
+            "outer_residual_ns": {
+              "sum": 14.063488,
+              "median": 0.649904,
+              "max": 3.439568
+            },
+            "backend_residual_ns": {
+              "sum": 529.14528,
+              "median": 33.295192,
+              "max": 114.328816
+            }
+          }
+        },
+        "events": [
+          {
+            "line": 158,
+            "start_ns": 3292857024,
+            "locked_ns": 3294071664,
+            "finish_ns": 3301223008,
+            "before_renderer_marker": true,
+            "vmas": 14,
+            "setup_ns": 132464,
+            "backend_ns": 5955888,
+            "install_ns": 793664,
+            "private_vmas": 13,
+            "prepared_pages": 128,
+            "protected_pages": 26,
+            "child_maps": 128,
+            "prepare_empty_slots": 128,
+            "commit_empty_slots": 128,
+            "prepare_ns": 1879040,
+            "walk_ns": 1605440,
+            "parent_finish_ns": 431472,
+            "child_finish_ns": 699632,
+            "commit_ns": 601872,
+            "work_ns": 7151344,
+            "outer_residual_ns": 269328,
+            "backend_residual_ns": 738432
+          },
+          {
+            "line": 161,
+            "start_ns": 3373582048,
+            "locked_ns": 3373584112,
+            "finish_ns": 3381864576,
+            "before_renderer_marker": true,
+            "vmas": 14,
+            "setup_ns": 151328,
+            "backend_ns": 7072976,
+            "install_ns": 1024320,
+            "private_vmas": 13,
+            "prepared_pages": 129,
+            "protected_pages": 9,
+            "child_maps": 129,
+            "prepare_empty_slots": 129,
+            "commit_empty_slots": 129,
+            "prepare_ns": 1040736,
+            "walk_ns": 4422080,
+            "parent_finish_ns": 293520,
+            "child_finish_ns": 407936,
+            "commit_ns": 388720,
+            "work_ns": 8280464,
+            "outer_residual_ns": 31840,
+            "backend_residual_ns": 519984
+          },
+          {
+            "line": 164,
+            "start_ns": 3468573264,
+            "locked_ns": 3468576080,
+            "finish_ns": 3479269376,
+            "before_renderer_marker": true,
+            "vmas": 14,
+            "setup_ns": 122512,
+            "backend_ns": 9145552,
+            "install_ns": 1308528,
+            "private_vmas": 13,
+            "prepared_pages": 133,
+            "protected_pages": 10,
+            "child_maps": 133,
+            "prepare_empty_slots": 133,
+            "commit_empty_slots": 133,
+            "prepare_ns": 1042048,
+            "walk_ns": 5861072,
+            "parent_finish_ns": 263248,
+            "child_finish_ns": 576432,
+            "commit_ns": 1029696,
+            "work_ns": 10693296,
+            "outer_residual_ns": 116704,
+            "backend_residual_ns": 373056
+          },
+          {
+            "line": 174,
+            "start_ns": 11104428144,
+            "locked_ns": 11104431344,
+            "finish_ns": 11311881328,
+            "before_renderer_marker": true,
+            "vmas": 511,
+            "setup_ns": 695504,
+            "backend_ns": 193446352,
+            "install_ns": 12861264,
+            "private_vmas": 510,
+            "prepared_pages": 7536,
+            "protected_pages": 628,
+            "child_maps": 7536,
+            "prepare_empty_slots": 7536,
+            "commit_empty_slots": 7536,
+            "prepare_ns": 54894384,
+            "walk_ns": 44503552,
+            "parent_finish_ns": 9363024,
+            "child_finish_ns": 20669088,
+            "commit_ns": 24042528,
+            "work_ns": 207449984,
+            "outer_residual_ns": 446864,
+            "backend_residual_ns": 39973776
+          },
+          {
+            "line": 176,
+            "start_ns": 11339463056,
+            "locked_ns": 11339465792,
+            "finish_ns": 11510899232,
+            "before_renderer_marker": true,
+            "vmas": 511,
+            "setup_ns": 440560,
+            "backend_ns": 159490528,
+            "install_ns": 10984736,
+            "private_vmas": 510,
+            "prepared_pages": 7542,
+            "protected_pages": 16,
+            "child_maps": 7542,
+            "prepare_empty_slots": 7542,
+            "commit_empty_slots": 7542,
+            "prepare_ns": 48381264,
+            "walk_ns": 34175280,
+            "parent_finish_ns": 613664,
+            "child_finish_ns": 22108192,
+            "commit_ns": 21925856,
+            "work_ns": 171433440,
+            "outer_residual_ns": 517616,
+            "backend_residual_ns": 32286272
+          },
+          {
+            "line": 179,
+            "start_ns": 11966611456,
+            "locked_ns": 11966613904,
+            "finish_ns": 11981484848,
+            "before_renderer_marker": true,
+            "vmas": 31,
+            "setup_ns": 1138304,
+            "backend_ns": 12429072,
+            "install_ns": 1231808,
+            "private_vmas": 30,
+            "prepared_pages": 276,
+            "protected_pages": 47,
+            "child_maps": 276,
+            "prepare_empty_slots": 276,
+            "commit_empty_slots": 276,
+            "prepare_ns": 3573456,
+            "walk_ns": 2551792,
+            "parent_finish_ns": 1085568,
+            "child_finish_ns": 955328,
+            "commit_ns": 1229056,
+            "work_ns": 14870944,
+            "outer_residual_ns": 71760,
+            "backend_residual_ns": 3033872
+          },
+          {
+            "line": 181,
+            "start_ns": 12011122944,
+            "locked_ns": 12011125232,
+            "finish_ns": 12027850384,
+            "before_renderer_marker": true,
+            "vmas": 32,
+            "setup_ns": 163344,
+            "backend_ns": 14359552,
+            "install_ns": 2116896,
+            "private_vmas": 31,
+            "prepared_pages": 283,
+            "protected_pages": 16,
+            "child_maps": 283,
+            "prepare_empty_slots": 283,
+            "commit_empty_slots": 283,
+            "prepare_ns": 5112784,
+            "walk_ns": 4305808,
+            "parent_finish_ns": 250608,
+            "child_finish_ns": 1385056,
+            "commit_ns": 1420416,
+            "work_ns": 16725152,
+            "outer_residual_ns": 85360,
+            "backend_residual_ns": 1884880
+          },
+          {
+            "line": 185,
+            "start_ns": 18702678272,
+            "locked_ns": 18702722192,
+            "finish_ns": 18855588816,
+            "before_renderer_marker": true,
+            "vmas": 935,
+            "setup_ns": 1777440,
+            "backend_ns": 134415856,
+            "install_ns": 15891136,
+            "private_vmas": 921,
+            "prepared_pages": 12930,
+            "protected_pages": 1293,
+            "child_maps": 12930,
+            "prepare_empty_slots": 12930,
+            "commit_empty_slots": 12930,
+            "prepare_ns": 26987216,
+            "walk_ns": 22713312,
+            "parent_finish_ns": 10057904,
+            "child_finish_ns": 30022048,
+            "commit_ns": 25068080,
+            "work_ns": 152866624,
+            "outer_residual_ns": 782192,
+            "backend_residual_ns": 19567296
+          },
+          {
+            "line": 188,
+            "start_ns": 19228124576,
+            "locked_ns": 19228127808,
+            "finish_ns": 19469570896,
+            "before_renderer_marker": true,
+            "vmas": 945,
+            "setup_ns": 814944,
+            "backend_ns": 214397184,
+            "install_ns": 24913712,
+            "private_vmas": 929,
+            "prepared_pages": 13151,
+            "protected_pages": 325,
+            "child_maps": 13151,
+            "prepare_empty_slots": 13151,
+            "commit_empty_slots": 13151,
+            "prepare_ns": 62255408,
+            "walk_ns": 47353744,
+            "parent_finish_ns": 5889344,
+            "child_finish_ns": 33387616,
+            "commit_ns": 31206960,
+            "work_ns": 241443088,
+            "outer_residual_ns": 1317248,
+            "backend_residual_ns": 34304112
+          },
+          {
+            "line": 192,
+            "start_ns": 22785959712,
+            "locked_ns": 22792242576,
+            "finish_ns": 23331270112,
+            "before_renderer_marker": true,
+            "vmas": 1052,
+            "setup_ns": 4131712,
+            "backend_ns": 492271536,
+            "install_ns": 41515872,
+            "private_vmas": 1033,
+            "prepared_pages": 15005,
+            "protected_pages": 915,
+            "child_maps": 15005,
+            "prepare_empty_slots": 15005,
+            "commit_empty_slots": 15005,
+            "prepare_ns": 163466288,
+            "walk_ns": 133575392,
+            "parent_finish_ns": 15362032,
+            "child_finish_ns": 46269024,
+            "commit_ns": 69255376,
+            "work_ns": 539027536,
+            "outer_residual_ns": 1108416,
+            "backend_residual_ns": 64343424
+          },
+          {
+            "line": 195,
+            "start_ns": 31482127888,
+            "locked_ns": 31482179216,
+            "finish_ns": 31718483040,
+            "before_renderer_marker": true,
+            "vmas": 1422,
+            "setup_ns": 1879712,
+            "backend_ns": 197156608,
+            "install_ns": 36052656,
+            "private_vmas": 1387,
+            "prepared_pages": 22217,
+            "protected_pages": 3070,
+            "child_maps": 22217,
+            "prepare_empty_slots": 22217,
+            "commit_empty_slots": 22217,
+            "prepare_ns": 47854336,
+            "walk_ns": 33760512,
+            "parent_finish_ns": 15229136,
+            "child_finish_ns": 25806816,
+            "commit_ns": 40038672,
+            "work_ns": 236303824,
+            "outer_residual_ns": 1214848,
+            "backend_residual_ns": 34467136
+          },
+          {
+            "line": 198,
+            "start_ns": 31815619984,
+            "locked_ns": 31816287280,
+            "finish_ns": 32311860784,
+            "before_renderer_marker": true,
+            "vmas": 1429,
+            "setup_ns": 1876192,
+            "backend_ns": 438459888,
+            "install_ns": 53907184,
+            "private_vmas": 1388,
+            "prepared_pages": 22250,
+            "protected_pages": 194,
+            "child_maps": 22250,
+            "prepare_empty_slots": 22250,
+            "commit_empty_slots": 22250,
+            "prepare_ns": 126988960,
+            "walk_ns": 90658400,
+            "parent_finish_ns": 5817488,
+            "child_finish_ns": 78836880,
+            "commit_ns": 62326960,
+            "work_ns": 495573504,
+            "outer_residual_ns": 1330240,
+            "backend_residual_ns": 73831200
+          },
+          {
+            "line": 203,
+            "start_ns": 36835656480,
+            "locked_ns": 36835707760,
+            "finish_ns": 37883244240,
+            "before_renderer_marker": false,
+            "vmas": 1616,
+            "setup_ns": 4204048,
+            "backend_ns": 914430256,
+            "install_ns": 125570672,
+            "private_vmas": 1551,
+            "prepared_pages": 24026,
+            "protected_pages": 2402,
+            "child_maps": 24026,
+            "prepare_empty_slots": 24026,
+            "commit_empty_slots": 24026,
+            "prepare_ns": 316411792,
+            "walk_ns": 217538832,
+            "parent_finish_ns": 63547328,
+            "child_finish_ns": 79424880,
+            "commit_ns": 128014400,
+            "work_ns": 1047536480,
+            "outer_residual_ns": 3331504,
+            "backend_residual_ns": 109493024
+          },
+          {
+            "line": 206,
+            "start_ns": 38423702896,
+            "locked_ns": 38423706544,
+            "finish_ns": 39438112208,
+            "before_renderer_marker": false,
+            "vmas": 1629,
+            "setup_ns": 2664656,
+            "backend_ns": 894218784,
+            "install_ns": 114082656,
+            "private_vmas": 1561,
+            "prepared_pages": 24107,
+            "protected_pages": 652,
+            "child_maps": 24107,
+            "prepare_empty_slots": 24107,
+            "commit_empty_slots": 24107,
+            "prepare_ns": 293569392,
+            "walk_ns": 262348848,
+            "parent_finish_ns": 17553968,
+            "child_finish_ns": 79135488,
+            "commit_ns": 127282272,
+            "work_ns": 1014405664,
+            "outer_residual_ns": 3439568,
+            "backend_residual_ns": 114328816
+          }
+        ]
+      }
+    },
+    {
+      "sample": "02-candidate",
+      "stage_observations_s": {
+        "weston_ready": 3.12,
+        "browser_start": 3.421,
+        "renderer_inventory_seen": 34.051,
+        "window_white": 56.661,
+        "home_colors": 59.53,
+        "startup_observation_complete": 70.24
+      },
+      "renderer_pid": 87,
+      "valid_visual": true,
+      "qemu_maxrss_bytes": 1219936256,
+      "serial_sha256": "2e43a19f3aa67bc7bdecae80fb2b5c9818a308445cc0f9e7527987e181448baa",
+      "fork_stages": {
+        "before_renderer_marker": {
+          "forks": 12,
+          "counts": {
+            "vmas": 7185,
+            "private_vmas": 7048,
+            "prepared_pages": 101712,
+            "protected_pages": 6620,
+            "child_maps": 101712,
+            "prepare_empty_slots": 101712,
+            "commit_empty_slots": 101712
+          },
+          "stages_ms": {
+            "setup_ns": {
+              "sum": 11.680256,
+              "median": 1.052736,
+              "max": 1.905104
+            },
+            "backend_ns": {
+              "sum": 2117.935248,
+              "median": 148.351824,
+              "max": 683.515024
+            },
+            "install_ns": {
+              "sum": 257.754128,
+              "median": 12.091888,
+              "max": 89.24712
+            },
+            "prepare_ns": {
+              "sum": 640.64344,
+              "median": 41.653776,
+              "max": 245.336528
+            },
+            "walk_ns": {
+              "sum": 503.864944,
+              "median": 32.726344,
+              "max": 185.273488
+            },
+            "parent_finish_ns": {
+              "sum": 65.341056,
+              "median": 3.973952,
+              "max": 16.738912
+            },
+            "child_finish_ns": {
+              "sum": 261.8308,
+              "median": 12.851848,
+              "max": 73.564672
+            },
+            "commit_ns": {
+              "sum": 295.71384,
+              "median": 22.078024,
+              "max": 83.79976
+            },
+            "work_ns": {
+              "sum": 2397.755584,
+              "median": 166.199336,
+              "max": 778.78992
+            },
+            "outer_residual_ns": {
+              "sum": 10.385952,
+              "median": 0.662504,
+              "max": 4.497312
+            },
+            "backend_residual_ns": {
+              "sum": 350.541168,
+              "median": 28.207536,
+              "max": 110.197984
+            }
+          }
+        },
+        "through_startup_observation": {
+          "forks": 14,
+          "counts": {
+            "vmas": 10533,
+            "private_vmas": 10261,
+            "prepared_pages": 149883,
+            "protected_pages": 9661,
+            "child_maps": 149883,
+            "prepare_empty_slots": 149883,
+            "commit_empty_slots": 149883
+          },
+          "stages_ms": {
+            "setup_ns": {
+              "sum": 22.549216,
+              "median": 1.168592,
+              "max": 7.11232
+            },
+            "backend_ns": {
+              "sum": 3651.987664,
+              "median": 183.322008,
+              "max": 814.840736
+            },
+            "install_ns": {
+              "sum": 477.555808,
+              "median": 16.130664,
+              "max": 119.498992
+            },
+            "prepare_ns": {
+              "sum": 1144.739552,
+              "median": 51.006488,
+              "max": 262.343056
+            },
+            "walk_ns": {
+              "sum": 890.902448,
+              "median": 38.816608,
+              "max": 203.65512
+            },
+            "parent_finish_ns": {
+              "sum": 125.661456,
+              "median": 6.992832,
+              "max": 44.013424
+            },
+            "child_finish_ns": {
+              "sum": 404.000992,
+              "median": 20.259536,
+              "max": 73.564672
+            },
+            "commit_ns": {
+              "sum": 531.295712,
+              "median": 23.837,
+              "max": 125.70128
+            },
+            "work_ns": {
+              "sum": 4170.827152,
+              "median": 196.862672,
+              "max": 946.775024
+            },
+            "outer_residual_ns": {
+              "sum": 18.734464,
+              "median": 0.854632,
+              "max": 5.322976
+            },
+            "backend_residual_ns": {
+              "sum": 555.387504,
+              "median": 35.768936,
+              "max": 110.197984
+            }
+          }
+        },
+        "events": [
+          {
+            "line": 161,
+            "start_ns": 3389529984,
+            "locked_ns": 3389533392,
+            "finish_ns": 3393401344,
+            "before_renderer_marker": true,
+            "vmas": 14,
+            "setup_ns": 98080,
+            "backend_ns": 3267840,
+            "install_ns": 465104,
+            "private_vmas": 13,
+            "prepared_pages": 128,
+            "protected_pages": 26,
+            "child_maps": 128,
+            "prepare_empty_slots": 128,
+            "commit_empty_slots": 128,
+            "prepare_ns": 941600,
+            "walk_ns": 703440,
+            "parent_finish_ns": 215024,
+            "child_finish_ns": 312912,
+            "commit_ns": 453232,
+            "work_ns": 3867952,
+            "outer_residual_ns": 36928,
+            "backend_residual_ns": 641632
+          },
+          {
+            "line": 164,
+            "start_ns": 3473368784,
+            "locked_ns": 3473371600,
+            "finish_ns": 3481760464,
+            "before_renderer_marker": true,
+            "vmas": 14,
+            "setup_ns": 274240,
+            "backend_ns": 7498496,
+            "install_ns": 567344,
+            "private_vmas": 13,
+            "prepared_pages": 129,
+            "protected_pages": 9,
+            "child_maps": 129,
+            "prepare_empty_slots": 129,
+            "commit_empty_slots": 129,
+            "prepare_ns": 869376,
+            "walk_ns": 4863056,
+            "parent_finish_ns": 211152,
+            "child_finish_ns": 190736,
+            "commit_ns": 474384,
+            "work_ns": 8388864,
+            "outer_residual_ns": 48784,
+            "backend_residual_ns": 889792
+          },
+          {
+            "line": 167,
+            "start_ns": 3553980032,
+            "locked_ns": 3553988384,
+            "finish_ns": 3566078160,
+            "before_renderer_marker": true,
+            "vmas": 14,
+            "setup_ns": 1194960,
+            "backend_ns": 9618304,
+            "install_ns": 1236912,
+            "private_vmas": 13,
+            "prepared_pages": 133,
+            "protected_pages": 10,
+            "child_maps": 133,
+            "prepare_empty_slots": 133,
+            "commit_empty_slots": 133,
+            "prepare_ns": 1285712,
+            "walk_ns": 6798592,
+            "parent_finish_ns": 224944,
+            "child_finish_ns": 234416,
+            "commit_ns": 537392,
+            "work_ns": 12089776,
+            "outer_residual_ns": 39600,
+            "backend_residual_ns": 537248
+          },
+          {
+            "line": 177,
+            "start_ns": 11300695632,
+            "locked_ns": 11300699392,
+            "finish_ns": 11508748320,
+            "before_renderer_marker": true,
+            "vmas": 511,
+            "setup_ns": 963248,
+            "backend_ns": 194378080,
+            "install_ns": 12194592,
+            "private_vmas": 510,
+            "prepared_pages": 7536,
+            "protected_pages": 628,
+            "child_maps": 7536,
+            "prepare_empty_slots": 7536,
+            "commit_empty_slots": 7536,
+            "prepare_ns": 59136272,
+            "walk_ns": 48532336,
+            "parent_finish_ns": 7610192,
+            "child_finish_ns": 17415408,
+            "commit_ns": 23746992,
+            "work_ns": 208048928,
+            "outer_residual_ns": 513008,
+            "backend_residual_ns": 37936880
+          },
+          {
+            "line": 179,
+            "start_ns": 11544469952,
+            "locked_ns": 11544472528,
+            "finish_ns": 11730148944,
+            "before_renderer_marker": true,
+            "vmas": 511,
+            "setup_ns": 524032,
+            "backend_ns": 172265936,
+            "install_ns": 11989184,
+            "private_vmas": 510,
+            "prepared_pages": 7542,
+            "protected_pages": 16,
+            "child_maps": 7542,
+            "prepare_empty_slots": 7542,
+            "commit_empty_slots": 7542,
+            "prepare_ns": 48604896,
+            "walk_ns": 39442304,
+            "parent_finish_ns": 1406144,
+            "child_finish_ns": 23103664,
+            "commit_ns": 20409056,
+            "work_ns": 185676416,
+            "outer_residual_ns": 897264,
+            "backend_residual_ns": 39299872
+          },
+          {
+            "line": 182,
+            "start_ns": 12299703152,
+            "locked_ns": 12299706272,
+            "finish_ns": 12310794928,
+            "before_renderer_marker": true,
+            "vmas": 31,
+            "setup_ns": 419456,
+            "backend_ns": 9738128,
+            "install_ns": 888304,
+            "private_vmas": 30,
+            "prepared_pages": 276,
+            "protected_pages": 47,
+            "child_maps": 276,
+            "prepare_empty_slots": 276,
+            "commit_empty_slots": 276,
+            "prepare_ns": 2834064,
+            "walk_ns": 1836800,
+            "parent_finish_ns": 827168,
+            "child_finish_ns": 1218912,
+            "commit_ns": 1043296,
+            "work_ns": 11088656,
+            "outer_residual_ns": 42768,
+            "backend_residual_ns": 1977888
+          },
+          {
+            "line": 184,
+            "start_ns": 12344086192,
+            "locked_ns": 12344089408,
+            "finish_ns": 12357711008,
+            "before_renderer_marker": true,
+            "vmas": 32,
+            "setup_ns": 291136,
+            "backend_ns": 11219936,
+            "install_ns": 1978528,
+            "private_vmas": 31,
+            "prepared_pages": 283,
+            "protected_pages": 16,
+            "child_maps": 283,
+            "prepare_empty_slots": 283,
+            "commit_empty_slots": 283,
+            "prepare_ns": 4446608,
+            "walk_ns": 2977872,
+            "parent_finish_ns": 267616,
+            "child_finish_ns": 1005696,
+            "commit_ns": 1328960,
+            "work_ns": 13621600,
+            "outer_residual_ns": 132000,
+            "backend_residual_ns": 1193184
+          },
+          {
+            "line": 188,
+            "start_ns": 19210476848,
+            "locked_ns": 19210522304,
+            "finish_ns": 19357244560,
+            "before_renderer_marker": true,
+            "vmas": 990,
+            "setup_ns": 1142224,
+            "backend_ns": 124437712,
+            "install_ns": 20066736,
+            "private_vmas": 975,
+            "prepared_pages": 12964,
+            "protected_pages": 1344,
+            "child_maps": 12964,
+            "prepare_empty_slots": 12964,
+            "commit_empty_slots": 12964,
+            "prepare_ns": 34702656,
+            "walk_ns": 27261776,
+            "parent_finish_ns": 7443904,
+            "child_finish_ns": 8288288,
+            "commit_ns": 23927008,
+            "work_ns": 146722256,
+            "outer_residual_ns": 1075584,
+            "backend_residual_ns": 22814080
+          },
+          {
+            "line": 191,
+            "start_ns": 19785473376,
+            "locked_ns": 19786395312,
+            "finish_ns": 20084214592,
+            "before_renderer_marker": true,
+            "vmas": 1000,
+            "setup_ns": 1905104,
+            "backend_ns": 262854896,
+            "install_ns": 32247280,
+            "private_vmas": 983,
+            "prepared_pages": 13186,
+            "protected_pages": 322,
+            "child_maps": 13186,
+            "prepare_empty_slots": 13186,
+            "commit_empty_slots": 13186,
+            "prepare_ns": 66065712,
+            "walk_ns": 57678240,
+            "parent_finish_ns": 8207904,
+            "child_finish_ns": 54595744,
+            "commit_ns": 38216576,
+            "work_ns": 297819280,
+            "outer_residual_ns": 812000,
+            "backend_residual_ns": 38090720
+          },
+          {
+            "line": 194,
+            "start_ns": 23160654400,
+            "locked_ns": 23169822496,
+            "finish_ns": 23948612416,
+            "before_renderer_marker": true,
+            "vmas": 1107,
+            "setup_ns": 1530464,
+            "backend_ns": 683515024,
+            "install_ns": 89247120,
+            "private_vmas": 1087,
+            "prepared_pages": 15039,
+            "protected_pages": 910,
+            "child_maps": 15039,
+            "prepare_empty_slots": 15039,
+            "commit_empty_slots": 15039,
+            "prepare_ns": 245336528,
+            "walk_ns": 185273488,
+            "parent_finish_ns": 15646336,
+            "child_finish_ns": 43260928,
+            "commit_ns": 83799760,
+            "work_ns": 778789920,
+            "outer_residual_ns": 4497312,
+            "backend_residual_ns": 110197984
+          },
+          {
+            "line": 197,
+            "start_ns": 32442672384,
+            "locked_ns": 32442722208,
+            "finish_ns": 32699046704,
+            "before_renderer_marker": true,
+            "vmas": 1478,
+            "setup_ns": 1494208,
+            "backend_ns": 223872768,
+            "install_ns": 29877552,
+            "private_vmas": 1442,
+            "prepared_pages": 22244,
+            "protected_pages": 3065,
+            "child_maps": 22244,
+            "prepare_empty_slots": 22244,
+            "commit_empty_slots": 22244,
+            "prepare_ns": 53408080,
+            "walk_ns": 38190912,
+            "parent_finish_ns": 16738912,
+            "child_finish_ns": 38639424,
+            "commit_ns": 43294448,
+            "work_ns": 256324496,
+            "outer_residual_ns": 1079968,
+            "backend_residual_ns": 33600992
+          },
+          {
+            "line": 200,
+            "start_ns": 32792441216,
+            "locked_ns": 32792444128,
+            "finish_ns": 33267761568,
+            "before_renderer_marker": true,
+            "vmas": 1483,
+            "setup_ns": 1843104,
+            "backend_ns": 415268128,
+            "install_ns": 56995472,
+            "private_vmas": 1441,
+            "prepared_pages": 22252,
+            "protected_pages": 227,
+            "child_maps": 22252,
+            "prepare_empty_slots": 22252,
+            "commit_empty_slots": 22252,
+            "prepare_ns": 123011936,
+            "walk_ns": 90306128,
+            "parent_finish_ns": 6541760,
+            "child_finish_ns": 73564672,
+            "commit_ns": 58482736,
+            "work_ns": 475317440,
+            "outer_residual_ns": 1210736,
+            "backend_residual_ns": 63360896
+          },
+          {
+            "line": 205,
+            "start_ns": 38109526352,
+            "locked_ns": 38109574928,
+            "finish_ns": 39056349952,
+            "before_renderer_marker": false,
+            "vmas": 1669,
+            "setup_ns": 7112320,
+            "backend_ns": 814840736,
+            "install_ns": 119498992,
+            "private_vmas": 1603,
+            "prepared_pages": 24054,
+            "protected_pages": 2405,
+            "child_maps": 24054,
+            "prepare_empty_slots": 24054,
+            "commit_empty_slots": 24054,
+            "prepare_ns": 262343056,
+            "walk_ns": 203655120,
+            "parent_finish_ns": 44013424,
+            "child_finish_ns": 69200112,
+            "commit_ns": 125701280,
+            "work_ns": 946775024,
+            "outer_residual_ns": 5322976,
+            "backend_residual_ns": 109927744
+          },
+          {
+            "line": 208,
+            "start_ns": 39952756464,
+            "locked_ns": 39952857072,
+            "finish_ns": 40779153616,
+            "before_renderer_marker": false,
+            "vmas": 1679,
+            "setup_ns": 3756640,
+            "backend_ns": 719211680,
+            "install_ns": 100302688,
+            "private_vmas": 1610,
+            "prepared_pages": 24117,
+            "protected_pages": 636,
+            "child_maps": 24117,
+            "prepare_empty_slots": 24117,
+            "commit_empty_slots": 24117,
+            "prepare_ns": 241753056,
+            "walk_ns": 183382384,
+            "parent_finish_ns": 16306976,
+            "child_finish_ns": 72970080,
+            "commit_ns": 109880592,
+            "work_ns": 826296544,
+            "outer_residual_ns": 3025536,
+            "backend_residual_ns": 94918592
+          }
+        ]
+      }
+    },
+    {
+      "sample": "02-baseline",
+      "stage_observations_s": {
+        "weston_ready": 3.115,
+        "browser_start": 3.416,
+        "renderer_inventory_seen": 34.129,
+        "window_white": 56.636,
+        "home_colors": 60.925,
+        "startup_observation_complete": 71.63
+      },
+      "renderer_pid": 87,
+      "valid_visual": true,
+      "qemu_maxrss_bytes": 1221881856,
+      "serial_sha256": "3ec4ac75c1c13042aa69897ac2be271a2367dcf611c36f8b7cb84ed3b62f8551"
+    }
+  ]
+}

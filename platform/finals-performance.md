@@ -99,4 +99,8 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 
 基于 38d221e 构建默认版与独立诊断版。两组冷启动共四轮，按 AB、BA 交替，全部观测到首页、首窗和独立 renderer。两次诊断中，renderer 首次被观测前各记录 12 次私有地址空间复制和 11 次成功映像装载。两类区间并集分别为 3.278 和 3.576 秒。复制中位数为 153.80 和 175.54 毫秒，装载中位数为 17.81 和 24.14 毫秒，单次锁等待最长为 3.06 毫秒。计时使用客体时钟并扣除跨任务重叠，覆盖该窗口内客体任务。继续分解复制路径的匿名对象、页表和 VMA 环节。[逐轮结果](evidence/finals-20261122/startup-fork-exec-observations.json) · [队友仓库计时补丁与复跑步骤](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/b7b9ad36311e4db7095f22a38c3f52908955a121/work/performance-20261122-finals-r10)
 
+## 11 月 22 日私有复制分段计时
+
+同一发布源码的默认版和分段诊断版各运行两次，共四次原参数冷启动，均观察到首窗、首页和 renderer。renderer 首次被观测前，两次诊断各记录 12 次私有复制。对象准备与提交合计为 822.01 和 936.36 毫秒，均约占复制记录总时长的 39%。准备和提交分别检查了约 10.2 万个空子对象中的页项。父页只在约 6.5% 的页项上降权。先测试能复用准备向量、跳过空子对象重复扫描并直接移交页句柄的候选。观察使用客体单调时钟，跨任务区间可能重叠。[逐轮分段数据](evidence/finals-20261122/private-fork-stages.json) · [队友分支补丁与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/2b9380c00182c479a68e8b2020a9e6cb3ef8b71a/work/performance-20261122-finals-r11)
+
 诊断批次可用 `--keep-going` 保留观测超时时的画面和原始记录，并完成其他样本。任何样本超时，整批仍返回失败，时延汇总只包含完成观察的样本。
