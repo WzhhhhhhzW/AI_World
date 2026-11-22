@@ -1,0 +1,376 @@
+{
+  "scope": "x86_64 WSL2 TCG guest-wide diagnostic with no change to speculative read or eviction policy",
+  "inputs": {
+    "kernel_sha256": "c33ef3ab3f414840fa61e8c55f41e072121a3bcf5c422e82189d460da0fc56f4",
+    "rootfs_sha256": "2817c7e2438075a42d8fc6d01d9e525164c9ea05d6696776d94ae26e901eeac4",
+    "guest_files_sha256": {
+      "index.html": "831cf28f3748940b450d1da325aa39a2dcaea2fee15b0532bf4111144d176b38",
+      "interaction.html": "58130daa4a2f426fd16b8bde93d964713f20e147da8af1537ab2d8b506d2fd58",
+      "layout.html": "a1b04f9aba81b4b7818be2e7a858d482d471bd0d625dee257f605b2129b8fc4c"
+    },
+    "upstream_commit": "0b6c59600a8782762a6112eb02cfd96347e496e6",
+    "host_kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "host_cpu": "Intel(R) Core(TM) Ultra 9 285H",
+    "host_memtotal": "MemTotal:       16115892 kB",
+    "qemu": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+    "run_order": [
+      [
+        "baseline"
+      ],
+      [
+        "baseline"
+      ]
+    ],
+    "comparison": "private_fault_probe",
+    "browser_mode": "baseline",
+    "measurement_scope": {
+      "guest_snapshots": [
+        "before",
+        "renderer",
+        "home",
+        "layout"
+      ]
+    }
+  },
+  "source_commit": "0645c8575e9251ba5acb6d77df126ac414145d12",
+  "source_archive_sha256": "9e98510237116ab926431e9c831562acfefe9818eb39b13dedcf6673ddb85b90",
+  "release_patch_sha256": "ce5112a7fc747f40de5450d3ba4cdf08930ea2648bfa9bc1909ce221f7a6270d",
+  "published_patch_sha256": "9e96770467f03e3020ed6f6c5b8a7da5a600818531d892c46d26a9923a8080f7",
+  "release_and_published_patch_differ_only_in_test_assertion": true,
+  "host_observer_patch_sha256": "94085baefd5eb8d660ea3fe38d8df8d9b8e1250f8c256a325935772397365229",
+  "source_config_sha256": "42e8d16450352712d78813b5f78b7ca221dfb88fadc796f57ecf317d7e33f669",
+  "release_kernel_sha256": "c33ef3ab3f414840fa61e8c55f41e072121a3bcf5c422e82189d460da0fc56f4",
+  "guest_unit_tests": {
+    "crates": [
+      "pagecache",
+      "kvfs",
+      "procfs"
+    ],
+    "passed": 231,
+    "failed": 0,
+    "ignored": 0,
+    "serial_sha256": "f9ddd24c9a5f49fd80a953c1937c7c6f697a4c4806ec316231e8855668acb5fa"
+  },
+  "observations": [
+    {
+      "scope": "guest-wide diagnostic; live fields sampled separately and peaks need not coincide",
+      "stages_s": {
+        "weston_ready": 3.159,
+        "browser_start": 3.56,
+        "renderer_inventory_seen": 33.545,
+        "window_white": 55.453,
+        "home_colors": 59.034,
+        "return_css": 64.888,
+        "css_visible": 68.602
+      },
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1233199104,
+        "user_s": 124.97533,
+        "system_s": 33.242569
+      },
+      "snapshots": {
+        "before": {
+          "prefetch_pages": {
+            "inserted": 738,
+            "unused": 333,
+            "peak_unused": 334,
+            "demanded": 405,
+            "modified": 0,
+            "dropped_unused": 0
+          },
+          "demand_distance_buckets": {
+            "distance_0_7": 95,
+            "distance_8_63": 169,
+            "distance_64_511": 140,
+            "distance_512_plus": 1
+          },
+          "guest_meminfo_kib": {
+            "MemTotal": 2086532,
+            "Cached": 4768,
+            "AnonPages": 15508,
+            "Shmem": 0,
+            "PageTables": 5152,
+            "XKernelManagedUsed": 74480,
+            "XKernelManagedPeak": 74480
+          },
+          "unused_mib": 1.301,
+          "independent_unused_peak_mib": 1.305,
+          "inserted_minus_accounted": 0,
+          "demanded_minus_buckets": 0,
+          "snapshot_sha256": "0b8ed9cbf9693ac848fd5abd9a33a7f87cca7b4450d0d007aada6bcfa7785221",
+          "guest_read_window": {
+            "guest_read_start_ns": 3338193536,
+            "guest_read_end_ns": 3351098224,
+            "bytes": 1050
+          }
+        },
+        "renderer": {
+          "prefetch_pages": {
+            "inserted": 28669,
+            "unused": 13156,
+            "peak_unused": 13167,
+            "demanded": 15513,
+            "modified": 0,
+            "dropped_unused": 0
+          },
+          "demand_distance_buckets": {
+            "distance_0_7": 6944,
+            "distance_8_63": 2145,
+            "distance_64_511": 1577,
+            "distance_512_plus": 4847
+          },
+          "guest_meminfo_kib": {
+            "MemTotal": 2086532,
+            "Cached": 151032,
+            "AnonPages": 224364,
+            "Shmem": 0,
+            "PageTables": 10244,
+            "XKernelManagedUsed": 533032,
+            "XKernelManagedPeak": 533032
+          },
+          "unused_mib": 51.391,
+          "independent_unused_peak_mib": 51.434,
+          "inserted_minus_accounted": 0,
+          "demanded_minus_buckets": 0,
+          "snapshot_sha256": "f28f5b0b3a7832c3c85fc3443a284498c6b7aac1faff4264f25eb2b58e26932a",
+          "guest_read_window": {
+            "guest_read_start_ns": 33286283392,
+            "guest_read_end_ns": 33299487296,
+            "bytes": 1067
+          }
+        },
+        "home": {
+          "prefetch_pages": {
+            "inserted": 36394,
+            "unused": 15069,
+            "peak_unused": 15248,
+            "demanded": 21325,
+            "modified": 0,
+            "dropped_unused": 0
+          },
+          "demand_distance_buckets": {
+            "distance_0_7": 7668,
+            "distance_8_63": 2743,
+            "distance_64_511": 2172,
+            "distance_512_plus": 8742
+          },
+          "guest_meminfo_kib": {
+            "MemTotal": 2086532,
+            "Cached": 229204,
+            "AnonPages": 426448,
+            "Shmem": 0,
+            "PageTables": 11796,
+            "XKernelManagedUsed": 880416,
+            "XKernelManagedPeak": 880416
+          },
+          "unused_mib": 58.863,
+          "independent_unused_peak_mib": 59.562,
+          "inserted_minus_accounted": 0,
+          "demanded_minus_buckets": 0,
+          "snapshot_sha256": "6f469919c1664c54c2704b2dc0739a36c4aa58f04c73249f38a5f056be4c6f79",
+          "guest_read_window": {
+            "guest_read_start_ns": 59081707664,
+            "guest_read_end_ns": 59086476784,
+            "bytes": 1067
+          }
+        },
+        "layout": {
+          "prefetch_pages": {
+            "inserted": 36656,
+            "unused": 14909,
+            "peak_unused": 15248,
+            "demanded": 21747,
+            "modified": 0,
+            "dropped_unused": 0
+          },
+          "demand_distance_buckets": {
+            "distance_0_7": 7720,
+            "distance_8_63": 2755,
+            "distance_64_511": 2177,
+            "distance_512_plus": 9095
+          },
+          "guest_meminfo_kib": {
+            "MemTotal": 2086532,
+            "Cached": 227124,
+            "AnonPages": 433180,
+            "Shmem": 0,
+            "PageTables": 11812,
+            "XKernelManagedUsed": 885048,
+            "XKernelManagedPeak": 887756
+          },
+          "unused_mib": 58.238,
+          "independent_unused_peak_mib": 59.562,
+          "inserted_minus_accounted": 0,
+          "demanded_minus_buckets": 0,
+          "snapshot_sha256": "0bb8990bba54d2335b2e1e726a589c67819fbbbb1c1794d89c5649fde3660412",
+          "guest_read_window": {
+            "guest_read_start_ns": 68688045808,
+            "guest_read_end_ns": 68692035120,
+            "bytes": 1067
+          }
+        }
+      }
+    },
+    {
+      "scope": "guest-wide diagnostic; live fields sampled separately and peaks need not coincide",
+      "stages_s": {
+        "weston_ready": 2.949,
+        "browser_start": 3.35,
+        "renderer_inventory_seen": 32.866,
+        "window_white": 55.902,
+        "home_colors": 58.06,
+        "return_css": 63.955,
+        "css_visible": 66.955
+      },
+      "qemu_wait4": {
+        "exit": 0,
+        "maxrss_bytes": 1228550144,
+        "user_s": 123.401882,
+        "system_s": 33.543195
+      },
+      "snapshots": {
+        "before": {
+          "prefetch_pages": {
+            "inserted": 701,
+            "unused": 300,
+            "peak_unused": 310,
+            "demanded": 401,
+            "modified": 0,
+            "dropped_unused": 0
+          },
+          "demand_distance_buckets": {
+            "distance_0_7": 98,
+            "distance_8_63": 163,
+            "distance_64_511": 139,
+            "distance_512_plus": 1
+          },
+          "guest_meminfo_kib": {
+            "MemTotal": 2086532,
+            "Cached": 4476,
+            "AnonPages": 14388,
+            "Shmem": 0,
+            "PageTables": 5152,
+            "XKernelManagedUsed": 73088,
+            "XKernelManagedPeak": 73088
+          },
+          "unused_mib": 1.172,
+          "independent_unused_peak_mib": 1.211,
+          "inserted_minus_accounted": 0,
+          "demanded_minus_buckets": 0,
+          "snapshot_sha256": "936cc3fd84151ecbedd1ffccaae135d7660dd5e9ddeb529cd77fc4aa8a46b57d",
+          "guest_read_window": {
+            "guest_read_start_ns": 3101081952,
+            "guest_read_end_ns": 3142634464,
+            "bytes": 1050
+          }
+        },
+        "renderer": {
+          "prefetch_pages": {
+            "inserted": 28523,
+            "unused": 13169,
+            "peak_unused": 13174,
+            "demanded": 15354,
+            "modified": 0,
+            "dropped_unused": 0
+          },
+          "demand_distance_buckets": {
+            "distance_0_7": 6963,
+            "distance_8_63": 2128,
+            "distance_64_511": 1554,
+            "distance_512_plus": 4709
+          },
+          "guest_meminfo_kib": {
+            "MemTotal": 2086532,
+            "Cached": 149820,
+            "AnonPages": 221300,
+            "Shmem": 0,
+            "PageTables": 10264,
+            "XKernelManagedUsed": 528796,
+            "XKernelManagedPeak": 529308
+          },
+          "unused_mib": 51.441,
+          "independent_unused_peak_mib": 51.461,
+          "inserted_minus_accounted": 0,
+          "demanded_minus_buckets": 0,
+          "snapshot_sha256": "48eef04e51f0aedc6b734c41395d97a86657749cb8c5288f9d3929c12d889840",
+          "guest_read_window": {
+            "guest_read_start_ns": 32611266432,
+            "guest_read_end_ns": 32622947056,
+            "bytes": 1067
+          }
+        },
+        "home": {
+          "prefetch_pages": {
+            "inserted": 36394,
+            "unused": 15067,
+            "peak_unused": 15266,
+            "demanded": 21327,
+            "modified": 0,
+            "dropped_unused": 0
+          },
+          "demand_distance_buckets": {
+            "distance_0_7": 7675,
+            "distance_8_63": 2757,
+            "distance_64_511": 2160,
+            "distance_512_plus": 8735
+          },
+          "guest_meminfo_kib": {
+            "MemTotal": 2086532,
+            "Cached": 227136,
+            "AnonPages": 427076,
+            "Shmem": 0,
+            "PageTables": 11748,
+            "XKernelManagedUsed": 878888,
+            "XKernelManagedPeak": 878888
+          },
+          "unused_mib": 58.855,
+          "independent_unused_peak_mib": 59.633,
+          "inserted_minus_accounted": 0,
+          "demanded_minus_buckets": 0,
+          "snapshot_sha256": "70b1b4eb2be3deaa16c1db4d5ad951915bdfb6001943f1da61aa31172f158dce",
+          "guest_read_window": {
+            "guest_read_start_ns": 58159056160,
+            "guest_read_end_ns": 58167053328,
+            "bytes": 1067
+          }
+        },
+        "layout": {
+          "prefetch_pages": {
+            "inserted": 36659,
+            "unused": 14906,
+            "peak_unused": 15266,
+            "demanded": 21753,
+            "modified": 0,
+            "dropped_unused": 0
+          },
+          "demand_distance_buckets": {
+            "distance_0_7": 7726,
+            "distance_8_63": 2770,
+            "distance_64_511": 2167,
+            "distance_512_plus": 9090
+          },
+          "guest_meminfo_kib": {
+            "MemTotal": 2086532,
+            "Cached": 227140,
+            "AnonPages": 433548,
+            "Shmem": 0,
+            "PageTables": 11764,
+            "XKernelManagedUsed": 885380,
+            "XKernelManagedPeak": 888088
+          },
+          "unused_mib": 58.227,
+          "independent_unused_peak_mib": 59.633,
+          "inserted_minus_accounted": 0,
+          "demanded_minus_buckets": 0,
+          "snapshot_sha256": "fee91720f7dc0c9e0bc0d076f67a7e8fc301b68cb1f06e6d4538e5e46eddc845",
+          "guest_read_window": {
+            "guest_read_start_ns": 67048709120,
+            "guest_read_end_ns": 67078912624,
+            "bytes": 1067
+          }
+        }
+      }
+    }
+  ]
+}

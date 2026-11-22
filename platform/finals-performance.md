@@ -160,3 +160,7 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 从 CRC32C 基线独立构建候选。每个准备好的请求少分配一个准入 `PollSet`，通过计数保留提前通知，需要等待时才保存唤醒器。终态完成流程保持原实现。137 项 AArch64 客体测试通过。用离线包入口运行候选，完成独立 renderer、双标签、键盘回显、鼠标跳转，以及 JS 和 CSS 各 6 项。本轮 TCG 用于确认功能，KVM 配对和 30 分钟长稳待实机验证。[源码、原始日志、截图及复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/c3a4b684ec90fb53e8ba375dfedac886473449d9/work/performance-20261122-finals-r21-admission)
 
 后续同盘五组交替 TCG 对照十次均完成。首页四组更快，配对差值中位 −0.715 秒，接近约 0.7 秒的取图间隔。首窗差值中位 +0.006 秒，renderer +0.195 秒，布局页 −0.005 秒，宿主 QEMU 峰值 RSS +2.922 MiB。保留当前长稳版为默认，候选继续用于 D3000M 复测。 [逐次原始指标](evidence/finals-20261122/virtio-block-admission-comparison.json) · [队友仓库复跑与数据](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/cb4945d15faafe7bb442de49d49f822fdf375eec/work/performance-20261122-finals-r21-admission)
+
+## 11 月 22 日预读邻页驻留诊断
+
+从同一 CRC32C 版本独立构建诊断内核，维持八页读取行为。`pagecache`、`kvfs`、`procfs` 的 231 项客体回归通过。两次同盘 Chromium 诊断中，首次看到 renderer 时约 51.4 MiB 的预读邻页尚未被需求访问，首页约 58.9 MiB，布局页约 58.2 MiB。到布局页，约 42% 的已访问邻页在标记至少 512 个后续邻页后才首次使用，快速回收可能增加重读。记录中区分客体未用页峰值、客体受管峰值和宿主 RSS。[原始阶段计数](evidence/finals-20261122/private-prefetch-residency.json)
