@@ -33,6 +33,10 @@ STAGES = {b"VILLAGE_WESTON_READY": "weston_ready", b"ICT_BROWSER_START": "browse
           b"FINALS_RENDERER_SEEN_FIRST pid=": "renderer_inventory_seen"}
 
 
+class IncompleteObservation(RuntimeError):
+    """The guest did not reach the browser observation criteria in time."""
+
+
 def write_json(path, data):
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -389,7 +393,9 @@ def measure(monitor, work, output, start, result, *, startup_only=False):
     if matched:
         result["renderer_pid"] = int(matched[1])
     if not result["valid_visual"] or not result["renderer_pid"] or "window_white" not in stages:
-        raise RuntimeError(f"客体观测不完整，已保留运行记录：{output}")
+        with contextlib.suppress(OSError, RuntimeError, ValueError):
+            monitor.screenshot(output / "observation-timeout.png")
+        raise IncompleteObservation(f"客体观测不完整，已保留运行记录：{output}")
 
 
 def capture_guest_memory(work, output, pid):
@@ -515,6 +521,8 @@ def main():
     parser.add_argument("--runs", type=int, default=5, help="每种模式独立启动次数")
     parser.add_argument("--order", choices=("alternate", "baseline-first"), default="alternate",
                         help="默认奇数组先原版、偶数组先候选；baseline-first 复现首次矩阵顺序")
+    parser.add_argument("--keep-going", action="store_true",
+                        help="记录出图超时并继续剩余样本，有超时时整批返回失败")
     validation = parser.add_mutually_exclusive_group()
     validation.add_argument("--controls", action="store_true", help="单独验证键鼠、双标签、CSS 和 JS")
     validation.add_argument("--soak", action="store_true", help="单独验证 30 分钟长稳与 10 次页面加载")
@@ -530,6 +538,8 @@ def main():
         parser.error("--browser-mode 需要 --candidate-kernel、--controls 或 --soak")
     if args.candidate_kernel and validation_only:
         parser.error("内核对照与 --controls、--soak 分开运行")
+    if args.keep_going and validation_only:
+        parser.error("--keep-going 仅用于批次对照")
     args.kernel, args.rootfs = args.kernel.resolve(strict=True), args.rootfs.resolve(strict=True)
     if args.candidate_kernel:
         args.candidate_kernel = args.candidate_kernel.resolve(strict=True)
@@ -567,8 +577,11 @@ def main():
     elif validation_only:
         inputs["comparison"] = "soak" if args.soak else "controls"
         inputs["browser_mode"] = next(iter(runs))
+    if args.keep_going:
+        inputs["incomplete_observation_policy"] = "record-and-continue"
     write_json(output / "inputs.json", inputs)
     results = []
+    failures = []
     with tempfile.TemporaryDirectory() as tmp:
         disks = prepare(args, Path(tmp), dict.fromkeys(mode for _, mode in runs.values()))
         if validation_only:
@@ -579,10 +592,21 @@ def main():
         for pair, order in enumerate(groups, 1):
             for label in order:
                 kernel, mode = runs[label]
-                result = run_once(kernel, disks[mode], output / f"{pair:02}-{label}", label,
-                                  startup_only=args.startup_only, memory_probe=args.memory_probe)
+                case = output / f"{pair:02}-{label}"
+                try:
+                    result = run_once(kernel, disks[mode], case, label,
+                                      startup_only=args.startup_only, memory_probe=args.memory_probe)
+                except IncompleteObservation as exc:
+                    if not args.keep_going:
+                        raise
+                    failures.append({"pair": pair, "mode": label, "output": case.name})
+                    write_json(output / "failures.json", failures)
+                    print(exc, file=sys.stderr, flush=True)
+                    continue
                 results.append(result)
                 write_json(output / "summary.json", summarize(results))
+        if failures:
+            raise RuntimeError(f"{len(failures)} 次客体观测未完成，详见 {output / 'failures.json'}")
 
 
 if __name__ == "__main__":

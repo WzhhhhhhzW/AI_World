@@ -1,0 +1,36 @@
+{
+  "source_commit": "38d221e357d50e9c5b7dae5232a45c2ec8fa2b98",
+  "source_tree": "ee9ddb8a2173732b6bae532fd8cb593b35d5d1e6",
+  "builds": {
+    "baseline": {
+      "kernel_sha256": "bd4c91d4a5bdc5c2b869441efdc6caff16005871c1063e7978af1181fc8384c9",
+      "kernel_size_bytes": 8521938,
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "target": "aarch64-unknown-none-softfloat",
+      "entry_link_flags": [
+        "-C opt-level=3",
+        "-C embed-bitcode=no"
+      ],
+      "entry_link_invocations": 1,
+      "config_sha256": "42e8d16450352712d78813b5f78b7ca221dfb88fadc796f57ecf317d7e33f669",
+      "source_archive_sha256": "245b90f1837172cacc760998a846795daae4984c1303512faef6b005b66c9187",
+      "verbose_build_log_sha256": "b547b419ed2ff4556be5673f0b3d09f63221d1e9e797fbd661b8038318f2dac7",
+      "cargo_kernel_build_completion": "Finished `release` profile [optimized] target(s) in 1m 35s"
+    },
+    "candidate": {
+      "kernel_sha256": "5587b90b5f6b1a857c63556b57c9e86b7fbf56fef447d26540ff30269698b8f4",
+      "kernel_size_bytes": 10127584,
+      "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "target": "aarch64-unknown-none-softfloat",
+      "entry_link_flags": [
+        "-C opt-level=3",
+        "-C lto=thin"
+      ],
+      "entry_link_invocations": 1,
+      "config_sha256": "42e8d16450352712d78813b5f78b7ca221dfb88fadc796f57ecf317d7e33f669",
+      "source_archive_sha256": "245b90f1837172cacc760998a846795daae4984c1303512faef6b005b66c9187",
+      "verbose_build_log_sha256": "612f400d867c59a76d1ce12e757432062c0c1fe9fa6c07438d2d2a2601d4b7dc",
+      "cargo_kernel_build_completion": "Finished `release` profile [optimized] target(s) in 1m 36s"
+    }
+  }
+}
