@@ -76,3 +76,7 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 候选在冷缺页时读取两页，前一页已驻留时可扩大到八页。命中时直接复用缓存页。AArch64 客体 188 项 kvfs 回归通过，其中 7 项覆盖预读、文件尾页、脏邻页、错误回调与内存文件。五组浏览器冷启动使用队友原参数、同一配置和 Wayland 启动盘。
 
 自适应方案的宿主峰值中位从 1,169.42 MiB 降到 1,154.33 MiB，五组均下降。首窗从 51.78 秒到 53.91 秒，首页从 56.06 秒到 57.48 秒，renderer 从 29.85 秒到 31.10 秒，这三项五组均较慢。局部节省不足以抵消当前决赛启动代价，继续用固定八页作为默认。[逐轮数据](evidence/finals-20261122/fault-readahead-adaptive.json) · [队友仓库与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/c635e9d08a6484ac93793092425cef9910a9f9fc/work/performance-20261122-finals-r6)
+
+## 11 月 22 日固定八页下的缓存命中对照
+
+预读保持固定八页，只去掉命中缓存之后的重复查询。五组交替冷启动的首页中位数从 58.22 秒变为 57.51 秒，峰值内存从 1,179.75 MiB 变为 1,167.88 MiB。首页三组快、两组慢，其中一个候选样本慢 7.88 秒。峰值内存同样有两组上升，renderer 中位数近似持平。当前决赛配置沿用已验证内核。[逐轮数据](evidence/finals-20261122/fault-folio-hit-only.json) · [队友仓库与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/00c041b7a9b6bf1142633b557aaf1a64c0783153/work/performance-20261122-finals-r7)
