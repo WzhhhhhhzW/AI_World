@@ -131,6 +131,10 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 
 候选在相同校验语义下改用 1 KiB 编译期表，保留所有元数据校验。AArch64 客体五个相关 crate 的 683 项回归全部通过。使用原 Chromium 参数固定环境交替启动五组，十轮均完成。首页中位数由 57.541 到 56.826 秒，renderer 四组更早，配对差值中位数 −0.390 秒。两版首窗及布局页各自的中位数基本相同。宿主峰值中位数由 1,175.36 到 1,170.43 MiB。区间有重叠，记录保留每组差值。[逐组数据及测试明细](evidence/finals-20261122/ext4-crc32c-comparison.json) · [队友分支源补丁、复跑及功能截图](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/6157a452c330d7bae175a08891b97e90459e1122/work/performance-20261122-finals-r18)
 
-同一候选的独立功能检查通过原生键鼠、双标签切换及 JS、CSS 各 6 项。30 分钟长稳正在运行，默认启动入口仍为上一通过版。
+同一候选的独立功能检查通过原生键鼠、双标签切换及 JS、CSS 各 6 项。长稳连续运行 1,805.608 秒，首页与布局页交替加载十次，终点仍可导航返回首页。Chromium 和 Weston 的 PID 保持一致，串口未发现 OOM、panic 或进程丢失。宿主 QEMU 全生命周期峰值为 1,196.89 MiB。[本机长稳汇总](evidence/finals-20261122/ext4-crc32c-soak.json) · [队友分支生产源码与长稳证据](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/90951d4a387644a8eb0fe029ce22c9b933a97bc1/work/performance-20261122-finals-r18)
+
+生产源码提交为 `0645c8575e9251ba5acb6d77df126ac414145d12`。本机默认入口已切至冷启动、功能和长稳所用的同一二进制，旧内核备份在 `data/platform/finals-next/pre-ext4-crc32c-r18-kernel.bin`。比赛现场仍以组委会统一环境和计时脚本为准。
+
+部署后从本机默认村庄入口启动，确认实际加载上述内核。使用 Xvfb 和临时存档复核，地图、角色、资源栏和交互入口正常显示。截图在启动后固定时点采集，用于核对入口。[运行证据](evidence/finals-20261122/ext4-crc32c-deployed-entry.json) · [默认入口画面](evidence/finals-20261122/ext4-crc32c-deployed-entry.png)
 
 诊断批次可用 `--keep-going` 保留观测超时时的画面和原始记录，并完成其他样本。任何样本超时，整批仍返回失败，时延汇总只包含完成观察的样本。

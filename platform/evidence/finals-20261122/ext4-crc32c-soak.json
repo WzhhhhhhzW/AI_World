@@ -1,0 +1,112 @@
+{
+  "test": "AArch64 TCG, same Chromium and Weston process with ten alternating page navigations",
+  "inputs": {
+    "kernel_sha256": "f3e070d203c9e2868ea4111379e22bd607547139389350efcc5eb13311f378ce",
+    "rootfs_sha256": "2817c7e2438075a42d8fc6d01d9e525164c9ea05d6696776d94ae26e901eeac4",
+    "guest_files_sha256": {
+      "index.html": "831cf28f3748940b450d1da325aa39a2dcaea2fee15b0532bf4111144d176b38",
+      "interaction.html": "58130daa4a2f426fd16b8bde93d964713f20e147da8af1537ab2d8b506d2fd58",
+      "layout.html": "a1b04f9aba81b4b7818be2e7a858d482d471bd0d625dee257f605b2129b8fc4c"
+    },
+    "upstream_commit": "0b6c59600a8782762a6112eb02cfd96347e496e6",
+    "host_kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "host_cpu": "Intel(R) Core(TM) Ultra 9 285H",
+    "host_memtotal": "MemTotal:       16115888 kB",
+    "qemu": "QEMU emulator version 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)",
+    "run_order": [
+      [
+        "baseline"
+      ]
+    ],
+    "comparison": "soak",
+    "browser_mode": "baseline"
+  },
+  "uptime": {
+    "elapsed_s": 1805.608,
+    "successful_loads": 10,
+    "browser_pid": 4,
+    "weston_pid": 20
+  },
+  "chromium_initial_stages_s": {
+    "weston_ready": 3.154,
+    "browser_start": 3.555,
+    "renderer_inventory_seen": 35.518,
+    "window_white": 58.93,
+    "home_colors": 62.504,
+    "return_css": 68.342,
+    "css_visible": 72.052
+  },
+  "qemu_wait4": {
+    "exit": 0,
+    "maxrss_bytes": 1255030784,
+    "user_s": 473.103917,
+    "system_s": 97.918788
+  },
+  "load_schedule": [
+    {
+      "order": 1,
+      "started_s": 120.14,
+      "page": "index.html"
+    },
+    {
+      "order": 2,
+      "started_s": 240.11,
+      "page": "layout.html"
+    },
+    {
+      "order": 3,
+      "started_s": 360.11,
+      "page": "index.html"
+    },
+    {
+      "order": 4,
+      "started_s": 480.1,
+      "page": "layout.html"
+    },
+    {
+      "order": 5,
+      "started_s": 600.11,
+      "page": "index.html"
+    },
+    {
+      "order": 6,
+      "started_s": 720.08,
+      "page": "layout.html"
+    },
+    {
+      "order": 7,
+      "started_s": 840.14,
+      "page": "index.html"
+    },
+    {
+      "order": 8,
+      "started_s": 960.11,
+      "page": "layout.html"
+    },
+    {
+      "order": 9,
+      "started_s": 1080.15,
+      "page": "index.html"
+    },
+    {
+      "order": 10,
+      "started_s": 1200.13,
+      "page": "layout.html"
+    }
+  ],
+  "process_heartbeat_count": 359,
+  "rss_observations": 1750,
+  "host_qemu_rss_sample_bounds_bytes": [
+    1227489280,
+    1246179328
+  ],
+  "raw_sha256": {
+    "soak.jsonl": "c793d7eb1ef445ed96a13aed5714f1bbc3bf6613ef7fd98a9b3370e9c983c944",
+    "soak-finished.png": "95dd71b303f1bab3dfa225826b81356fb9299f53243e612b76be3baea63c8847",
+    "serial.log": "f7e8f6d9d2080247fab14421ae3f207d26960f654b6f8835f3ee0717d735bbb3",
+    "metrics.json": "78350b87eb9dea32a394b9fca448d42d05681650723158a7765c526c1f3c1fa7"
+  },
+  "started_utc": "2026-11-22T13:33:43+08:00",
+  "finished_utc": "2026-11-22T14:05:10+08:00",
+  "source_commit": "0645c8575e9251ba5acb6d77df126ac414145d12"
+}

@@ -1,0 +1,7 @@
+{
+  "selected_kernel_sha256": "f3e070d203c9e2868ea4111379e22bd607547139389350efcc5eb13311f378ce",
+  "qmp_name": "Qilin Village 4e98a31e5b49",
+  "capture_seconds": 88.202,
+  "capture_sha256": "2ad153cd83d15d77c86e86c18f6514c9e61039f750a8b06ee3e4b2368c75df22",
+  "test_desktop": "Xvfb, temporary player save"
+}

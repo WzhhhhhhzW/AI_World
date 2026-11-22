@@ -1217,5 +1217,7 @@
       "user_s": 206.07912,
       "system_s": 42.680358
     }
-  }
+  },
+  "production_source_commit": "0645c8575e9251ba5acb6d77df126ac414145d12",
+  "disposition": "qualified for local release after independent controls and stability"
 }
