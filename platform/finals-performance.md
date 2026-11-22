@@ -127,4 +127,10 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 
 两轮诊断均完成。首次观测 renderer 前，两轮分别抽到 103 和 102 次 ext4 预读。`read_at` 累计 148.04 和 198.26 毫秒，占三个 ext4 分项的 77.4% 和 80.6%。缓冲区分配及清零仅占 2.6% 和 2.2%。`read_at` 覆盖挂载锁、extent 查找校验和同步块请求。只读运行盘的 Chromium 主程序使用一个带校验的 4 KiB extent 叶节点。因此优先验证保留完整校验语义的 CRC32C 查表读路径，实际启动收益另行对照。[分核数据和原始快照](evidence/finals-20261122/private-file-fault-ext4/observations.json) · [队友分支补丁与复跑](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/e41fea879114ed4db496a4c9a336ce99c56e67de/work/performance-20261122-finals-r17)
 
+## 11 月 22 日 ext4 CRC32C 查表候选
+
+候选在相同校验语义下改用 1 KiB 编译期表，保留所有元数据校验。AArch64 客体五个相关 crate 的 683 项回归全部通过。使用原 Chromium 参数固定环境交替启动五组，十轮均完成。首页中位数由 57.541 到 56.826 秒，renderer 四组更早，配对差值中位数 −0.390 秒。两版首窗及布局页各自的中位数基本相同。宿主峰值中位数由 1,175.36 到 1,170.43 MiB。区间有重叠，记录保留每组差值。[逐组数据及测试明细](evidence/finals-20261122/ext4-crc32c-comparison.json) · [队友分支源补丁、复跑及功能截图](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/6157a452c330d7bae175a08891b97e90459e1122/work/performance-20261122-finals-r18)
+
+同一候选的独立功能检查通过原生键鼠、双标签切换及 JS、CSS 各 6 项。30 分钟长稳正在运行，默认启动入口仍为上一通过版。
+
 诊断批次可用 `--keep-going` 保留观测超时时的画面和原始记录，并完成其他样本。任何样本超时，整批仍返回失败，时延汇总只包含完成观察的样本。
