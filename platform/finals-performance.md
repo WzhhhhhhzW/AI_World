@@ -12,6 +12,8 @@
 
 KVM 模式的 `first-visible.ppm` 是触发首窗判定的同一张 QEMU 截图，`browser-window.png` 由其转换。`metrics.json` 附原图哈希、上一张未出图的请求时刻、本次请求与应答区间，以及浏览器串口标记在宿主的观察区间。首次看到 renderer 仍受客体进程扫描间隔影响。上述时间用于本地定位，现场按组委会脚本取值。`paired.json` 保存每组执行顺序、完成情况及候选减基线的逐组差值、中位数和范围，缺失的一侧保留原组号。
 
+另用 `--block-io-probe` 可以保持原内核，在四个浏览器阶段分别读取 QEMU 客体根盘 `disk0` 的逻辑读取字节、请求数及失败和无效读取计数，附每次请求的时间区间。各阶段差值涵盖同期整台客体的根盘读取。诊断可加 `--memory-probe` 同时保留客体内存阶段快照和受管内存峰值。常规计时对照独立运行。 [QEMU QMP 块设备统计](https://www.qemu.org/docs/master/interop/qemu-qmp-ref.html#command-QMP-query-blockstats)
+
 现场可用 `--prepared-assets` 读取预先导出的 `guest-browser.sh` 和静态 AArch64 `renderer-watch`，省去克隆仓库和现场交叉编译。脚本校验浏览器启动脚本与固定提交的字节一致，并把两个离线文件的 SHA-256 写入 `inputs.json`。本地传输包包含已通过长稳的 CRC32C 版、同配置重建首版和 R20 对照的两份内核，附镜像与文件校验值。首版共同启动阶段使用 `--startup-only`，完整功能及长稳单独验证。
 
 ## 输入和计时口径
@@ -164,3 +166,9 @@ python3 platform/finals_benchmark.py --soak --output data/platform/finals-soak
 ## 11 月 22 日预读邻页驻留诊断
 
 从同一 CRC32C 版本独立构建诊断内核，维持八页读取行为。`pagecache`、`kvfs`、`procfs` 的 231 项客体回归通过。两次同盘 Chromium 诊断中，首次看到 renderer 时约 51.4 MiB 的预读邻页尚未被需求访问，首页约 58.9 MiB，布局页约 58.2 MiB。到布局页，约 42% 的已访问邻页在标记至少 512 个后续邻页后才首次使用，快速回收可能增加重读。记录中区分客体未用页峰值、客体受管峰值和宿主 RSS。[原始阶段计数](evidence/finals-20261122/private-prefetch-residency.json)
+
+## 11 月 22 日预读邻页驻留上限候选
+
+候选保留八页连续读取，每个文件最多标记 2,048 个可回收的未用私有预读邻页。五组交替 TCG 冷启动十次均完成，宿主峰值 RSS 五组均下降，配对中位少 31.109 MiB。首窗及首页配对中位分别慢 1.368 和 0.651 秒，首次看到 renderer 提前 2.983 秒。独立诊断中至布局页的客体根盘逻辑读取由 284.328 MiB 增至 447.465 MiB，客体受管内存峰值少 36.918 MiB。继续用已通过长稳的 CRC32C 版本作为默认。[逐次数据](evidence/finals-20261122/private-prefetch-budget-comparison.json)
+
+候选通过 653 项客体回归。独立 ext4 副本试验中，保留共享映射跨 1,023 个私有缺页窗口后写入并同步 `msync`。关机后宿主回读全 32 MiB 文件，只有指定 16 字节改变。[共享映射校验](evidence/finals-20261122/private-prefetch-budget-shared-mapping.json)

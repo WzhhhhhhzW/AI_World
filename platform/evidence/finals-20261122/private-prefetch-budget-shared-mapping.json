@@ -1,0 +1,12 @@
+{
+  "scope": "independent guest mmap/writeback test, local TCG",
+  "kernel_sha256": "5eeb2a270abf23674a20dfe40ff4353ceabef6cafe7f8b15b7e306f681e8dfdc",
+  "original_rootfs_sha256": "2817c7e2438075a42d8fc6d01d9e525164c9ea05d6696776d94ae26e901eeac4",
+  "guest_probe_source_sha256": "3f65356d9b2932fb8d06ecf21faf8bd4f7c04d6126850865a4f48366592a3383",
+  "qemu_exit": 0,
+  "guest_result": "R23_SHARED_MAPPING_PROBE_OK windows=1023 offset=4224 bytes=16",
+  "disk_file_bytes": 33554432,
+  "disk_file_sha256": "f6c4f1a251fffb58ccb1c3f5a4b91dde33d6e7c741d6e3ba89e9dd6484af7897",
+  "expected_sha256": "f6c4f1a251fffb58ccb1c3f5a4b91dde33d6e7c741d6e3ba89e9dd6484af7897",
+  "all_disk_file_bytes_match": true
+}

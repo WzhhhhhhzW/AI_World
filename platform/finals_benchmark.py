@@ -33,6 +33,8 @@ HOME_COLORS = ("e5534b", "2da44e", "bf8700", "8250df")
 BROWSER_START_MARKER = b"ICT_BROWSER_START"
 STAGES = {b"VILLAGE_WESTON_READY": "weston_ready", BROWSER_START_MARKER: "browser_start",
           b"FINALS_RENDERER_SEEN_FIRST pid=": "renderer_inventory_seen"}
+BLOCK_READ_STAGES = ("browser_start", "renderer_inventory_seen", "home_colors", "css_visible")
+BLOCK_READ_COUNTERS = ("rd_bytes", "rd_operations", "failed_rd_operations", "invalid_rd_operations")
 
 
 class IncompleteObservation(RuntimeError):
@@ -398,7 +400,24 @@ def save_sample_image(monitor, probe, destination, is_kvm):
         monitor.screenshot(destination)
 
 
-def measure(monitor, work, output, start, result, *, startup_only=False, accel="tcg"):
+def sample_root_reads(monitor, start):
+    request_started = time.monotonic()
+    devices = monitor.call("query-blockstats", **{"query-nodes": False})
+    response_received = time.monotonic()
+    root = [device for device in devices if device.get("device") == "disk0"]
+    if len(root) != 1:
+        raise RuntimeError("QMP 块设备统计缺少唯一的客体根盘 disk0")
+    stats = root[0].get("stats", {})
+    if not isinstance(stats, dict):
+        raise RuntimeError("QMP 根盘读取统计格式错误")
+    reads = {key: stats.get(key) for key in BLOCK_READ_COUNTERS}
+    if any(type(value) is not int or value < 0 for value in reads.values()):
+        raise RuntimeError("QMP 根盘读取计数不完整")
+    return {"request_s": [round(point - start, 6) for point in (request_started, response_received)],
+            **reads}
+
+
+def measure(monitor, work, output, start, result, *, startup_only=False, accel="tcg", block_io_probe=False):
     stages = result["stages_s"]
     is_kvm = accel == "kvm"
     first_frame = "window_visible" if is_kvm else "window_white"
@@ -406,6 +425,8 @@ def measure(monitor, work, output, start, result, *, startup_only=False, accel="
         if label not in stages:
             stages[label] = round((time.monotonic() if observed_at is None else observed_at) - start, 3)
             print(f"{output.name} {label} {stages[label]:.3f}s", flush=True)
+            if block_io_probe and label in BLOCK_READ_STAGES:
+                result.setdefault("root_block_read_observations", {})[label] = sample_root_reads(monitor, start)
 
     next_frame = 0
     probe = work / "probe.ppm"
@@ -510,7 +531,7 @@ def capture_guest_memory(work, output, pid):
 
 
 def run_once(kernel, disk, output, mode, *, check_controls=False, long_run=False,
-             startup_only=False, memory_probe=False, accel="tcg"):
+             startup_only=False, memory_probe=False, accel="tcg", block_io_probe=False):
     output.mkdir()
     result = {"mode": mode, "stages_s": {}, "frames": []}
     if accel == "kvm":
@@ -534,7 +555,8 @@ def run_once(kernel, disk, output, mode, *, check_controls=False, long_run=False
                     try:
                         if accel == "kvm":
                             verify_kvm(monitor, result["acceleration"])
-                        measure(monitor, work, output, start, result, startup_only=startup_only, accel=accel)
+                        measure(monitor, work, output, start, result, startup_only=startup_only,
+                                accel=accel, block_io_probe=block_io_probe)
                         if memory_probe:
                             capture_guest_memory(work, output, emulator.pid)
                         if check_controls:
@@ -650,6 +672,8 @@ def main():
                             help=f"首页出现后继续观测 {STARTUP_OBSERVATION_SECONDS} 秒，不触发键盘导航")
     validation.add_argument("--memory-probe", action="store_true",
                             help="单独采集浏览器启动前和布局页出图后的客体内存快照")
+    parser.add_argument("--block-io-probe", action="store_true",
+                        help="采集各启动阶段的客体根盘读取计数，可与 --memory-probe 同跑")
     args = parser.parse_args()
     kvm_host = kvm_preflight() if args.accel == "kvm" else None
     validation_only = args.controls or args.soak
@@ -661,6 +685,8 @@ def main():
         parser.error("内核对照与 --controls、--soak 分开运行")
     if args.keep_going and validation_only:
         parser.error("--keep-going 仅用于批次对照")
+    if args.block_io_probe and (validation_only or args.startup_only):
+        parser.error("--block-io-probe 需要内核或浏览器对照和布局页导航")
     args.kernel, args.rootfs = args.kernel.resolve(strict=True), args.rootfs.resolve(strict=True)
     if args.candidate_kernel:
         args.candidate_kernel = args.candidate_kernel.resolve(strict=True)
@@ -697,6 +723,9 @@ def main():
             "guest_memory_probe": "before-browser and after-layout",
             "guest_endpoint_delay_seconds": GUEST_MEMORY_PROBE_DELAY_SECONDS,
         }
+    if args.block_io_probe:
+        inputs.setdefault("measurement_scope", {}).update(
+            root_block_read_probe="QMP device disk0, cumulative logical reads", root_block_read_stages=BLOCK_READ_STAGES)
     if args.candidate_kernel:
         inputs["candidate_kernel_sha256"] = file_hash(args.candidate_kernel)
         inputs["browser_mode"] = browser_mode
@@ -727,7 +756,7 @@ def main():
                 try:
                     result = run_once(kernel, disks[mode], case, label,
                                       startup_only=args.startup_only, memory_probe=args.memory_probe,
-                                      accel=args.accel)
+                                      accel=args.accel, block_io_probe=args.block_io_probe)
                 except IncompleteObservation as exc:
                     if not args.keep_going:
                         raise

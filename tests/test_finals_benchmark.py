@@ -32,6 +32,26 @@ class FinalsPairTests(unittest.TestCase):
                          {"values": [-1.0, 1.0], "median": 0.0, "min": -1.0, "max": 1.0})
 
 
+class BlockReadEvidenceTests(unittest.TestCase):
+    def test_root_read_counters_do_not_include_backing_or_other_disks(self):
+        reads = dict(rd_bytes=65536, rd_operations=3, failed_rd_operations=0, invalid_rd_operations=0)
+        monitor = mock.Mock()
+        monitor.call.return_value = [
+            {"device": "disk1", "stats": {"rd_bytes": 1234}},
+            {"device": "disk0", "stats": reads, "backing": {"stats": {"rd_bytes": 131072}}},
+        ]
+        with mock.patch.object(benchmark.time, "monotonic", side_effect=[11.0, 11.125]):
+            evidence = benchmark.sample_root_reads(monitor, 10.0)
+        monitor.call.assert_called_once_with("query-blockstats", **{"query-nodes": False})
+        self.assertEqual(evidence, {"request_s": [1.0, 1.125], **reads})
+
+    def test_missing_root_drive_is_a_diagnostic_failure(self):
+        monitor = mock.Mock()
+        monitor.call.return_value = [{"device": "disk1", "stats": {}}]
+        with self.assertRaisesRegex(RuntimeError, "disk0"):
+            benchmark.sample_root_reads(monitor, 0.0)
+
+
 @unittest.skipUnless(importlib.util.find_spec("PIL"), "requires Pillow")
 class KvmFrameEvidenceTests(unittest.TestCase):
     def test_fast_home_preserves_the_exact_detected_screendump(self):
