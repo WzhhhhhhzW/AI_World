@@ -1,0 +1,17 @@
+{
+  "action": "text",
+  "session": "vlg-7f7dc524034e431a9e742fc54a2b0c95",
+  "time_unix": 1795481687.7224364,
+  "before": {
+    "sha256": "a41a8c179bb574e90a935ccefefcedc28aca90a80d371973ab64e7a86088866f",
+    "width": 1280,
+    "height": 800
+  },
+  "typed": "audit village stock",
+  "after": {
+    "sha256": "bd7881d294719c8e57766e6112f24161246352bd914bdbaa75c0cc144357157e",
+    "width": 1280,
+    "height": 800
+  },
+  "transport": "ok"
+}

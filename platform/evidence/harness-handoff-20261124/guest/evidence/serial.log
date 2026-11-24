@@ -1,0 +1,421 @@
+[boot] entered primary switched cpu=0 mpidr=0x0 dtb=0x48000000 kimage_voffset=0xffff7fffbfe00000
+[boot] boot linear RAM map extended from DT
+[boot] handoff to kruntime boot_info=0xffff800000825640
+[boot] kruntime primary start cpu=0 boot_info=0xffff800000825640
+[boot] firmware: DTB at 0x48000000
+[boot] firmware: chosen stdout-path=/pl011@9000000
+[boot] firmware: chosen bootargs=<none>
+[boot] firmware: hwdesc source=device tree
+[boot] firmware: memory source=device tree
+[boot] firmware: no cmdline
+[boot] kruntime memory regions ready
+[boot] kruntime allocator ready
+[boot] memory space map ready
+[boot] NMI mode: Pseudo (PMR)
+
+                 ++
+             *  ***
+           *******
+         *******++
+      ********+===
+    ******#*+======
+   *******#***++===
+   *********+**===
+  ##*********##==                  ====+
+%##****++==+****#                ***+=**
+#****++=====++****##            ********
+####*+=======+******===-     ***#*##****
+ #%#******+**+==++**=======+*+*#%
+ %#****+******=====+====+++==**
+  #*********##***###********##%
+   ***##%#%%%%*****#*###*****#%
+   *#%%%#%%%%%****   %%*******#%
+   #%%%%%%          %%%##***###%%
+    **#%           %%%%#% **#**##
+   ###%%         %%%%%   %%%***
+ %%%%%%        %%%%%%%  %%%%#*
+ %%%%%%                %%%%%%+=
+
+Boot at 2026-11-24 00:52:42.003244496 UTC
+
+[37m[  0.323208 knet:185] [33m  No vsock device found![m
+[march = aarch64
+platform = kplat-aarch64
+target = aarch64-unknown-none-softfloat
+build_mode = release
+build_machine = admin150714@LAPTOP-OU596R3G
+build_time = 2026-11-23T20:52:09.44271673Z
+log_level = warn
+backtrace = false
+nr_cpus_max = 4
+vmm = off
+config_sha256 = 128e17a1045d6b541ebf71c0f031f4a1d879f0622e3334ea343df486dded6a83
+git_commit = unknown
+git_dirty = unknown
+build_id = 50703f247cafaec23cee1228da80edc08bbc0309919ef9c43d8eb631f6c30707
+smp = 4
+Welcome to [96m[1mKylin X[0m!
+SHLVL=1
+HOME=/root
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+PWD=/
+
+Use [1m[3mapt[0m to install packages.
+
+kylin-x:~# [6n
+VILLAGE_SESSION_START
+VILLAGE_DEVICE /dev/dri/card0 226:0 
+VILLAGE_DEVICE /dev/input/event0 13:64 ID_INPUT_KEYBOARD
+VILLAGE_DEVICE /dev/input/event1 13:65 ID_INPUT_MOUSE
+VILLAGE_WESTON_READY
+VILLAGE_BROWSER_URL http://10.0.2.100:8766/?render=tcg
+[37m[ 10.282538 0:4 ksyscall::dispatch:865] [33mUnimplemented syscall: landlock_create_ruleset (tid=4)[m
+[m[37m[ 33.887502 0:84 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[mp=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' fac3d916b8b54eb4bdf08a4537dc297f "$p"
+
+VGfac3d916b8b54eb4bdf08a4537dc297f [ 599563.767] wl_pointer#28.enter(0, wl_surface#3, 100.30468750, 100.30468750)|
+kylin-x:~# [6n[37m[ 52.243330 0:85 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[mp=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' afc82e2b460f42c1ac6445c573b1d713 "$p"
+
+VGafc82e2b460f42c1ac6445c573b1d713 [ 601879.313] wl_pointer#28.motion(185285447, 189.46093750, 150.24218750)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' fb36a052c9a34bed9e261570e755aa0d "$p"
+
+VGfb36a052c9a34bed9e261570e755aa0d [ 604063.290] wl_pointer#28.motion(185287654, 287.80078125, 205.96484375)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' fd7fb2a8ad484f3bb739bf3b6f87ae55 "$p"
+
+VGfd7fb2a8ad484f3bb739bf3b6f87ae55 [ 606318.815] wl_pointer#28.motion(185289910, 382.18359375, 259.85937500)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 5b78f69b5cc04f2faabd66f750cd94cf "$p"
+
+VG5b78f69b5cc04f2faabd66f750cd94cf [ 608526.769] wl_pointer#28.motion(185292119, 477.91796875, 312.28125000)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 33b44c201d4f4ce994fca3f0760fa042 "$p"
+
+VG33b44c201d4f4ce994fca3f0760fa042 [ 610842.449] wl_pointer#28.motion(185294434, 577.76953125, 367.31250000)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' e1397aff6729471ba8a6262081ff563d "$p"
+
+VGe1397aff6729471ba8a6262081ff563d [ 612604.268] wl_pointer#28.motion(185296196, 636.10546875, 401.37890625)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' cf1fa4b053b147dc92003b7e13d64370 "$p"
+
+VGcf1fa4b053b147dc92003b7e13d64370 [ 613895.149] wl_pointer#28.motion(185297487, 625.03906250, 394.73437500)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 420089e44f7d44b3a812018e67fc6680 "$p"
+[37m[ 87.527800 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m
+VG420089e44f7d44b3a812018e67fc6680 [ 635198.802] wl_pointer#28.motion(185318761, 625.85937500, 395.55468750)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 8127b095238c47b78f21f98bd2ff1ff6 "$p"
+
+VG8127b095238c47b78f21f98bd2ff1ff6 [ 637472.965] wl_pointer#28.motion(185321063, 648.42578125, 496.16015625)|
+pkylin-x:~# [6n=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n' 
+'|'); printf '\nVG%s %s\n' f01aefefce26472e9d3ce4905807f3dd "$p"
+/bin/sh: =: not found
+
+VGf01aefefce26472e9d3ce4905807f3dd [ 637472.965] wl_pointer#28.motion(185321063, 648.42578125, 496.16015625)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n'
+ '|'); printf '\nVG%s %s\n' f20b78aff50c4d7181fa09deaad50b06 "$p"
+
+VGf20b78aff50c4d7181fa09deaad50b06 [ 639600.570] wl_pointer#28.button(5, 185323173, 272, 1)|[ 639705.140] wl_pointer#28.button(6, 185323296, 272, 0)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 6b08f95f401a43b393e26b2d7e257533 "$p"
+
+VG6b08f95f401a43b393e26b2d7e257533 [ 649021.014] wl_pointer#28.motion(185332594, 650.14453125, 497.87890625)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' c2879654d5bd4789824299d688c84a70 "$p"
+
+VGc2879654d5bd4789824299d688c84a70 [ 651360.531] wl_pointer#28.motion(185334953, 607.03125000, 401.64843750)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 3d9384709e0742828a65196f3efcc8c1 "$p"
+
+VG3d9384709e0742828a65196f3efcc8c1 [ 652651.433] wl_pointer#28.motion(185336215, 607.61328125, 404.75000000)|
+pkylin-x:~# [6n=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n' 
+'|'); printf '\nVG%s %s\n' fd44be15c47846b38d36c51d4565e7dc "$p"
+/bin/sh: =[: not found
+
+VGfd44be15c47846b38d36c51d4565e7dc [ 652651.433] wl_pointer#28.motion(185336215, 607.61328125, 404.75000000)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n'
+ '|'); printf '\nVG%s %s\n' 9c07594e103a4bebb6a9f5cff0a3a4c8 "$p"
+
+VG9c07594e103a4bebb6a9f5cff0a3a4c8 [ 639600.570] wl_pointer#28.button(5, 185323173, 272, 1)|[ 639705.140] wl_pointer#28.button(6, 185323296, 272, 0)|[ 654821.969] wl_pointer#28.button(7, 185338394, 272, 1)|[ 654925.756] wl_pointer#28.button(8, 185338517, 272, 0)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 985d5178548347e9a4cea891eddc26d4 "$p"
+
+VG985d5178548347e9a4cea891eddc26d4 [ 665848.735] wl_pointer#28.motion(185349420, 609.33203125, 406.47265625)|
+kylin-x:~# [6n[37m[118.832723 0:18446462599825203216 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[mp=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 37295093d34342358eabd9c85deda3ea "$p"
+
+VG37295093d34342358eabd9c85deda3ea [ 668150.612] wl_pointer#28.motion(185351742, 599.87109375, 507.15234375)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' ae4db9b9eaea411ab68de3387a35bde1 "$p"
+
+VGae4db9b9eaea411ab68de3387a35bde1 [ 669729.936] wl_pointer#28.motion(185353320, 599.87109375, 528.91796875)|
+pkylin-x:~# [6n=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n' 
+'|'); printf '\nVG%s %s\n' 2f96ce067c94478590faf60658aed1e9 "$p"
+/bin/sh: =[: not found
+
+VG2f96ce067c94478590faf60658aed1e9 [ 669729.936] wl_pointer#28.motion(185353320, 599.87109375, 528.91796875)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n'
+ '|'); printf '\nVG%s %s\n' a7195ab2caa24de4bfa6c10250d257d9 "$p"
+
+VGa7195ab2caa24de4bfa6c10250d257d9 [ 639600.570] wl_pointer#28.button(5, 185323173, 272, 1)|[ 639705.140] wl_pointer#28.button(6, 185323296, 272, 0)|[ 654821.969] wl_pointer#28.button(7, 185338394, 272, 1)|[ 654925.756] wl_pointer#28.button(8, 185338517, 272, 0)|[ 671914.734] wl_pointer#28.button(10, 185355485, 272, 1)|[ 672066.041] wl_pointer#28.button(11, 185355609, 272, 0)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 891d1910a43f463baaeafe92f47b5ebf "$p"
+
+VG891d1910a43f463baaeafe92f47b5ebf [ 675694.799] wl_pointer#28.motion(185359267, 600.48046875, 529.52734375)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 53b52d21bd014907ab8c1d70b8e6b8a7 "$p"
+
+VG53b52d21bd014907ab8c1d70b8e6b8a7 [ 677983.838] wl_pointer#28.motion(185361576, 634.22265625, 625.70703125)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 900e1dd90e3c4bfd9cdf6bad4c2b62fb "$p"
+
+VG900e1dd90e3c4bfd9cdf6bad4c2b62fb [ 679245.491] wl_pointer#28.motion(185362837, 634.22265625, 621.48046875)|
+pkylin-x:~# [6n=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n' 
+'|'); printf '\nVG%s %s\n' 8bfa3d08d4b541c3a9c7b308e845162b "$p"
+/bin/sh: =[: not found
+
+VG8bfa3d08d4b541c3a9c7b308e845162b [ 679245.491] wl_pointer#28.motion(185362837, 634.22265625, 621.48046875)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n'
+ '|'); printf '\nVG%s %s\n' 199107b7b6fb45079c5897ac8cab5f58 "$p"
+
+VG199107b7b6fb45079c5897ac8cab5f58 [ 654821.969] wl_pointer#28.button(7, 185338394, 272, 1)|[ 654925.756] wl_pointer#28.button(8, 185338517, 272, 0)|[ 671914.734] wl_pointer#28.button(10, 185355485, 272, 1)|[ 672066.041] wl_pointer#28.button(11, 185355609, 272, 0)|[ 681588.861] wl_pointer#28.button(50, 185365151, 272, 1)|[ 681682.046] wl_pointer#28.button(51, 185365272, 272, 0)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' e1859845fcc74b2fa5178d85f1083c35 "$p"
+
+VGe1859845fcc74b2fa5178d85f1083c35 [ 695962.506] wl_pointer#28.motion(185379533, 634.90234375, 622.16406250)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 70388efbec4d4c258e22bdc969096cf6 "$p"
+
+VG70388efbec4d4c258e22bdc969096cf6 [ 698267.710] wl_pointer#28.motion(185381860, 614.67578125, 522.20703125)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' b4d2484153f947ff96ae9f4eb354beba "$p"
+
+VGb4d2484153f947ff96ae9f4eb354beba [ 700550.129] wl_pointer#28.motion(185384141, 594.62890625, 429.52343750)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' e926de76b5a748e4945fdee4be502318 "$p"
+
+VGe926de76b5a748e4945fdee4be502318 [ 701908.172] wl_pointer#28.motion(185385500, 600.18750000, 438.77343750)|
+pkylin-x:~# [6n=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n' 
+'|'); printf '\nVG%s %s\n' 61ccdee5ef214244a8b79755ad86816b "$p"
+/bin/sh: =[: not found
+
+VG61ccdee5ef214244a8b79755ad86816b [ 701908.172] wl_pointer#28.motion(185385500, 600.18750000, 438.77343750)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n'
+ '|'); printf '\nVG%s %s\n' 1b92ddc578f9436194fcda0fbe852dab "$p"
+
+VG1b92ddc578f9436194fcda0fbe852dab [ 671914.734] wl_pointer#28.button(10, 185355485, 272, 1)|[ 672066.041] wl_pointer#28.button(11, 185355609, 272, 0)|[ 681588.861] wl_pointer#28.button(50, 185365151, 272, 1)|[ 681682.046] wl_pointer#28.button(51, 185365272, 272, 0)|[ 704054.725] wl_pointer#28.button(53, 185387627, 272, 1)|[ 704204.889] wl_pointer#28.button(54, 185387749, 272, 0)|
+kylin-x:~# [6n[37m[158.337537 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[mp=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' d72571ae71c94663907584724d9a395a "$p"
+
+VGd72571ae71c94663907584724d9a395a [ 725493.115] wl_pointer#28.motion(185409065, 600.72656250, 439.31250000)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 3f1e9553b04543be9f019f1d54121a5a "$p"
+
+VG3f1e9553b04543be9f019f1d54121a5a [ 727657.694] wl_pointer#28.motion(185411242, 648.06640625, 519.61718750)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 0ff62d351ea54d2ea6188b42213fb359 "$p"
+
+VG0ff62d351ea54d2ea6188b42213fb359 [ 728959.745] wl_pointer#28.motion(185412550, 640.75781250, 503.12500000)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 196dc98c9c51495189a4285c177b9b3e "$p"
+
+VG196dc98c9c51495189a4285c177b9b3e [ 730213.577] wl_pointer#28.motion(185413805, 641.73046875, 506.24218750)|
+pkylin-x:~# [6n=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n' 
+'|'); printf '\nVG%s %s\n' 71aea0fc9b704c50a43b22ad95f1fdc3 "$p"
+/bin/sh: =[: not found
+
+VG71aea0fc9b704c50a43b22ad95f1fdc3 [ 730213.577] wl_pointer#28.motion(185413805, 641.73046875, 506.24218750)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n'
+ '|'); printf '\nVG%s %s\n' da53b5f40248460ba484eb2f09057e27 "$p"
+
+VGda53b5f40248460ba484eb2f09057e27 [ 681588.861] wl_pointer#28.button(50, 185365151, 272, 1)|[ 681682.046] wl_pointer#28.button(51, 185365272, 272, 0)|[ 704054.725] wl_pointer#28.button(53, 185387627, 272, 1)|[ 704204.889] wl_pointer#28.button(54, 185387749, 272, 0)|[ 732483.000] wl_pointer#28.button(81, 185416055, 272, 1)|[ 732624.993] wl_pointer#28.button(82, 185416199, 272, 0)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 37893a04f3624302adb6987253713b61 "$p"
+
+VG37893a04f3624302adb6987253713b61 [ 743327.089] wl_pointer#28.motion(185426899, 642.44140625, 506.95312500)|
+kylin-x:~# [6n[37m[196.980929 0:82 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[mp=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' db28d566e5ef4c62b284162d6a62f4d0 "$p"
+
+VGdb28d566e5ef4c62b284162d6a62f4d0 [ 745582.183] wl_pointer#28.motion(185429174, 597.75781250, 605.98046875)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' ac2a3ee254d24766a6d431667241b1b4 "$p"
+
+VGac2a3ee254d24766a6d431667241b1b4 [ 747848.264] wl_pointer#28.motion(185431440, 549.75781250, 711.80078125)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 6590fd660c3947eabca7206087357431 "$p"
+
+VG6590fd660c3947eabca7206087357431 [ 749328.864] wl_pointer#28.motion(185432921, 537.43750000, 739.57812500)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 8ff9fce549cb4b678de06cedbc6b431a "$p"
+
+VG8ff9fce549cb4b678de06cedbc6b431a [ 750706.019] wl_pointer#28.motion(185434291, 540.92968750, 733.71093750)|
+pkylin-x:~# [6n=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n' 
+'|'); printf '\nVG%s %s\n' 7761f0c0c8224db1b699ee74f99b68d2 "$p"
+/bin/sh: =[: not found
+
+VG7761f0c0c8224db1b699ee74f99b68d2 [ 750706.019] wl_pointer#28.motion(185434291, 540.92968750, 733.71093750)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n'
+ '|'); printf '\nVG%s %s\n' 6d0f9c3ef74f4c878e8e9cfb694cf53b "$p"
+
+VG6d0f9c3ef74f4c878e8e9cfb694cf53b [ 704054.725] wl_pointer#28.button(53, 185387627, 272, 1)|[ 704204.889] wl_pointer#28.button(54, 185387749, 272, 0)|[ 732483.000] wl_pointer#28.button(81, 185416055, 272, 1)|[ 732624.993] wl_pointer#28.button(82, 185416199, 272, 0)|[ 752920.430] wl_pointer#28.button(83, 185436493, 272, 1)|[ 753024.846] wl_pointer#28.button(84, 185436616, 272, 0)|
+kylin-x:~# [6n[37m[225.071598 0:61 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[mp=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' e2150811090b4c0a89d740d94a48c4f1 "$p"
+
+VGe2150811090b4c0a89d740d94a48c4f1 [ 799321.001] wl_pointer#28.motion(185482893, 541.62500000, 734.40625000)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 0a70feba690141b68f45d4cb838d2fd0 "$p"
+
+VG0a70feba690141b68f45d4cb838d2fd0 [ 800788.929] wl_pointer#28.motion(185484379, 534.23828125, 759.47265625)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 8961acb4c8ac49eab9f4747d51414e4b "$p"
+
+VG8961acb4c8ac49eab9f4747d51414e4b [ 802006.718] wl_pointer#28.motion(185485595, 534.92187500, 757.08593750)|
+pkylin-x:~# [6n=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n' 
+'|'); printf '\nVG%s %s\n' cca2cc4be3964db4a8e9013a45e22a87 "$p"
+/bin/sh: =[: not found
+
+VGcca2cc4be3964db4a8e9013a45e22a87 [ 802006.718] wl_pointer#28.motion(185485595, 534.92187500, 757.08593750)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n'
+ '|'); printf '\nVG%s %s\n' d6560bcb5a494150914d8b1d04e4d3e0 "$p"
+
+VGd6560bcb5a494150914d8b1d04e4d3e0 [ 732483.000] wl_pointer#28.button(81, 185416055, 272, 1)|[ 732624.993] wl_pointer#28.button(82, 185416199, 272, 0)|[ 752920.430] wl_pointer#28.button(83, 185436493, 272, 1)|[ 753024.846] wl_pointer#28.button(84, 185436616, 272, 0)|[ 804231.534] wl_pointer#28.button(117, 185487802, 272, 1)|[ 804335.920] wl_pointer#28.button(118, 185487927, 272, 0)|
+kylin-x:~# [6n[37m[263.526015 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[mp=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 92b7607a21e540349094cc71f1a6b9e1 "$p"
+
+VG92b7607a21e540349094cc71f1a6b9e1 [ 837127.246] wl_pointer#28.motion(185520700, 535.62890625, 757.78906250)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' c917bbc352194fe89c9bba79cabf19a5 "$p"
+
+VGc917bbc352194fe89c9bba79cabf19a5 [ 839502.388] wl_pointer#28.motion(185523077, 498.54687500, 660.44531250)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 940902fa15494912814445224ccfd77b "$p"
+
+VG940902fa15494912814445224ccfd77b [ 841766.044] wl_pointer#28.motion(185525341, 462.62890625, 558.21875000)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 939da1feba5a4bf993bdf9471b50e754 "$p"
+
+VG939da1feba5a4bf993bdf9471b50e754 [ 844044.097] wl_pointer#28.motion(185527636, 425.08984375, 461.66015625)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 0dfe442dfc914d149a8f0902e80b5034 "$p"
+
+VG0dfe442dfc914d149a8f0902e80b5034 [ 845311.090] wl_pointer#28.motion(185528903, 426.91015625, 466.18359375)|
+pkylin-x:~# [6n=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n' 
+'|'); printf '\nVG%s %s\n' 27fd78dec51f4577931f1cbd780e31cf "$p"
+/bin/sh: =[: not found
+
+VG27fd78dec51f4577931f1cbd780e31cf [ 845311.090] wl_pointer#28.motion(185528903, 426.91015625, 466.18359375)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n'
+ '|'); printf '\nVG%s %s\n' a5421be841874701a8[37m[299.984900 0:82 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m097fe34e2f2bb1 "$p"
+
+VGa5421be841874701a8097fe34e2f2bb1 [ 752920.430] wl_pointer#28.button(83, 185436493, 272, 1)|[ 753024.846] wl_pointer#28.button(84, 185436616, 272, 0)|[ 804231.534] wl_pointer#28.button(117, 185487802, 272, 1)|[ 804335.920] wl_pointer#28.button(118, 185487927, 272, 0)|[ 847489.407] wl_pointer#28.button(132, 185531062, 272, 1)|[ 847593.790] wl_pointer#28.button(133, 185531185, 272, 0)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 254ccaa243bb4038a572f8ed2f37d465 "$p"
+
+VG254ccaa243bb4038a572f8ed2f37d465 [ 891542.598] wl_pointer#28.motion(185575115, 427.62500000, 466.89843750)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 7fee08220c204bd7893d1cb7b848b362 "$p"
+
+VG7fee08220c204bd7893d1cb7b848b362 [ 893833.348] wl_pointer#28.motion(185577426, 528.85937500, 451.80468750)|
+kylin-x:~# [6n[37m[347.535607 0:61 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[mp=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' c6722c502efe47d595523bbd145e65b9 "$p"
+
+VGc6722c502efe47d595523bbd145e65b9 [ 896117.179] wl_pointer#28.motion(185579705, 627.60937500, 435.45312500)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' e543b4082bb2498c84d1cf6ae86ac466 "$p"
+
+VGe543b4082bb2498c84d1cf6ae86ac466 [ 897798.636] wl_pointer#28.motion(185581388, 667.86718750, 428.89453125)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 51aa10becef2472291a6c16804cb6832 "$p"
+
+VG51aa10becef2472291a6c16804cb6832 [ 899125.221] wl_pointer#28.motion(185582717, 657.38281250, 430.72656250)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' ccaeb366930a4bc5aef1583e48536e62 "$p"
+
+VGccaeb366930a4bc5aef1583e48536e62 [ 900503.650] wl_pointer#28.motion(185584094, 660.65625000, 429.75000000)|
+pkylin-x:~# [6n=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n' 
+'|'); printf '\nVG%s %s\n' 0f78d5afc3604516867d6dcef80d526d "$p"
+/bin/sh: =[: not found
+
+VG0f78d5afc3604516867d6dcef80d526d [ 900503.650] wl_pointer#28.motion(185584094, 660.65625000, 429.75000000)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n'
+ '|'); printf '\nVG%s %s\n' 0743c032235e4ad4afe6af7190951439 "$p"
+
+VG0743c032235e4ad4afe6af7190951439 [ 847489.407] wl_pointer#28.button(132, 185531062, 272, 1)|[ 847593.790] wl_pointer#28.button(133, 185531185, 272, 0)|[ 902643.179] wl_pointer#28.button(134, 185586216, 272, 1)|[ 902745.323] wl_pointer#28.button(135, 185586331, 272, 0)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' e914c623d7014fbdb2c26505b3d627dc "$p"
+
+VGe914c623d7014fbdb2c26505b3d627dc [ 912401.319] wl_pointer#28.motion(185595973, 661.36718750, 430.46093750)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 0632da0f1ab7464caa31502f60553af8 "$p"
+
+VG0632da0f1ab7464caa31502f60553af8 [ 914670.626] wl_pointer#28.motion(185598263, 587.17578125, 526.62890625)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 1c1550fb23c040ce9722a43eeeb1a572 "$p"
+
+VG1c1550fb23c040ce9722a43eeeb1a572 [ 916983.220] wl_pointer#28.motion(185600558, 508.53515625, 632.50781250)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 193d7f1836eb41aab3e75b22809cae5a "$p"
+
+VG193d7f1836eb41aab3e75b22809cae5a [ 919302.811] wl_pointer#28.motion(185602884, 428.51953125, 736.89843750)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 0e455d333bfd4a9c95b9cc3c9b9b4665 "$p"
+
+VG0e455d333bfd4a9c95b9cc3c9b9b4665 [ 920648.318] wl_pointer#28.motion(185604240, 416.12500000, 750.29296875)|
+pkylin-x:~# [6n=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n' 
+'|'); printf '\nVG%s %s\n' 6b3ba6c9d3c94f008500324c36dacbec "$p"
+/bin/sh: =[: not found
+
+VG6b3ba6c9d3c94f008500324c36dacbec [ 920648.318] wl_pointer#28.motion(185604240, 416.12500000, 750.29296875)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n'
+ '|'); printf '\nVG%s %s\n' a96ef610da4d4b268[37m[375.300847 0:85 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[mbd9a35bda16c577 "$p"
+
+VGa96ef610da4d4b268bd9a35bda16c577 [ 847489.407] wl_pointer#28.button(132, 185531062, 272, 1)|[ 847593.790] wl_pointer#28.button(133, 185531185, 272, 0)|[ 902643.179] wl_pointer#28.button(134, 185586216, 272, 1)|[ 902745.323] wl_pointer#28.button(135, 185586331, 272, 0)|[ 922806.741] wl_pointer#28.button(136, 185606379, 272, 1)|[ 922929.989] wl_pointer#28.button(137, 185606511, 272, 0)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' e09ce093f7c441cabd318adfeeec9fd4 "$p"
+
+VGe09ce093f7c441cabd318adfeeec9fd4 [ 932599.699] wl_pointer#28.motion(185616172, 416.94921875, 751.11328125)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 0e46731de2d8473dba4850d42f615789 "$p"
+
+VG0e46731de2d8473dba4850d42f615789 [ 934879.376] wl_pointer#28.motion(185618471, 474.55859375, 656.28906250)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' d07451a91f8d44108f18611f4e20ae0a "$p"
+
+VGd07451a91f8d44108f18611f4e20ae0a [ 937173.304] wl_pointer#28.motion(185620764, 538.28906250, 552.97265625)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' e75a168f58d84edc94e1851771153342 "$p"
+
+VGe75a168f58d84edc94e1851771153342 [ 939529.672] wl_pointer#28.motion(185623122, 599.19531250, 451.67578125)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' ab2d0a71319c46f5a9e64c235b5ad6cd "$p"
+
+VGab2d0a71319c46f5a9e64c235b5ad6cd [ 940951.263] wl_pointer#28.motion(185624543, 613.05468750, 429.02734375)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(motion|enter)\(' | tail -1 | t
+r '\n' '|'); printf '\nVG%s %s\n' 19997ad270da49439dac6d0bd42ff74b "$p"
+
+VG19997ad270da49439dac6d0bd42ff74b [ 942263.612] wl_pointer#28.motion(185625856, 607.66796875, 435.95703125)|
+pkylin-x:~# [6n=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n' 
+'|'); printf '\nVG%s %s\n' fce8694142e0421db1a1e71cadec053a "$p"
+/bin/sh: =[: not found
+
+VGfce8694142e0421db1a1e71cadec053a [ 942263.612] wl_pointer#28.motion(185625856, 607.66796875, 435.95703125)|
+kylin-x:~# [6np=$(tail -c 131072 /tmp/village-chromium.log | grep -E 'wl_pointer.*(button)\(' | tail -6 | tr '\n'
+ '|'); printf '\nVG%s %s\n' 0e553376a8354d949925e17de0b6c68a "$p"
+
+VG0e553376a8354d949925e17de0b6c68a [ 902643.179] wl_pointer#28.button(134, 185586216, 272, 1)|[ 902745.323] wl_pointer#28.button(135, 185586331, 272, 0)|[ 922806.741] wl_pointer#28.button(136, 185606379, 272, 1)|[ 922929.989] wl_pointer#28.button(137, 185606511, 272, 0)|[ 944483.504] wl_pointer#28.button(138, 185628056, 272, 1)|[ 944595.966] wl_pointer#28.button(139, 185628180, 272, 0)|
+kylin-x:~# [6n[37m[410.524635 0:18446462599806638096 kirq::runtime::dispatch:67] [33mUnhandled IRQ 4099[m
+[m

@@ -1,0 +1,16 @@
+{
+  "observation": "operator transcription of launch and final process checks, supplemental to guest/exit.json, guest/99-quit/step.json and server.log",
+  "checkout": "74ac824ab0226990c1ca7985c4d7dea808a6c1c8",
+  "qemu_name": "vlg-7f7dc524034e431a9e742fc54a2b0c95",
+  "qemu_numeric_pid": null,
+  "qemu_pid_scope": "The launcher did not persist QEMU's numeric PID. Monitor identity was checked against the unique QMP guest name for each control.",
+  "server_pid_from_health_and_stdout": 852,
+  "qemu_process_check_command": "Ubuntu: ps -C qemu-system-aarch64 -o pid=,comm=",
+  "before_qemu_process_rows": [],
+  "final_qemu_process_rows": [],
+  "final_check_windows_timestamp": "2026-11-24T08:59:43.6496990+08:00",
+  "qemu_exit_code": 0,
+  "outer_wsl_supervisor_exit_code": 0,
+  "server_stdout_terminal": "VILLAGE_EXIT clean",
+  "testing_scope": "local offline-provider application only; transient clock unpause and restore in steps 26–27"
+}

@@ -1,0 +1,41 @@
+{
+  "mode": "read-only host save and local API",
+  "status": "planted",
+  "two_advisers_checked": false,
+  "save_sha256": "846634d0de8d0c9270a6d8711aaea4acc7612442f43c66b3177ae0d14d2509f7",
+  "detail": {
+    "id": "9e4e64c62a1f",
+    "title": "guest review",
+    "goal": "audit village stock",
+    "mode": "local",
+    "worker_id": "6b4b3e84cc07",
+    "reviewer_id": "",
+    "skill_id": "village-inventory",
+    "status": "planted",
+    "revision": 1,
+    "version": 0,
+    "stage": "primary",
+    "snapshot": {},
+    "snapshot_clock": null,
+    "artifact": "",
+    "question": "",
+    "review": "",
+    "feedback": "",
+    "consult_question": "",
+    "error": "",
+    "hints": [],
+    "input_hints": [],
+    "history": [],
+    "consultations": [],
+    "advisor_ids": [],
+    "events": [
+      {
+        "time": 1795481721.1717882,
+        "text": "任务已播下，等待主办居民动工。"
+      }
+    ]
+  },
+  "worker_chat_turns": 0,
+  "ledger": [],
+  "provider_count": 0
+}
