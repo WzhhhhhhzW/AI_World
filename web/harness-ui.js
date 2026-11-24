@@ -143,11 +143,11 @@ const VillageHarness = (() => {
       (t.mode === 'local' || r.connected));
     if (!peers.length) return `<p class="fine-print">${t.mode === 'model' ? '暂无可邀请的顾问。可在其他居民的 API 接入设置中连接模型。' : '本稿中可邀请的居民都已受邀。'}</p>`;
     const question = draft.question ?? (t.consult_question || t.question || '');
-    return `<details class="work-trace" data-invite ${draft.inviteOpen ? 'open' : ''}><summary>邀请独立顾问 <small>本稿已邀 ${asked.size}/3 · 可选 ${peers.length} 位</small></summary>
+    return `<details class="work-trace" data-invite ${draft.inviteOpen ? 'open' : ''}><summary data-record-focus="invite">邀请独立顾问 <small>本稿已邀 ${asked.size}/3 · 可选 ${peers.length} 位</small></summary>
       <form class="work-form" data-assist-form><p class="fine-print">顾问分别收到委托、你的问题和精简材料。你决定哪些建议交给主理人。</p>
       <label>可邀请的顾问<select name="reviewer_id" required>${peers.map(r => `<option value="${esc(r.id)}" ${r.id === draft.reviewer ? 'selected' : ''}>${esc(r.name)}${r.role ? ' · ' + esc(r.role) : ''}</option>`).join('')}</select></label>
       <label>请顾问独立看什么<textarea name="question" maxlength="400" required rows="2" placeholder="写下希望这位顾问检查的问题">${esc(question)}</textarea></label>
-      <button class="outline" type="submit">${t.mode === 'model' ? '请顾问独立判断 · 调用模型' : '实习 · 查看规则提示'}</button></form></details>`;
+      <button class="outline" type="submit" data-record-focus="request-advice">${t.mode === 'model' ? '请顾问独立判断 · 调用模型' : '实习 · 查看规则提示'}</button></form></details>`;
   }
 
   function feedbackForm(t, advice, draft) {
@@ -163,11 +163,11 @@ const VillageHarness = (() => {
         ${g.hints.length ? '' : `<p class="fine-print" role="status">${pending ? '正在独立审阅…' : '未收到建议'}</p>`}</fieldset>`;
     }).join('');
     return `<${comparing?'section':'details'} class="work-trace work-guidance" data-guidance ${!comparing && draft.guidanceOpen?'open':''}>
-      ${comparing ? '<h4>对照顾问建议</h4><p class="fine-print">最多勾选三条，也可以只写自己的意见。点击交回后，主理人才会收到。</p>' : `<summary>${revise?'让主理人修改':'直接补充线索'}</summary>`}
+      ${comparing ? '<h4>对照顾问建议</h4><p class="fine-print">最多勾选三条，也可以只写自己的意见。点击交回后，主理人才会收到。</p>' : `<summary data-record-focus="guidance">${revise?'让主理人修改':'直接补充线索'}</summary>`}
       <form class="work-form" data-feedback-action="${revise?'revise':'resume'}">
       ${groups ? `<div class="adviser-grid">${groups}</div><output class="hint-count" aria-live="polite">已勾选 ${selected.size}/3 条</output>` : ''}
       <label>给主理人的补充<textarea name="feedback" maxlength="600" rows="2" ${revise || t.status==='blocked' ? 'required' : ''}>${esc(draft.feedback || '')}</textarea></label>
-      <button class="outline" type="submit" ${waiting?'disabled':''}>${waiting?'等待顾问回复':revise ? '退回待开工' : '交回主理人继续'}${!waiting && !revise && t.mode === 'model' ? ' · 调用模型' : ''}</button>
+      <button class="outline" type="submit" data-record-focus="${revise?'revise':'resume'}" ${waiting?'disabled':''}>${waiting?'等待顾问回复':revise ? '退回待开工' : '交回主理人继续'}${!waiting && !revise && t.mode === 'model' ? ' · 调用模型' : ''}</button>
       </form></${comparing?'section':'details'}>`;
   }
 
@@ -250,6 +250,10 @@ const VillageHarness = (() => {
     root.sending = true;
     root.setAttribute('aria-busy', 'true');
     const enabled = [...root.querySelectorAll('[data-task-action]:enabled, form button[type=submit]:enabled')];
+    const active = document.activeElement;
+    const anchor = root.querySelector('[data-record-body]');
+    // Disabling a focused button would send keyboard navigation back to the page.
+    if (enabled.includes(active) && document.hasFocus()) anchor.focus({preventScroll:true});
     for (const b of enabled) b.disabled = true;
     try {
       await mutate('harness/action', {id:task.id, version:task.version, action, ...values}, {
@@ -260,6 +264,9 @@ const VillageHarness = (() => {
       root.sending = false;
       root.removeAttribute('aria-busy');
       for (const b of enabled) if (b.isConnected) b.disabled = false;
+      if (enabled.includes(active) && active.isConnected && document.activeElement === anchor && document.hasFocus()) {
+        active.focus({preventScroll:true});
+      }
     }
   }
 
@@ -353,7 +360,7 @@ const VillageHarness = (() => {
   function paintRecord(root, slot, task, roster) {
     const sameDraft = root.task?.revision === task.revision;
     const focus = document.activeElement;
-    const inForm = sameDraft && focus?.name && root.contains(focus);
+    const hadFocus = focus && focus !== slot && slot.contains(focus) && document.hasFocus();
     if (!sameDraft) root.draft = {};
     else {
       const invite = root.querySelector('[data-invite]');
@@ -364,13 +371,16 @@ const VillageHarness = (() => {
     slot.innerHTML = taskDetails(task, root.draft);
     root.task = task;
     root.roster = roster;
-    if (inForm) {
-      const field = [...root.querySelectorAll('form [name]')].find(el => el.name === focus.name &&
-        (el.name !== 'hint_ids' || el.value === focus.value));
-      if (field && !field.disabled) {
-        field.focus({preventScroll:true});
-        if (field.tagName === 'TEXTAREA') field.setSelectionRange(focus.selectionStart, focus.selectionEnd);
-      }
+    if (hadFocus) {
+      const controls = 'form [name], [data-record-focus], [data-task-action]';
+      const field = sameDraft && [...slot.querySelectorAll(controls)].find(el => {
+        if (el.disabled) return false;
+        if (focus.name) return el.name === focus.name && (el.name !== 'hint_ids' || el.value === focus.value);
+        const {recordFocus, taskAction} = focus.dataset;
+        return (recordFocus && el.dataset.recordFocus === recordFocus) || (taskAction && el.dataset.taskAction === taskAction);
+      });
+      (field || slot).focus({preventScroll:true});
+      if (field && field.tagName === 'TEXTAREA') field.setSelectionRange(focus.selectionStart, focus.selectionEnd);
     }
   }
 
@@ -408,16 +418,19 @@ const VillageHarness = (() => {
     const key = view + '/' + (id || '');
     let root = panel.firstElementChild;
     if (!root || root.dataset.harnessPage !== key || (view === 'sowTask' && root.chatOrderVersion !== chatOrderVersion)) {
+      const inside = document.activeElement && panel.contains(document.activeElement) && document.hasFocus();
       root = document.createElement('div');
       root.className = 'harness-page';
+      root.tabIndex = -1;
       root.dataset.harnessPage = key;
       root.chatOrderVersion = chatOrderVersion;
       panel.replaceChildren(root);
       panel.scrollTop = 0;
       if (view === 'sowTask') root.innerHTML = orderForm();
       if (view === 'skillForge') root.innerHTML = forgeForm();
-      if (view === 'taskRecord') root.innerHTML = toolbar(nav('taskBoard','返回委托田')) + '<div data-record-body>正在翻开手记…</div>';
+      if (view === 'taskRecord') root.innerHTML = toolbar(nav('taskBoard','返回委托田')) + '<div data-record-body tabindex="-1" role="region" aria-label="委托手记">正在翻开手记…</div>';
       bind(root);
+      if (inside) root.focus({preventScroll:true});
     }
     if (view === 'skillForge' && shop()?.built) {
       const submit = root.querySelector('[type=submit]');

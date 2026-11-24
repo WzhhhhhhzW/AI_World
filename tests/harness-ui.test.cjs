@@ -15,8 +15,9 @@ function fixture(task = {}) {
     status:'advised',revision:1,version:3,history:[{revision:1,status:'ready'}],events:[],
     consultations:[],hints:[{id:'h1',text:'<检查来源>'},{id:'h2',text:'检查日期'}],...task};
   state.harness.tasks.push(record);
-  const panel = {replaceChildren(root){this.firstElementChild = root;}};
-  const slot = {};
+  const doc = {activeElement:null, hasFocus:()=>true};
+  const panel = {replaceChildren(root){this.firstElementChild = root;},contains:node=>node===panel.firstElementChild};
+  const slot = {contains:()=>false, focus(){doc.activeElement=this;}};
   const posts = [], visits = [];
   const sowNotes = {};
   const sow = {elements:{mode:{value:'local'},worker_id:{value:''},skill_id:{value:'plain'},goal:{value:''}},
@@ -28,20 +29,21 @@ function fixture(task = {}) {
   }
   let reads = 0;
   function element() {
-    return {dataset:{},isConnected:true,listeners:{},addEventListener(type, handler){this.listeners[type]=handler;},
+    return {dataset:{},isConnected:true,listeners:{},focus(){doc.activeElement=this;},addEventListener(type, handler){this.listeners[type]=handler;},
       setAttribute(){}, removeAttribute(){}, contains(){return true;}, querySelectorAll(){return [];},
       querySelector(selector){
         if (selector==='[data-sow-form]' && this.innerHTML?.includes('data-sow-form')) return sow;
         return selector==='[data-record-body]' ? slot : null;
       }};
   }
+  doc.createElement=element;
   const context = vm.createContext({state,$:s=>s==='#panel'?panel:{},
-    document:{createElement:element},esc:s=>String(s??'').replaceAll('<','&lt;').replaceAll('>','&gt;'),
+    document:doc,esc:s=>String(s??'').replaceAll('<','&lt;').replaceAll('>','&gt;'),
     FormData:FormFields, navigate:(...args)=>visits.push(args),
     mutate:async(path, data)=>{posts.push({path,data});return {};},
     request:async()=>{reads++;return {...record};}});
   const ui = vm.runInContext(script + '\nVillageHarness',context);
-  return {ui,record,skill,state,panel,slot,sow,posts,visits,reads:()=>reads};
+  return {ui,record,skill,state,panel,slot,sow,posts,visits,doc,context,reads:()=>reads};
 }
 
 const settle = () => new Promise(resolve=>setImmediate(resolve));
@@ -157,4 +159,72 @@ test('chat handoff retains only the supplied unsent text and waits for the garde
   assert.equal(sow.elements.mode.value,'model');
   assert.match(sow.elements.worker_id.innerHTML,/value="b" selected/);
   assert.equal(posts.length,0);
+});
+
+test('record refresh preserves disclosure focus and leaves browser or page controls alone', async () => {
+  const {ui,record,slot,doc}=fixture();
+  ui.show('taskRecord','t'); await settle();
+  function control(key) {
+    return {dataset:{recordFocus:key},focus(){doc.activeElement=this;}};
+  }
+  let old=control('invite'), replacement=control('invite');
+  slot.contains=el=>el===old;
+  slot.querySelectorAll=()=>[replacement];
+  Object.defineProperty(slot,'innerHTML',{set(){if(doc.activeElement===old) doc.activeElement=null;}});
+  old.focus();
+  record.version++; ui.show('taskRecord','t'); await settle();
+  assert.equal(doc.activeElement,replacement);
+
+  old=replacement; replacement=control('guidance');
+  record.version++; ui.show('taskRecord','t'); await settle();
+  assert.equal(doc.activeElement,slot);
+
+  const hud=control('hud');
+  hud.focus();
+  record.version++; ui.show('taskRecord','t'); await settle();
+  assert.equal(doc.activeElement,hud);
+  old.focus(); doc.hasFocus=()=>false;
+  record.version++; ui.show('taskRecord','t'); await settle();
+  assert.equal(doc.activeElement,null);
+});
+
+test('a focused submission stays in the record through disable and replacement without stealing later focus', async () => {
+  const {ui,panel,record,doc,slot,context}=fixture();
+  ui.show('taskRecord','t'); await settle();
+  const root=panel.firstElementChild;
+  const button={isConnected:true,dataset:{recordFocus:'request-advice'},focus(){doc.activeElement=this;}};
+  Object.defineProperty(button,'disabled',{set(value){if(value && doc.activeElement===this) doc.activeElement=null;}});
+  const form={dataset:{},hasAttribute:k=>k==='data-assist-form',values:{question:'check',reviewer_id:'b'}};
+  const event={target:form,preventDefault(){}};
+  root.querySelectorAll=()=>[button];
+  let done; context.mutate=()=>new Promise(resolve=>{done=resolve;});
+
+  button.focus();
+  const failed=root.listeners.submit(event);
+  assert.equal(doc.activeElement,slot);
+  done(null); await failed;
+  assert.equal(doc.activeElement,button);
+
+  const changed=root.listeners.submit(event);
+  button.isConnected=false;
+  record.version++; ui.show('taskRecord','t'); await settle();
+  done({}); await changed;
+  assert.equal(doc.activeElement,slot);
+
+  button.isConnected=true; button.focus();
+  const leaving=root.listeners.submit(event);
+  const outside={}; doc.activeElement=outside;
+  done(null); await leaving;
+  assert.equal(doc.activeElement,outside);
+});
+
+test('routing replaces focus only when the old panel owned it', () => {
+  const {ui,panel,doc}=fixture();
+  const hud={}; doc.activeElement=hud;
+  ui.show('taskBoard'); assert.equal(doc.activeElement,hud);
+  const previous=panel.firstElementChild; previous.focus();
+  ui.show('sowTask'); const next=panel.firstElementChild;
+  assert.notEqual(next,previous); assert.equal(doc.activeElement,next); assert.equal(next.tabIndex,-1);
+  doc.activeElement=hud;
+  ui.show('sowTask'); assert.equal(doc.activeElement,hud);
 });
