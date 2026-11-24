@@ -100,7 +100,9 @@ const VillageInteractions=(()=>{
       <button type="button" class="outline chat-newer" hidden>更新的对话</button></div>
       <div class="chat-thread" role="log" aria-live="polite" aria-label="聊天记录"></div>
       <form class="chat-compose"><textarea aria-label="给${esc(r.name)}的消息" rows="2" placeholder="发消息…" required></textarea><button type="submit" class="primary">发送</button></form>
-      <div class="chat-status" role="status"></div><button type="button" class="outline chat-config" hidden>配置这位居民的 API</button></section>`;
+      <div class="chat-status" role="status"></div>
+      <button type="button" class="outline chat-order" hidden>转为协作委托</button>
+      <button type="button" class="outline chat-config" hidden>配置这位居民的 API</button></section>`;
   }
   function chatRows(turns,r){
     const portrait=`<canvas data-avatar="${esc(r.appearance)}" width="32" height="38" aria-hidden="true"></canvas>`;
@@ -114,6 +116,7 @@ const VillageInteractions=(()=>{
     const root=$('.resident-chat'),thread=root.querySelector('.chat-thread'),form=root.querySelector('form');
     const earlier=root.querySelector('.chat-earlier'),newer=root.querySelector('.chat-newer'),pageSize=24;
     const input=form.querySelector('textarea'),send=form.querySelector('button'),status=root.querySelector('[role=status]'),config=root.querySelector('.chat-config');
+    const order=root.querySelector('.chat-order');
     if(!state.resident_interactions){
       input.disabled=true;send.disabled=true;status.textContent=restartHint;
       root.sync=()=>{if(state.resident_interactions)bindChat(r);};
@@ -127,6 +130,8 @@ const VillageInteractions=(()=>{
       config.hidden=current.connected;
       send.disabled=posting||waiting||!!state.busy||!current.connected||!input.value.trim();
       status.textContent=error||(!current.connected?'这位居民还未配置模型。':state.busy&&!waiting?state.busy:'');
+      order.hidden=!state.harness||typeof VillageHarness==='undefined'||typeof VillageHarness.openOrderFromChat!=='function';
+      order.disabled=posting||draft.requestId!==null;
     }
     async function sync(){
       if(!root.isConnected||view!=='residentChat'||selected!==r.id)return;
@@ -161,6 +166,10 @@ const VillageInteractions=(()=>{
     earlier.onclick=()=>{before=start;return sync();};
     newer.onclick=()=>{before=end+pageSize>=total?null:end+pageSize;return sync();};
     config.onclick=()=>navigate('residentApi',r.id);
+    order.onclick=()=>{
+      if(!root.isConnected||view!=='residentChat'||selected!==r.id||order.hidden||order.disabled)return;
+      VillageHarness.openOrderFromChat(r.id,input.value);
+    };
     input.oninput=()=>{draft.text=input.value;draft.requestId=null;error='';controls(state.residents.find(x=>x.id===r.id));};
     input.onkeydown=e=>{
       if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing&&e.keyCode!==229){

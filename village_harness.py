@@ -22,6 +22,8 @@ RECORD_REVIEW = {
 }
 INDEX_FIELDS = ("id", "title", "mode", "worker_id", "reviewer_id", "skill_id", "status", "revision", "version")
 MAX_REVISION = 3
+MAX_ADVISORS = 3
+MAX_SELECTED_HINTS = 3
 
 
 def field(data, key, limit, label, optional=False):
@@ -71,8 +73,17 @@ def fact_lines(snapshot):
     return lines
 
 
-def local_advice(snapshot):
+def local_advice(snapshot, role):
     hints = []
+    if role == "学者":
+        hints.append("把可以从取样读数直接验证的结论单列，并写出各项结论对应的读数。")
+    elif role == "园丁" and "materials" in snapshot:
+        hints.append(f"物资栏有作物 {snapshot['materials']['crops']} 份；把现有库存与之后可能收获的产量分开记录。")
+    elif role == "探索者":
+        hints.append("标记这次取样没有覆盖的项目；下次核查时只补读这些缺项。")
+    elif role == "规划师" and "buildings" in snapshot:
+        planned = sum(b["state"] == "待建" for b in snapshot["buildings"])
+        hints.append(f"单列 {planned} 项待建工程，核算用料时先确认本轮计划开建哪一项。")
     if "materials" in snapshot and "buildings" in snapshot:
         stock = snapshot["materials"]
         for building in snapshot["buildings"]:
@@ -159,11 +170,29 @@ class VillageHarness:
             h["skills"].append(copy.deepcopy(RECORD_REVIEW))
             h["revision"] += 1
         for task in h["tasks"]:
+            migrated = "advisor_ids" not in task
+            if migrated:
+                # A legacy revision could consult only one resident. The last
+                # reviewer field can't identify a consultation in an older revision.
+                reviewer = task["reviewer_id"] if task["stage"] == "advisor" else ""
+                task["advisor_ids"] = [reviewer] if reviewer else []
+                if reviewer:
+                    for entry in task["consultations"]:
+                        if entry["revision"] == task["revision"]:
+                            entry["reviewer_id"] = reviewer
+                            for hint in entry["hints"]:
+                                hint["reviewer_id"] = reviewer
+                    for hint in task["hints"]:
+                        hint["reviewer_id"] = reviewer
             if task["status"] in ("working", "advising"):
+                if task["stage"] == "advisor" and task["reviewer_id"] not in task["advisor_ids"]:
+                    task["advisor_ids"].append(task["reviewer_id"])
                 task.update(status="interrupted", error="服务已重启，请核对账本，再决定是否重试本阶段。")
+                note(task, task["error"])
+                migrated = True
+            if migrated:
                 task["version"] += 1
                 h["revision"] += 1
-                note(task, task["error"])
 
     def harness_index(self):
         with self.lock:
@@ -234,7 +263,7 @@ class VillageHarness:
                     "status": "planted", "revision": 1, "version": 0, "stage": "primary", "snapshot": {},
                     "snapshot_clock": None, "artifact": "", "question": "", "review": "", "feedback": "",
                     "consult_question": "", "error": "", "hints": [], "input_hints": [],
-                    "history": [], "consultations": [], "events": []}
+                    "history": [], "consultations": [], "advisor_ids": [], "events": []}
             note(task, "任务已播下，等待主办居民动工。")
             return self._insert_record("tasks", task)
 
@@ -278,10 +307,20 @@ class VillageHarness:
         task = self.harness_task(task_id)
         try:
             if task["stage"] == "advisor":
-                hints = local_advice(task["snapshot"]) if task["mode"] == "local" else model_advice(self, task)
-                task["hints"] = [{"id": uuid.uuid4().hex[:12], "text": text} for text in hints]
-                task["consultations"].append({"revision": task["revision"], "question": task["consult_question"],
-                                              "hints": copy.deepcopy(task["hints"]), "selected_ids": []})
+                reviewer = task["reviewer_id"]
+                if task["mode"] == "local":
+                    hints = local_advice(task["snapshot"], self.resident(reviewer)["role"])
+                else:
+                    hints = model_advice(self, task)
+                # Ids are opaque to callers. Revision and per-revision seat
+                # give each new hint a distinct ID even across retries or reloads.
+                seat = task["advisor_ids"].index(reviewer) + 1
+                new_hints = [{"id": f"{task['id']}-{task['revision']}-{seat}-{n}",
+                              "text": text, "reviewer_id": reviewer} for n, text in enumerate(hints, 1)]
+                task["hints"].extend(new_hints)
+                task["consultations"].append({"revision": task["revision"], "reviewer_id": reviewer,
+                                              "question": task["consult_question"],
+                                              "hints": copy.deepcopy(new_hints), "selected_ids": []})
                 task["status"] = "advised"
                 note(task, f"收到 {len(hints)} 条独立提示，等待村长挑选。")
             else:
@@ -310,17 +349,27 @@ class VillageHarness:
             failed = status in ("failed", "interrupted")
             if action == "run" and (status == "planted" or failed):
                 self._schedule_stage(task)
-            elif action == "assist" and status in ("ready", "blocked"):
+            elif action == "assist" and (status in ("ready", "blocked", "advised") or
+                                         (failed and task["stage"] == "advisor")):
                 if task["revision"] >= MAX_REVISION:
                     raise ValueError("本任务已用完两次修订机会")
-                advisor = data.get("reviewer_id") or task["reviewer_id"]
+                supplied = data.get("reviewer_id")
+                if supplied is not None and not isinstance(supplied, str):
+                    raise ValueError("顾问标识无效")
+                advisor = supplied or task["reviewer_id"]
                 if not advisor or advisor == task["worker_id"]:
                     raise ValueError("请指定一位不同于主办的顾问")
                 self.resident(advisor)
-                question = field(data, "question", 400, "请教的问题", optional=True) or task["question"]
+                if advisor in task["advisor_ids"]:
+                    raise ValueError("本版已请教过这位顾问，请另选居民")
+                if len(task["advisor_ids"]) >= MAX_ADVISORS:
+                    raise ValueError("每版最多请教三位不同的顾问")
+                previous_issue = task["consult_question"] if task["advisor_ids"] else ""
+                question = field(data, "question", 400, "请教的问题", optional=True) or previous_issue or task["question"]
                 if not question:
                     raise ValueError("请指出希望顾问独立检查的具体问题")
-                task.update(stage="advisor", reviewer_id=advisor, consult_question=question, hints=[])
+                task["advisor_ids"].append(advisor)
+                task.update(stage="advisor", reviewer_id=advisor, consult_question=question)
                 self._schedule_stage(task)
             elif ((action == "revise" and status == "ready") or
                   (action == "resume" and (status in ("blocked", "advised") or (failed and task["stage"] == "advisor")))):
@@ -328,14 +377,17 @@ class VillageHarness:
                     raise ValueError("本任务已用完两次修订机会")
                 feedback = field(data, "feedback", 600, "村长补充", optional=action == "resume" and status != "blocked")
                 selected = data.get("hint_ids", [])
-                available = {hint["id"]: hint["text"] for hint in task["hints"]} if status == "advised" else {}
-                if (not isinstance(selected, list) or any(not isinstance(h, str) or h not in available for h in selected)
+                available = {hint["id"]: hint["text"] for hint in task["hints"]}
+                if (not isinstance(selected, list) or len(selected) > MAX_SELECTED_HINTS
+                        or any(not isinstance(h, str) or h not in available for h in selected)
                         or len(set(selected)) != len(selected)):
-                    raise ValueError("请选择本次顾问返回的提示")
-                if status == "advised":
-                    task["consultations"][-1]["selected_ids"] = selected[:]
+                    raise ValueError("请从本版顾问提示中选择最多三条不同的提示")
+                for entry in task["consultations"]:
+                    if entry["revision"] == task["revision"]:
+                        own_ids = {hint["id"] for hint in entry["hints"]}
+                        entry["selected_ids"] = [hint_id for hint_id in selected if hint_id in own_ids]
                 task.update(stage="primary", revision=task["revision"] + 1, input_hints=[available[h] for h in selected],
-                            feedback=feedback, hints=[], error="", status="planted")
+                            feedback=feedback, hints=[], consult_question="", advisor_ids=[], error="", status="planted")
                 if action == "resume":
                     self._schedule_stage(task)
                 else:

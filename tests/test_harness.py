@@ -1,6 +1,7 @@
 import json
 import sys
 import tempfile
+import threading
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -105,6 +106,100 @@ class HarnessTests(unittest.TestCase):
                          [self.worker["id"], self.advisor["id"], self.advisor["id"]])
         self.assertEqual(self.action("harvest")["artifact"], "可收获原稿")
 
+    def test_three_advisers_compare_same_snapshot_without_sharing_their_turns(self):
+        residents = self.world.s["residents"]
+        for name in ("松影", "桂音"):
+            residents.append(self.world._resident(name, "探索者", "测试", "qwen", 20000))
+        first, second, third, fourth = [r["id"] for r in residents[1:]]
+        self.tid = self.plant(mode="model")
+        self.script({"status": "blocked", "artifact": "PRIVATE_DRAFT", "question": "核对库存"},
+                    {"hints": ["FIRST_KEEP", "FIRST_DROP"]}, {"hints": ["SECOND_DROP"]},
+                    {"hints": ["THIRD_KEEP"]}, {"status": "done", "artifact": "修订完成", "question": ""})
+        self.assertEqual(self.action("run")["advisor_ids"], [])
+        p1 = self.action("assist", reviewer_id=first)
+        self.world.s["resources"]["wood"] = 9999
+        with self.assertRaises(ValueError):
+            self.action("assist", reviewer_id=first)
+        with self.assertRaises(ValueError):
+            self.world.task_action({"id": self.tid, "version": p1["version"] - 1, "action": "assist", "reviewer_id": second})
+        self.action("assist", reviewer_id=second)
+        p3 = self.action("assist", reviewer_id=third)
+        self.assertEqual(p3["advisor_ids"], [first, second, third])
+        self.assertEqual([c["reviewer_id"] for c in p3["consultations"]], [first, second, third])
+        calls = self.provider.calls
+        for _, messages, cap in calls[1:]:
+            self.assertEqual((cap, len(messages)), (480, 2))
+            prompt = messages[-1]["content"]
+            self.assertEqual(prompt, calls[1][1][-1]["content"])
+            self.assertIn("木材 60", prompt)
+            for secret in ("PRIVATE_DRAFT", "FIRST_KEEP", "FIRST_DROP", "SECOND_DROP", "9999"):
+                self.assertNotIn(secret, prompt)
+        ids = [h["id"] for h in p3["hints"]]
+        self.assertEqual(len(set(ids)), 4)
+        for r in (first, fourth, self.worker["id"], ["invalid"]):
+            with self.assertRaises(ValueError):
+                self.action("assist", reviewer_id=r)
+        for invalid in ([ids[0], ids[0]], ids, ["unknown"], "text"):
+            with self.assertRaises(ValueError):
+                self.action("resume", hint_ids=invalid)
+        self.assertEqual(self.detail()["version"], p3["version"])
+        self.assertEqual(len(calls), 4)
+        self.world.close()
+        self.world = Village(self.path, self.provider)
+        self.assertEqual(self.detail()["hints"], p3["hints"])
+        self.assertEqual(len(calls), 4)
+        result = self.action("resume", hint_ids=[ids[3], ids[0]])
+        self.assertEqual(result["input_hints"], ["THIRD_KEEP", "FIRST_KEEP"])
+        self.assertEqual([entry["selected_ids"] for entry in result["consultations"]], [[ids[0]], [], [ids[3]]])
+        self.assertEqual((result["advisor_ids"], result["hints"], result["revision"]), ([], [], 2))
+        self.assertNotIn("FIRST_DROP", str(calls[-1][1]))
+        self.assertNotIn("SECOND_DROP", str(calls[-1][1]))
+        self.assertEqual([e["resident_id"] for e in self.world.s["ledger"]],
+                         [self.worker["id"], first, second, third, self.worker["id"]])
+        self.assertEqual([c[2] for c in calls], [1000, 480, 480, 480, 1000])
+        self.script({"hints": ["NEW_REVISION_HINT"]})
+        self.action("assist", reviewer_id=first, question="核对新稿")
+        with self.assertRaises(ValueError):
+            self.action("resume", hint_ids=[ids[0]])
+
+    def test_failed_second_adviser_preserves_first_and_old_save_migrates_only_current_round(self):
+        first, second = [r["id"] for r in self.world.s["residents"][1:]]
+        self.tid = self.plant(mode="model")
+        self.script({"status": "done", "artifact": "草稿", "question": ""}, {"hints": ["旧版线索"]},
+                    {"status": "blocked", "artifact": "", "question": "当前卡点"}, {"hints": ["现在的线索"]},
+                    {"hints": ["重复", "重复"]}, {"status": "done", "artifact": "结束", "question": ""})
+        self.action("run")
+        self.action("assist", reviewer_id=first, question="旧版问题")
+        self.action("resume")
+        advised = self.action("assist", reviewer_id=second)
+        current_id = advised["hints"][0]["id"]
+        legacy = self.world._record("tasks", self.tid)
+        del legacy["advisor_ids"]
+        for entry in legacy["consultations"]:
+            del entry["reviewer_id"]
+            for hint in entry["hints"]:
+                del hint["reviewer_id"]
+        del legacy["hints"][0]["reviewer_id"]
+        self.world.save()
+        self.world.close()
+        self.world = Village(self.path, self.provider)
+        self.assertEqual(self.detail()["advisor_ids"], [second])
+        old, current = self.detail()["consultations"]
+        self.assertNotIn("reviewer_id", old)
+        self.assertEqual(current["reviewer_id"], second)
+        self.assertEqual(self.detail()["hints"][0]["id"], current_id)
+        self.assertEqual(len(self.provider.calls), 4)
+        failed = self.action("assist", reviewer_id=first)
+        self.assertEqual((failed["status"], failed["advisor_ids"]), ("failed", [second, first]))
+        self.assertEqual([h["id"] for h in failed["hints"]], [current_id])
+        self.world.close()
+        self.world = Village(self.path, self.provider)
+        self.assertEqual(len(self.provider.calls), 5)
+        result = self.action("resume", hint_ids=[current_id])
+        self.assertEqual(result["history"][-1]["input_hints"], ["现在的线索"])
+        self.assertEqual(result["consultations"][-1]["selected_ids"], [current_id])
+        self.assertEqual(len(self.provider.calls), 6)
+
     def test_local_sample_is_reproducible_and_unselected_hints_stay_out(self):
         result = self.action("run")
         self.assertEqual(result["status"], "ready")
@@ -126,6 +221,53 @@ class HarnessTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.action("assist", question="还有盲点吗")
         self.assertEqual(len(self.action("harvest")["history"]), 3)
+        self.assertEqual(self.provider.calls, [])
+        self.assertEqual(self.world.s["ledger"], [])
+
+    def test_two_clients_one_slot_and_interrupted_consult_does_not_replay(self):
+        first, second = [r["id"] for r in self.world.s["residents"][1:]]
+        initial = self.action("run")
+        barrier = threading.Barrier(2)
+        outcomes = []
+
+        def compete(reviewer):
+            data = {"id": self.tid, "version": initial["version"], "reviewer_id": reviewer,
+                    "question": "核对账目", "action": "assist"}
+            barrier.wait(timeout=3)
+            try:
+                self.world.task_action(data)
+            except ValueError:
+                outcomes.append((reviewer, False))
+            else:
+                outcomes.append((reviewer, True))
+
+        clients = [threading.Thread(target=compete, args=(rid,)) for rid in (first, second)]
+        for client in clients:
+            client.start()
+        for client in clients:
+            client.join(3)
+            self.assertFalse(client.is_alive())
+        for worker in self.world.workers:
+            worker.join(3)
+        self.assertEqual(sorted(ok for _, ok in outcomes), [False, True])
+        winner = next(rid for rid, ok in outcomes if ok)
+        other = next(rid for rid, ok in outcomes if not ok)
+        advised = self.detail()
+        self.assertEqual(advised["advisor_ids"], [winner])
+        self.assertEqual(len(advised["consultations"]), 1)
+
+        # Persist the normal claim without executing its worker, as if the
+        # process exited between saving the stage and invoking the provider.
+        with patch.object(self.world, "_spawn", side_effect=lambda _name, _fn: self.world.save()):
+            self.world.task_action({"id": self.tid, "version": advised["version"], "reviewer_id": other, "action": "assist"})
+        self.world.close()
+        self.world = Village(self.path, self.provider)
+        interrupted = self.detail()
+        self.assertEqual((interrupted["status"], interrupted["advisor_ids"]), ("interrupted", [winner, other]))
+        self.assertEqual(interrupted["hints"], advised["hints"])
+        another = self.action("run")
+        self.assertEqual([c["reviewer_id"] for c in another["consultations"]], [winner, other])
+        self.assertNotEqual(another["consultations"][0]["hints"][0]["text"], another["consultations"][1]["hints"][0]["text"])
         self.assertEqual(self.provider.calls, [])
         self.assertEqual(self.world.s["ledger"], [])
 

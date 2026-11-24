@@ -101,24 +101,25 @@ test('clicking a resident opens three actions and keeps the target ID when enter
   assert.equal(context.opened.next,'residentChat');
 });
 
-test('chat renders escaped bubbles, preserves typing and sends to the selected resident', async () => {
+test('chat transfers only the unsent draft and still sends to the selected resident', async () => {
   const {context,element}=fixture('http://127.0.0.1:8766/');
   const root=element('.resident-chat'), status=element('status'), thread=element('thread');
   const fields={textarea:element('message'),button:element('send')};
   const form=Object.assign(element('composer'),{querySelector:key=>fields[key]});
   const parts={'.chat-thread':thread,form,'[role=status]':status,'.chat-config':element('configure'),
-    '.chat-earlier':element('earlier'),'.chat-newer':element('newer')};
+    '.chat-earlier':element('earlier'),'.chat-newer':element('newer'),'.chat-order':element('order')};
   Object.assign(root,{isConnected:true,querySelector:key=>parts[key]});
   Object.assign(thread,{scrollHeight:100,scrollTop:0,clientHeight:50});
   const resident={id:'r1',name:'星河',appearance:'doubao',connected:true};
-  const calls=[],turns=[{id:'one',text:'你好',reply:'<星河>',status:'complete'}];
+  const calls=[],orders=[],turns=[{id:'one',text:'你好',reply:'<星河>',status:'complete'}];
   Object.assign(context,{resident,VillageAvatars:{paintChoices(){}},crypto:{getRandomValues:bytes=>bytes.fill(33)},
+    VillageHarness:{openOrderFromChat:(workerId,goal)=>orders.push({workerId,goal})},
     fakeRequest:async(path,body)=>{
       calls.push({path,body});
       if(body){turns.push({id:body.request_id,text:body.text,status:'pending'});return {ok:true};}
       return {turns};
     }});
-  vm.runInContext("state={residents:[resident],resident_interactions:true};view='residentChat';selected='r1';request=fakeRequest;VillageInteractions.bindChat(resident)",context);
+  vm.runInContext("state={residents:[resident],resident_interactions:true,harness:{}};view='residentChat';selected='r1';request=fakeRequest;VillageInteractions.bindChat(resident)",context);
   await new Promise(resolve=>setImmediate(resolve));
   assert.match(thread.innerHTML,/chat-row mine/);
   assert.match(thread.innerHTML,/chat-row theirs/);
@@ -126,7 +127,16 @@ test('chat renders escaped bubbles, preserves typing and sends to the selected r
   fields.textarea.value='今天在忙什么？';fields.textarea.oninput();
   await root.sync();
   assert.equal(fields.textarea.value,'今天在忙什么？');
-  await form.onsubmit({preventDefault(){}});
+  const order=parts['.chat-order'];
+  assert.equal(order.hidden,false);
+  order.onclick();
+  assert.deepEqual(orders,[{workerId:'r1',goal:'今天在忙什么？'}]);
+  assert.equal(calls.some(c=>c.body),false);
+  const sending=form.onsubmit({preventDefault(){}});
+  assert.equal(order.disabled,true);
+  order.onclick();
+  assert.equal(orders.length,1);
+  await sending;
   const send=calls.find(c=>c.body);
   assert.equal(send.path,'residents/chat');
   assert.equal(send.body.id,'r1');
