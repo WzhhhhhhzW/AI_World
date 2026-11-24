@@ -10,7 +10,7 @@
 
 工坊落成后，点开 **工坊 → 铁匠铺**，把一套方法写成技能，指定工作步骤和允许读取的村务材料。纯文字委托可将材料留空。已收获的成果也可以点「锻造成技艺」，整理后收入技艺册，或导出为 `SKILL.md`。原有的播种、施工、议事和粮仓操作可从地图照常进入。
 
-[x-kernel 客体协作实跑与复验](platform/evidence/harness-handoff-20261124/guest/README.md) · [Windows 浏览器实跑与复验](platform/evidence/harness-handoff-20261124/host-r2/README.md)
+[x-kernel 客体协作实跑与复验](platform/evidence/harness-handoff-20261124/guest/README.md) · [Windows 浏览器实跑与复验](platform/evidence/harness-handoff-20261124/host-r2/README.md) · [键盘焦点复验](platform/evidence/harness-handoff-20261124/focus/README.md)
 
 **拿这道赛题试一份真实委托**。选「赛题记录复核」，把队友候选的记录粘到交付目标里，例如「同一台 VM 内重复五次，8 GiB 稀疏区域改只读的中位耗时从 47.270304 ms 变为 0.174016 ms。另有一次约 174 秒的 Chromium 指定页交互。请写两句答辩陈述，说明哪个收益有直接测量、哪个仍待验证。」可以先保存独立答卷，再请顾问想一个能区分局部内存优化和浏览器启动收益的对照实验。比较前后稿件时，核对新增的实验条件、错误结论和 Token 用量。[队友的候选说明和原始记录](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/blob/0b6c59600a8782762a6112eb02cfd96347e496e6/work/performance-20261117-r1/README.txt)
 
