@@ -1,0 +1,384 @@
+{
+  "result": "passed",
+  "checkout_head": "40a0513b35eb85c0179b5adf620975626e54517b",
+  "phases": [
+    "open-resident-map-menu",
+    "transfer-unsent-chat",
+    "independent-advisers",
+    "resume-harvest",
+    "await-new-ready-document",
+    "reload-and-durable-receipt-verified",
+    "forge-harvested-source",
+    "download-actual-markdown",
+    "forged-preview-download-verified"
+  ],
+  "posts": [
+    {
+      "path": "/api/harness/tasks",
+      "body": {
+        "mode": "local",
+        "title": "浏览器实测 · 两位独立顾问",
+        "goal": "请从原始库存和建筑快照盘点村务，并标明核对依据。",
+        "skill_id": "village-inventory",
+        "worker_id": "e70bd2ab851b"
+      }
+    },
+    {
+      "path": "/api/harness/action",
+      "body": {
+        "id": "2701d72d1147",
+        "version": 0,
+        "action": "run"
+      }
+    },
+    {
+      "path": "/api/harness/action",
+      "body": {
+        "id": "2701d72d1147",
+        "version": 2,
+        "action": "assist",
+        "question": "请独立复核已有材料和建筑状态。",
+        "reviewer_id": "31d1052b77e5"
+      }
+    },
+    {
+      "path": "/api/harness/action",
+      "body": {
+        "id": "2701d72d1147",
+        "version": 4,
+        "action": "assist",
+        "question": "请独立复核已有材料和建筑状态。",
+        "reviewer_id": "fb1d2d31b462"
+      }
+    },
+    {
+      "path": "/api/harness/action",
+      "body": {
+        "id": "2701d72d1147",
+        "version": 6,
+        "action": "resume",
+        "feedback": "",
+        "hint_ids": [
+          "2701d72d1147-1-2-1"
+        ]
+      }
+    },
+    {
+      "path": "/api/harness/action",
+      "body": {
+        "id": "2701d72d1147",
+        "version": 8,
+        "action": "harvest"
+      }
+    },
+    {
+      "path": "/api/harness/skills",
+      "body": {
+        "name": "浏览器实测 · 两位独立顾问",
+        "description": "请从原始库存和建筑快照盘点村务，并标明核对依据。",
+        "instructions": "# 浏览器实测 · 两位独立顾问\n\n任务备注：请从原始库存和建筑快照盘点村务，并标明核对依据。\n取样时刻：村庄时钟 480 分\n物资：木材 60，石料 40，作物 0。\n建筑：议事厅（已建成）、粮仓（已建成）、居民小屋（已建成）、工坊（已建成）、档案馆（待建）、菜园（已建成）\n\n本版采纳的补充\n把可以从取样读数直接验证的结论单列，并写出各项结论对应的读数。",
+        "tools": [
+          "materials",
+          "buildings"
+        ]
+      }
+    }
+  ],
+  "harness_ui_sha256": "426b6241c26ccad1da1634f0200a17997fd6c794dd87e5883ba3b110882d07fb",
+  "harness_backend_sha256": "9d32fffda76662ff6fce1e88104c4df35ea1d1f9c12ed473e22d8be0e44df77a",
+  "download_events": [
+    {
+      "event": "Page.downloadWillBegin",
+      "guid": "65dc8e20-d6b1-4601-81ca-da0e57a9226e",
+      "suggestedFilename": "SKILL.md"
+    },
+    {
+      "event": "Page.downloadProgress",
+      "guid": "65dc8e20-d6b1-4601-81ca-da0e57a9226e",
+      "state": "inProgress",
+      "totalBytes": 710,
+      "receivedBytes": 0
+    },
+    {
+      "event": "Page.downloadProgress",
+      "guid": "65dc8e20-d6b1-4601-81ca-da0e57a9226e",
+      "state": "inProgress",
+      "totalBytes": 710,
+      "receivedBytes": 710
+    },
+    {
+      "event": "Page.downloadProgress",
+      "guid": "65dc8e20-d6b1-4601-81ca-da0e57a9226e",
+      "state": "inProgress",
+      "totalBytes": 710,
+      "receivedBytes": 710
+    },
+    {
+      "event": "Page.downloadProgress",
+      "guid": "65dc8e20-d6b1-4601-81ca-da0e57a9226e",
+      "state": "inProgress",
+      "totalBytes": 710,
+      "receivedBytes": 710
+    },
+    {
+      "event": "Page.downloadProgress",
+      "guid": "65dc8e20-d6b1-4601-81ca-da0e57a9226e",
+      "state": "inProgress",
+      "totalBytes": 710,
+      "receivedBytes": 710
+    },
+    {
+      "event": "Page.downloadProgress",
+      "guid": "65dc8e20-d6b1-4601-81ca-da0e57a9226e",
+      "state": "inProgress",
+      "totalBytes": 710,
+      "receivedBytes": 710
+    },
+    {
+      "event": "Page.downloadProgress",
+      "guid": "65dc8e20-d6b1-4601-81ca-da0e57a9226e",
+      "state": "completed",
+      "totalBytes": 710,
+      "receivedBytes": 710
+    }
+  ],
+  "browser": "Chrome/157.0.8103.81",
+  "hover": {
+    "x": 709.95,
+    "y": 528.4000000000001,
+    "tooltip": "阿榆 ↗",
+    "target": "village"
+  },
+  "reload": {
+    "old_time_origin_ms": 1795484904141.2,
+    "new_time_origin_ms": 1795484906374.3,
+    "game_ready": true
+  },
+  "record": {
+    "id": "2701d72d1147",
+    "title": "浏览器实测 · 两位独立顾问",
+    "goal": "请从原始库存和建筑快照盘点村务，并标明核对依据。",
+    "mode": "local",
+    "worker_id": "e70bd2ab851b",
+    "reviewer_id": "fb1d2d31b462",
+    "skill_id": "village-inventory",
+    "status": "harvested",
+    "revision": 2,
+    "version": 9,
+    "stage": "primary",
+    "snapshot": {
+      "materials": {
+        "wood": 60,
+        "stone": 40,
+        "crops": 0
+      },
+      "buildings": [
+        {
+          "name": "议事厅",
+          "state": "已建成",
+          "cost": {
+            "wood": 0,
+            "stone": 0
+          }
+        },
+        {
+          "name": "粮仓",
+          "state": "已建成",
+          "cost": {
+            "wood": 0,
+            "stone": 0
+          }
+        },
+        {
+          "name": "居民小屋",
+          "state": "已建成",
+          "cost": {
+            "wood": 0,
+            "stone": 0
+          }
+        },
+        {
+          "name": "工坊",
+          "state": "已建成",
+          "cost": {
+            "wood": 35,
+            "stone": 15
+          }
+        },
+        {
+          "name": "档案馆",
+          "state": "待建",
+          "cost": {
+            "wood": 25,
+            "stone": 25
+          }
+        },
+        {
+          "name": "菜园",
+          "state": "已建成",
+          "cost": {
+            "wood": 20,
+            "stone": 5
+          }
+        }
+      ]
+    },
+    "snapshot_clock": 480,
+    "artifact": "# 浏览器实测 · 两位独立顾问\n\n任务备注：请从原始库存和建筑快照盘点村务，并标明核对依据。\n取样时刻：村庄时钟 480 分\n物资：木材 60，石料 40，作物 0。\n建筑：议事厅（已建成）、粮仓（已建成）、居民小屋（已建成）、工坊（已建成）、档案馆（待建）、菜园（已建成）\n\n本版采纳的补充\n把可以从取样读数直接验证的结论单列，并写出各项结论对应的读数。",
+    "question": "",
+    "review": "",
+    "feedback": "",
+    "consult_question": "",
+    "error": "",
+    "hints": [],
+    "input_hints": [
+      "把可以从取样读数直接验证的结论单列，并写出各项结论对应的读数。"
+    ],
+    "history": [
+      {
+        "revision": 1,
+        "artifact": "# 浏览器实测 · 两位独立顾问\n\n任务备注：请从原始库存和建筑快照盘点村务，并标明核对依据。\n取样时刻：村庄时钟 480 分\n物资：木材 60，石料 40，作物 0。\n建筑：议事厅（已建成）、粮仓（已建成）、居民小屋（已建成）、工坊（已建成）、档案馆（待建）、菜园（已建成）",
+        "question": "",
+        "status": "ready",
+        "feedback": "",
+        "input_hints": []
+      },
+      {
+        "revision": 2,
+        "artifact": "# 浏览器实测 · 两位独立顾问\n\n任务备注：请从原始库存和建筑快照盘点村务，并标明核对依据。\n取样时刻：村庄时钟 480 分\n物资：木材 60，石料 40，作物 0。\n建筑：议事厅（已建成）、粮仓（已建成）、居民小屋（已建成）、工坊（已建成）、档案馆（待建）、菜园（已建成）\n\n本版采纳的补充\n把可以从取样读数直接验证的结论单列，并写出各项结论对应的读数。",
+        "question": "",
+        "status": "ready",
+        "feedback": "",
+        "input_hints": [
+          "把可以从取样读数直接验证的结论单列，并写出各项结论对应的读数。"
+        ]
+      }
+    ],
+    "consultations": [
+      {
+        "revision": 1,
+        "reviewer_id": "31d1052b77e5",
+        "question": "请独立复核已有材料和建筑状态。",
+        "hints": [
+          {
+            "id": "2701d72d1147-1-1-1",
+            "text": "物资栏有作物 0 份；把现有库存与之后可能收获的产量分开记录。",
+            "reviewer_id": "31d1052b77e5"
+          },
+          {
+            "id": "2701d72d1147-1-1-2",
+            "text": "若开建档案馆，需木材 25、石料 25；按采样库存，分别还缺 0 和 0。",
+            "reviewer_id": "31d1052b77e5"
+          },
+          {
+            "id": "2701d72d1147-1-1-3",
+            "text": "明确统计口径：6 座规划建筑中已建成 5 座，其余 1 座含工地与待建地。",
+            "reviewer_id": "31d1052b77e5"
+          }
+        ],
+        "selected_ids": []
+      },
+      {
+        "revision": 1,
+        "reviewer_id": "fb1d2d31b462",
+        "question": "请独立复核已有材料和建筑状态。",
+        "hints": [
+          {
+            "id": "2701d72d1147-1-2-1",
+            "text": "把可以从取样读数直接验证的结论单列，并写出各项结论对应的读数。",
+            "reviewer_id": "fb1d2d31b462"
+          },
+          {
+            "id": "2701d72d1147-1-2-2",
+            "text": "若开建档案馆，需木材 25、石料 25；按采样库存，分别还缺 0 和 0。",
+            "reviewer_id": "fb1d2d31b462"
+          },
+          {
+            "id": "2701d72d1147-1-2-3",
+            "text": "明确统计口径：6 座规划建筑中已建成 5 座，其余 1 座含工地与待建地。",
+            "reviewer_id": "fb1d2d31b462"
+          }
+        ],
+        "selected_ids": [
+          "2701d72d1147-1-2-1"
+        ]
+      }
+    ],
+    "advisor_ids": [],
+    "events": [
+      {
+        "time": 1795484905.1920493,
+        "text": "任务已播下，等待主办居民动工。"
+      },
+      {
+        "time": 1795484905.3363578,
+        "text": "阿榆撰写第 1 版（本地规则演练）"
+      },
+      {
+        "time": 1795484905.3392525,
+        "text": "主办已交稿，等待村长收获。"
+      },
+      {
+        "time": 1795484905.4943616,
+        "text": "小满独立查看卡点（本地规则演练）"
+      },
+      {
+        "time": 1795484905.4966073,
+        "text": "收到 3 条独立提示，等待村长挑选。"
+      },
+      {
+        "time": 1795484905.6516685,
+        "text": "砚秋独立查看卡点（本地规则演练）"
+      },
+      {
+        "time": 1795484905.6534262,
+        "text": "收到 3 条独立提示，等待村长挑选。"
+      },
+      {
+        "time": 1795484906.0942967,
+        "text": "阿榆撰写第 2 版（本地规则演练）"
+      },
+      {
+        "time": 1795484906.0962007,
+        "text": "主办已交稿，等待村长收获。"
+      },
+      {
+        "time": 1795484906.2436419,
+        "text": "村长已验收并收获主办的成果。"
+      }
+    ]
+  },
+  "ledger": [],
+  "chat_turns": 0,
+  "forge": {
+    "source_task_id": "2701d72d1147",
+    "source_revision": 2,
+    "original_skill_id": "village-inventory",
+    "source_artifact_sha256": "3b2de6c5d9b49a2247229b61c0b57b69fbe671259d471bb008d9da5ac0294389",
+    "persisted_skill": {
+      "id": "bfa94e481919",
+      "name": "浏览器实测 · 两位独立顾问",
+      "description": "请从原始库存和建筑快照盘点村务，并标明核对依据。",
+      "instructions": "# 浏览器实测 · 两位独立顾问\n\n任务备注：请从原始库存和建筑快照盘点村务，并标明核对依据。\n取样时刻：村庄时钟 480 分\n物资：木材 60，石料 40，作物 0。\n建筑：议事厅（已建成）、粮仓（已建成）、居民小屋（已建成）、工坊（已建成）、档案馆（待建）、菜园（已建成）\n\n本版采纳的补充\n把可以从取样读数直接验证的结论单列，并写出各项结论对应的读数。",
+      "tools": [
+        "materials",
+        "buildings"
+      ]
+    },
+    "selection_from_source": [
+      "materials",
+      "buildings"
+    ],
+    "download_file": "downloads/SKILL.md",
+    "bytes": 710,
+    "sha256": "7e90070051b93d307602ef19a112fa1d2d883a37fbad40973be5566aa940f09b",
+    "preview_sha256": "7e90070051b93d307602ef19a112fa1d2d883a37fbad40973be5566aa940f09b",
+    "expected_sha256": "7e90070051b93d307602ef19a112fa1d2d883a37fbad40973be5566aa940f09b",
+    "policy_override": false,
+    "ledger_entries": 0
+  },
+  "server_exit": {
+    "code": 0,
+    "signal": null
+  }
+}
