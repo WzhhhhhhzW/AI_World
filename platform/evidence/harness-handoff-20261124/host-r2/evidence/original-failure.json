@@ -1,0 +1,79 @@
+{
+  "result": "failed",
+  "checkout_head": "16ea5d0b2416c3290154a83e4c4ffde3d43145c2",
+  "phases": [
+    "open-resident-map-menu",
+    "transfer-unsent-chat",
+    "independent-advisers",
+    "resume-harvest"
+  ],
+  "posts": [
+    {
+      "path": "/api/harness/tasks",
+      "body": {
+        "mode": "local",
+        "title": "浏览器实测 · 两位独立顾问",
+        "goal": "请从原始库存和建筑快照盘点村务，并标明核对依据。",
+        "skill_id": "village-inventory",
+        "worker_id": "648c8046caa6"
+      }
+    },
+    {
+      "path": "/api/harness/action",
+      "body": {
+        "id": "b21e8169d883",
+        "version": 0,
+        "action": "run"
+      }
+    },
+    {
+      "path": "/api/harness/action",
+      "body": {
+        "id": "b21e8169d883",
+        "version": 2,
+        "action": "assist",
+        "question": "请独立复核已有材料和建筑状态。",
+        "reviewer_id": "ae482e2ce9f4"
+      }
+    },
+    {
+      "path": "/api/harness/action",
+      "body": {
+        "id": "b21e8169d883",
+        "version": 4,
+        "action": "assist",
+        "question": "请独立复核已有材料和建筑状态。",
+        "reviewer_id": "98c148d2ca63"
+      }
+    },
+    {
+      "path": "/api/harness/action",
+      "body": {
+        "id": "b21e8169d883",
+        "version": 6,
+        "action": "resume",
+        "feedback": "",
+        "hint_ids": [
+          "b21e8169d883-1-2-1"
+        ]
+      }
+    },
+    {
+      "path": "/api/harness/action",
+      "body": {
+        "id": "b21e8169d883",
+        "version": 8,
+        "action": "harvest"
+      }
+    }
+  ],
+  "browser": "Chrome/157.0.8103.81",
+  "hover": {
+    "x": 709.95,
+    "y": 528.4000000000001,
+    "tooltip": "阿榆 ↗",
+    "target": "village"
+  },
+  "error": "Error: 等待超时 [data-task-record=\"b21e8169d883\"]\n    at until (file:///E:/qilin-harness-handoff-20261124/platform/evidence/harness-handoff-20261124/host/browser-smoke.mjs:45:9)\n    at async click (file:///E:/qilin-harness-handoff-20261124/platform/evidence/harness-handoff-20261124/host/browser-smoke.mjs:112:15)\n    at async smoke (file:///E:/qilin-harness-handoff-20261124/platform/evidence/harness-handoff-20261124/host/browser-smoke.mjs:161:40)\n    at async file:///E:/qilin-harness-handoff-20261124/platform/evidence/harness-handoff-20261124/host/browser-smoke.mjs:180:7",
+  "last_phase": "resume-harvest"
+}
