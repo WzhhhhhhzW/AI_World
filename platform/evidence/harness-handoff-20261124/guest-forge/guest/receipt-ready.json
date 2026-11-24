@@ -1,0 +1,114 @@
+{
+  "mode": "read-only host save and local API",
+  "status": "ready",
+  "two_advisers_checked": false,
+  "save_sha256": "a5313cdf09a3e085409679294e6814ec3b3e7dcfcc69da5371abd3a11ee3a3a3",
+  "detail": {
+    "id": "1fc00716dda8",
+    "title": "r117 forge",
+    "goal": "交一份最新的村务盘点单，列出下一步要留意的事项。",
+    "mode": "local",
+    "worker_id": "e15ddd724857",
+    "reviewer_id": "",
+    "skill_id": "village-inventory",
+    "status": "ready",
+    "revision": 1,
+    "version": 2,
+    "stage": "primary",
+    "snapshot": {
+      "materials": {
+        "wood": 60,
+        "stone": 40,
+        "crops": 0
+      },
+      "buildings": [
+        {
+          "name": "议事厅",
+          "state": "已建成",
+          "cost": {
+            "wood": 0,
+            "stone": 0
+          }
+        },
+        {
+          "name": "粮仓",
+          "state": "已建成",
+          "cost": {
+            "wood": 0,
+            "stone": 0
+          }
+        },
+        {
+          "name": "居民小屋",
+          "state": "已建成",
+          "cost": {
+            "wood": 0,
+            "stone": 0
+          }
+        },
+        {
+          "name": "工坊",
+          "state": "已建成",
+          "cost": {
+            "wood": 35,
+            "stone": 15
+          }
+        },
+        {
+          "name": "档案馆",
+          "state": "待建",
+          "cost": {
+            "wood": 25,
+            "stone": 25
+          }
+        },
+        {
+          "name": "菜园",
+          "state": "已建成",
+          "cost": {
+            "wood": 20,
+            "stone": 5
+          }
+        }
+      ]
+    },
+    "snapshot_clock": 480,
+    "artifact": "# r117 forge\n\n任务备注：交一份最新的村务盘点单，列出下一步要留意的事项。\n取样时刻：村庄时钟 480 分\n物资：木材 60，石料 40，作物 0。\n建筑：议事厅（已建成）、粮仓（已建成）、居民小屋（已建成）、工坊（已建成）、档案馆（待建）、菜园（已建成）",
+    "question": "",
+    "review": "",
+    "feedback": "",
+    "consult_question": "",
+    "error": "",
+    "hints": [],
+    "input_hints": [],
+    "history": [
+      {
+        "revision": 1,
+        "artifact": "# r117 forge\n\n任务备注：交一份最新的村务盘点单，列出下一步要留意的事项。\n取样时刻：村庄时钟 480 分\n物资：木材 60，石料 40，作物 0。\n建筑：议事厅（已建成）、粮仓（已建成）、居民小屋（已建成）、工坊（已建成）、档案馆（待建）、菜园（已建成）",
+        "question": "",
+        "status": "ready",
+        "feedback": "",
+        "input_hints": []
+      }
+    ],
+    "consultations": [],
+    "advisor_ids": [],
+    "events": [
+      {
+        "time": 1795484239.1961627,
+        "text": "任务已播下，等待主办居民动工。"
+      },
+      {
+        "time": 1795484265.5205436,
+        "text": "阿榆撰写第 1 版（本地规则演练）"
+      },
+      {
+        "time": 1795484265.527381,
+        "text": "主办已交稿，等待村长收获。"
+      }
+    ]
+  },
+  "worker_chat_turns": 0,
+  "ledger": [],
+  "provider_count": 0
+}

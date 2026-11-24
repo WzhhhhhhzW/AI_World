@@ -1,0 +1,32 @@
+echo; cat /etc/chromium/policies/managed/kiosk.json; ls -la /root/Downloads; ls -l /tmp/village-pro
+file/Default/History*; printf '\nVGEND%s\n' 31859c1e2846
+
+{
+  "Comment": "Kiosk 锁定策略 - 放在 /etc/chromium/policies/managed/ 下强制生效",
+  "BrowserSignin": 0,
+  "SyncDisabled": true,
+  "MetricsReportingEnabled": false,
+  "SafeBrowsingProtectionLevel": 1,
+  "SearchSuggestEnabled": false,
+  "BackgroundModeEnabled": false,
+  "DefaultBrowserSettingEnabled": false,
+  "TranslateEnabled": false,
+  "PasswordManagerEnabled": false,
+  "AutoFillEnabled": false,
+  "EditBookmarkEnabled": false,
+  "BookmarkBarEnabled": false,
+  "ShowHomeButton": false,
+  "DeveloperToolsAvailability": 2,
+  "DownloadRestrictions": 3,
+  "AllowFileSelectionDialogs": false,
+  "FullscreenAllowed": true,
+  "RestrictSigninToPattern": "*@disabled",
+  "URLBlacklist": ["chrome://settings", "chrome://extensions", "about:flags"]
+}
+total 8
+drwx------    2 root     root          4096 Nov 24 01:39 [1;34m.[m
+drwx------    4 root     root          4096 Nov 24 01:39 [1;34m..[m
+-rw-------    1 root     root        163840 Jan  1  1970 [0;0m/tmp/village-profile/Default/History[m
+-rw-------    1 root     root          8720 Jan  1  1970 [0;0m/tmp/village-profile/Default/History-journal[m
+
+VGEND31859c1e2846

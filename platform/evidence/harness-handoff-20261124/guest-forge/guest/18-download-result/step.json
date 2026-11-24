@@ -1,0 +1,11 @@
+{
+  "action": "shot",
+  "session": "vlg-3bd19f92f38c4a16bf3f4cfaf8715dbe",
+  "time_unix": 1795484529.2354875,
+  "before": {
+    "sha256": "7076f6433d5cce804f8466d7f4646ccb448c0d5d3e503b35e21568c34b1bb29a",
+    "width": 1280,
+    "height": 800
+  },
+  "transport": "ok"
+}
