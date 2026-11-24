@@ -1,0 +1,12 @@
+{
+  "time": "2026-11-24T11:24:38.2061566+08:00",
+  "qemu_pid": 710,
+  "fixture_pid": 696,
+  "qemu_rows": [],
+  "fixture_rows": [],
+  "supervisor_exit": 0,
+  "observer_exit": 0,
+  "fixture_exit": 0,
+  "vm_exit": 0,
+  "server_last": "VILLAGE_EXIT clean"
+}

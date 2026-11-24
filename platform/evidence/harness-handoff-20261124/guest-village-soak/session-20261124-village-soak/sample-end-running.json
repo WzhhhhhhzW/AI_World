@@ -1,0 +1,20 @@
+{
+  "label": "end-running",
+  "monotonic_start_ns": 2434820588153,
+  "monotonic_end_ns": 2434823407239,
+  "beijing": "2026-11-24T11:23:47.477240+08:00",
+  "paused": false,
+  "api_clock": 7674,
+  "disk_clock": 7660,
+  "api_resources": {
+    "wood": 280,
+    "stone": 192,
+    "crops": 7
+  },
+  "disk_resources": {
+    "wood": 280,
+    "stone": 192,
+    "crops": 7
+  },
+  "saved_sha256": "b0dbfc860a7e656a2a491973fea2f7b508d1f0d0863eda435746d63348d05d62"
+}

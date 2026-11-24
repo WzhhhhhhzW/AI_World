@@ -1,0 +1,41 @@
+{
+  "action": "click",
+  "session": "vlg-5d94ff0abcab4435ac58b33e7f6f4b7d",
+  "time_unix": 1795490627.594735,
+  "before": {
+    "sha256": "bd37de167b46b0ceeae474dfe918f441d8008fa296770a2b7ece75e79f5f2337",
+    "width": 1280,
+    "height": 800
+  },
+  "requested_surface_xy": [
+    56,
+    736
+  ],
+  "wayland_positions": [
+    [
+      57.37890625,
+      737.37109375
+    ]
+  ],
+  "button_events": [
+    [
+      28,
+      16,
+      194299758,
+      1
+    ],
+    [
+      28,
+      17,
+      194299879,
+      0
+    ]
+  ],
+  "guest_received_left_click": true,
+  "after": {
+    "sha256": "c8886708056172ad796b6e3940aae28ab10f6c9ce6d70fe7801b14b906d18384",
+    "width": 1280,
+    "height": 800
+  },
+  "transport": "ok"
+}

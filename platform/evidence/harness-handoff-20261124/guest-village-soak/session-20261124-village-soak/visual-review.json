@@ -1,0 +1,35 @@
+{
+  "session": "vlg-5d94ff0abcab4435ac58b33e7f6f4b7d",
+  "at": {
+    "02-start": {
+      "board": {
+        "observed": "Day 1 09:32. The board shows its title, three navigation buttons, sow button and zero work orders.",
+        "sha256": "1fb73639b7a54cb633923ce1b84af9a8dea6da7f6440a4578562107f592c2458"
+      },
+      "map": {
+        "observed": "Day 1 09:42. The board is closed; the village, HUD and moving residents are visible.",
+        "sha256": "cd7aff255ecb06ccbc0541636edaf2c794609820fd978584510ba9c3ffe112fe"
+      }
+    },
+    "03-middle": {
+      "board": {
+        "observed": "Day 3 20:22. The board opened with three navigation buttons, the sow button and zero orders, over the evening village.",
+        "sha256": "07f82857cbdf0e9bbff0387aad4f54c54c61c3fee14e9e95235bfd8a4befd437"
+      },
+      "map": {
+        "observed": "Day 3 20:28. The board is closed, the evening village and three residents are visible, and the HUD shows 172/116/3.",
+        "sha256": "385578282c6d536f12fced98ca1dc463898737d3427c82578fa6d98fadf2f5be"
+      }
+    },
+    "04-end": {
+      "board": {
+        "observed": "Day 6 08:14. The task board is open over the village: title, sow button, three navigation buttons, and zero work orders.",
+        "sha256": "c8886708056172ad796b6e3940aae28ab10f6c9ce6d70fe7801b14b906d18384"
+      },
+      "map": {
+        "observed": "Day 6 08:20. The board is closed. The map, villagers and HUD are visible; resources show 280 wood, 196 stone, and 7 crops.",
+        "sha256": "1db5f55430c2823074bfa8f00f5694623a43d95807a2d4be5382fbf4a79f9def"
+      }
+    }
+  }
+}

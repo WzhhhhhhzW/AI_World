@@ -1,0 +1,87 @@
+{
+  "commit": "a68c9eec38f34cdcea7b4a512310d9d567e056b6",
+  "tracked_status_clean": true,
+  "files": {
+    "farming.py": {
+      "working_bytes": 6365,
+      "working_sha256": "99ce99f366e7d541979d498db42f3f4875ff2f50b4b2cd4b13c0876d8308be3c",
+      "git_blob": "73972a78f3376d0e4471956b791f4c39e6eb6646"
+    },
+    "platform/finals_benchmark.py": {
+      "working_bytes": 38728,
+      "working_sha256": "bb0a7d98b6b725bbf9e386c1a568b7ff6ec369ec286870f651bb0cb19a66e7ae",
+      "git_blob": "35c6617397e6e3c6146327395c0e4b061f5afb05"
+    },
+    "platform/guest-session.sh": {
+      "working_bytes": 2967,
+      "working_sha256": "471d4ee0256fb60be5ff4343ec9bb31e005aed480613318db55baa45435b1289",
+      "git_blob": "f63035be664ce995de3b40a5baa8e97808327e56"
+    },
+    "platform/qemu_demo.py": {
+      "working_bytes": 11664,
+      "working_sha256": "3ac2672e41ab053cb07d461b7aec77744242659477c7450cc7e390c3b5724bcf",
+      "git_blob": "3f3fb8da5f8274e7562f492b293c065b5344d26a"
+    },
+    "resident_keys.py": {
+      "working_bytes": 2187,
+      "working_sha256": "c7c64f86eb8b53a986a013eba0dbdfe3772a8dfdf05d2f9fbe396b5010f84241",
+      "git_blob": "8debc9f9b89169f20c48e60ed66a09294e2ec47b"
+    },
+    "server.py": {
+      "working_bytes": 16533,
+      "working_sha256": "74d9977259bb0678225b9f2850668c1eb884e138b0e368269e927ff7efc30c3c",
+      "git_blob": "5f217fb3d72d76c475c7543111ca62143f143488"
+    },
+    "village.py": {
+      "working_bytes": 46273,
+      "working_sha256": "5b8eec48f68912ca6237b562ce59ef60cf249fdd862596d2249f3f0c7390bdd9",
+      "git_blob": "71d8eb26156ddad95c41a053f1c22b66785b73c0"
+    },
+    "village_harness.py": {
+      "working_bytes": 23549,
+      "working_sha256": "9d32fffda76662ff6fce1e88104c4df35ea1d1f9c12ed473e22d8be0e44df77a",
+      "git_blob": "df31881e7c9b4780bdfc810eba3215bb8f076583"
+    },
+    "village_map.py": {
+      "working_bytes": 3807,
+      "working_sha256": "3db73fe63ec1ec614753504c1b3bdc509e3a365169ff3d0d6241acb456db6d6c",
+      "git_blob": "b47e0771d031141222a8b6239545a8cc6dc1c194"
+    },
+    "village_web.py": {
+      "working_bytes": 2592,
+      "working_sha256": "4944b31a7e1e198fdca9f7eef9d9f712e2458fa33a7873e71a7ce929f4bacc5d",
+      "git_blob": "5972232eec739724ec4ea4c1af5cef88ae08b533"
+    },
+    "web/app.js": {
+      "working_bytes": 76267,
+      "working_sha256": "11acdf358ba565fd9a801e595e525e5c4b1df99903eef7cdd1d9e663b37e1a05",
+      "git_blob": "89b5371edbba607dab6f8efa1665cdc9ebc1582f"
+    },
+    "web/harness-ui.js": {
+      "working_bytes": 31005,
+      "working_sha256": "426b6241c26ccad1da1634f0200a17997fd6c794dd87e5883ba3b110882d07fb",
+      "git_blob": "5ca60cee58906a29744ff2e75acda063713aa870"
+    },
+    "web/harness.css": {
+      "working_bytes": 5613,
+      "working_sha256": "0422491518a9e80ec735aeddf9b5e0dc172a6f28f827433c910baad9676806c5",
+      "git_blob": "6146d63fb7397ccd75777cf29c273968275fd501"
+    },
+    "web/index.html": {
+      "working_bytes": 6403,
+      "working_sha256": "723bf6ddd125ec9bf9f4e1612195ca40c58db6b8b096d7a49af7f0b5afb3c38c",
+      "git_blob": "abf43beb4ac1bb4933ec843ab4c5164f96954c04"
+    },
+    "web/resident-actions.js": {
+      "working_bytes": 11724,
+      "working_sha256": "c8574f7a3976ee9e8d122cfcedeb5a07e36ea2e6b4c2b9c6357fa9bfa0457959",
+      "git_blob": "860a43686a89236fad0593d538f0e824c98f0438"
+    },
+    "world_governance.py": {
+      "working_bytes": 13205,
+      "working_sha256": "ed4936e1855de9df9745ce25382ed93cb0fa757b853e938aad5b01bdc382be6e",
+      "git_blob": "2f396b1f16b164a8b0eed61f187ca7e0975c12d7"
+    }
+  },
+  "initial_linux_git_normalization": "first preflight rejected before any QEMU or service existed; replay used Windows checkout CRLF semantics"
+}

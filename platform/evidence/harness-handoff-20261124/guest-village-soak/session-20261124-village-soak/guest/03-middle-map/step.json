@@ -1,0 +1,19 @@
+{
+  "action": "key",
+  "session": "vlg-5d94ff0abcab4435ac58b33e7f6f4b7d",
+  "time_unix": 1795489733.4172184,
+  "before": {
+    "sha256": "172f40f37239aa4e02ef4c50c76edea2c90a1b653a6c0ab50dd0369e12941205",
+    "width": 1280,
+    "height": 800
+  },
+  "keys": [
+    "esc"
+  ],
+  "after": {
+    "sha256": "385578282c6d536f12fced98ca1dc463898737d3427c82578fa6d98fadf2f5be",
+    "width": 1280,
+    "height": 800
+  },
+  "transport": "ok"
+}

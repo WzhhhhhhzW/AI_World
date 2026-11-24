@@ -1,0 +1,10 @@
+{
+  "elapsed_active_monotonic_ns": 1800004243047,
+  "session": "vlg-5d94ff0abcab4435ac58b33e7f6f4b7d",
+  "clock_at_start_middle_end": [
+    490,
+    4082,
+    7674
+  ],
+  "scope": "Local hosted village simulation displayed in a single R117 TCG guest; three framebuffer interactions require visual review."
+}

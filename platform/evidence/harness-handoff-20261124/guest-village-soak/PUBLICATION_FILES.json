@@ -1,0 +1,305 @@
+{
+  "bytes": 8451158,
+  "files": [
+    {
+      "path": "guest_ui.py",
+      "bytes": 14361,
+      "sha256": "e4f56329e169903b4598cc953187fada6bdcf9834efaba898fc4dc3db2cf5057"
+    },
+    {
+      "path": "session-20261124-village-soak/api-end-paused-again.json",
+      "bytes": 7173,
+      "sha256": "4da234547c80684c471e133bf0c8931eea138bd008b180a32960c191770c93fb"
+    },
+    {
+      "path": "session-20261124-village-soak/api-end-paused.json",
+      "bytes": 7173,
+      "sha256": "4da234547c80684c471e133bf0c8931eea138bd008b180a32960c191770c93fb"
+    },
+    {
+      "path": "session-20261124-village-soak/api-end-running.json",
+      "bytes": 7491,
+      "sha256": "788ddbf903cc25f1e569a5d8c7b51817078488f0628f91fadd7ed0a98d83a2ad"
+    },
+    {
+      "path": "session-20261124-village-soak/api-initial-paused.json",
+      "bytes": 7184,
+      "sha256": "3e84262cfcf71bd036fbe281d836121eb1f5ad7fef372e744c0070746dc02c87"
+    },
+    {
+      "path": "session-20261124-village-soak/api-middle-running.json",
+      "bytes": 7489,
+      "sha256": "13e63b1eda501edbc94a5cb64582529242958a5cf88732cbf288e622997483f8"
+    },
+    {
+      "path": "session-20261124-village-soak/api-start-running.json",
+      "bytes": 8686,
+      "sha256": "532d2fb4c43e000fee1ca74121c7dc5668592a44ce550886ba64c1c1156b28bd"
+    },
+    {
+      "path": "session-20261124-village-soak/audit.py",
+      "bytes": 7256,
+      "sha256": "db7dcf10631a370cf91e22435ff8789f4da12e5cd6a1b2190b4ce411fbccc260"
+    },
+    {
+      "path": "session-20261124-village-soak/disk-end-paused-again.json",
+      "bytes": 4100,
+      "sha256": "08e2bc8f6934b7905e3e7d9bf0596920c38da780830d4c2c9b57b6b9e4c5b24a"
+    },
+    {
+      "path": "session-20261124-village-soak/disk-end-paused.json",
+      "bytes": 4100,
+      "sha256": "08e2bc8f6934b7905e3e7d9bf0596920c38da780830d4c2c9b57b6b9e4c5b24a"
+    },
+    {
+      "path": "session-20261124-village-soak/disk-end-running.json",
+      "bytes": 4265,
+      "sha256": "b0dbfc860a7e656a2a491973fea2f7b508d1f0d0863eda435746d63348d05d62"
+    },
+    {
+      "path": "session-20261124-village-soak/disk-initial-paused.json",
+      "bytes": 4111,
+      "sha256": "325c73ec6fd761ea879c1f3c625d50684569320e2c0207fb840d3552b10f4cd6"
+    },
+    {
+      "path": "session-20261124-village-soak/disk-middle-running.json",
+      "bytes": 4192,
+      "sha256": "7634a52bc718d3fd406cfa02462b13589c50e713f8c0cb9b8e8268f0ed062f0e"
+    },
+    {
+      "path": "session-20261124-village-soak/disk-start-running.json",
+      "bytes": 4112,
+      "sha256": "60fd6e0c3222a2bd93aeef6a999fae986e5504c2c28550c4996d8ff7e3c3cb95"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/01-resume/step.json",
+      "bytes": 812,
+      "sha256": "a8154c941e6a9fc2c6ebc147a3e6f5b4f59ded025f5f597d877b1a2796aa8fea"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/02-start-board/after.png",
+      "bytes": 1277025,
+      "sha256": "1fb73639b7a54cb633923ce1b84af9a8dea6da7f6440a4578562107f592c2458"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/02-start-board/step.json",
+      "bytes": 1115,
+      "sha256": "2ddaad2d67ace75e5766a2546371ad4dae4c549f52718e0e747abe2b26f1c0e1"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/02-start-map/after.png",
+      "bytes": 1536471,
+      "sha256": "cd7aff255ecb06ccbc0541636edaf2c794609820fd978584510ba9c3ffe112fe"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/02-start-map/step.json",
+      "bytes": 433,
+      "sha256": "c1889bcdb784bcb96c9ceeb4b46c378e522ecf3d615284d4f9dbb31010c9d820"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/03-middle-board/after.png",
+      "bytes": 1208198,
+      "sha256": "07f82857cbdf0e9bbff0387aad4f54c54c61c3fee14e9e95235bfd8a4befd437"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/03-middle-board/step.json",
+      "bytes": 714,
+      "sha256": "125846b18844b62e1e93ff5e6228a46c491a6c45a87ad7efcf2dc7ff1f75eec1"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/03-middle-map/after.png",
+      "bytes": 1440424,
+      "sha256": "385578282c6d536f12fced98ca1dc463898737d3427c82578fa6d98fadf2f5be"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/03-middle-map/step.json",
+      "bytes": 433,
+      "sha256": "b29e44f03994737fb9239abd167131c4ee5c5b203d5e41c7177201b5dc1d243d"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/04-end-board/after.png",
+      "bytes": 1291364,
+      "sha256": "c8886708056172ad796b6e3940aae28ab10f6c9ce6d70fe7801b14b906d18384"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/04-end-board/step.json",
+      "bytes": 714,
+      "sha256": "a86d1e6bc865b29e6eeaf9b0c2c932fd38b0c981995cb7b88649179ecc099b14"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/04-end-map/after.png",
+      "bytes": 1542732,
+      "sha256": "1db5f55430c2823074bfa8f00f5694623a43d95807a2d4be5382fbf4a79f9def"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/04-end-map/step.json",
+      "bytes": 433,
+      "sha256": "92e0a8193d3f28d97349f927027e58a52e51459483112c7b85e631e2be06a5b2"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/05-pause/step.json",
+      "bytes": 1123,
+      "sha256": "0febc031967d57194386e04def9d8488679ef700906a0e5e538bab3038ba99c3"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/99-quit/step.json",
+      "bytes": 131,
+      "sha256": "192b4de37f91a11a2f25e8e873312d7a3bcf06e71a2f2ac15213d84952a7d03a"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/before.json",
+      "bytes": 7184,
+      "sha256": "3e84262cfcf71bd036fbe281d836121eb1f5ad7fef372e744c0070746dc02c87"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/emulator.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/exit.json",
+      "bytes": 22,
+      "sha256": "1e3f6691f455051e8adb15d961e4bf3c7a17e83dd88b2afdd13315cc288250bb"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/launch.json",
+      "bytes": 2787,
+      "sha256": "36a34531831d18b57957577a38977092930beab6f70c755844760528c1299a7c"
+    },
+    {
+      "path": "session-20261124-village-soak/guest/serial.log",
+      "bytes": 16173,
+      "sha256": "c9ebb21785036b9da30928542d03325981b82f82ab07d02bc28256fbd3614b19"
+    },
+    {
+      "path": "session-20261124-village-soak/heartbeat.jsonl",
+      "bytes": 2860,
+      "sha256": "1e8bdf7cc5e70f5410a88b3f961cd649f985ada2155100b5a5a3440233106803"
+    },
+    {
+      "path": "session-20261124-village-soak/interactive-observations.json",
+      "bytes": 308,
+      "sha256": "aa6ce78553187bb638706bafc9f462b217e631cab76747ee367f45ca613c7ec3"
+    },
+    {
+      "path": "session-20261124-village-soak/launch.log",
+      "bytes": 161,
+      "sha256": "f2846ec74aa0186bdaaba9d10cfe249202866a4e4e5d74716de7d4605300f5be"
+    },
+    {
+      "path": "session-20261124-village-soak/launcher.exitcode",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "session-20261124-village-soak/MEASURED.md",
+      "bytes": 3217,
+      "sha256": "2143b6e7019d0a192f13b215f8fd903aca82e6f16da467690f9459f6c6f0a794"
+    },
+    {
+      "path": "session-20261124-village-soak/observer.exitcode",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "session-20261124-village-soak/observer.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "session-20261124-village-soak/PLAN.md",
+      "bytes": 3018,
+      "sha256": "30058a927a9328e19bc43ff79bc8a5b4b8b23caf79c3eae323cb22b2dc0b2792"
+    },
+    {
+      "path": "session-20261124-village-soak/providers.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "session-20261124-village-soak/qemu-pid.txt",
+      "bytes": 34,
+      "sha256": "b6902217b19ea669d5086aa715f1badd33eeb5010d5233f069a59f510f6c382d"
+    },
+    {
+      "path": "session-20261124-village-soak/run-initial.sh",
+      "bytes": 1561,
+      "sha256": "69cf8151011b5a9499e14c066afad05c51f1a2f97c8f3a34ffa1564c75ef71fe"
+    },
+    {
+      "path": "session-20261124-village-soak/run.sh",
+      "bytes": 1606,
+      "sha256": "2231b264c178e428e7025e44372204db537d8862d4c6df3c0b505ef0208df305"
+    },
+    {
+      "path": "session-20261124-village-soak/sample-end-paused-again.json",
+      "bytes": 459,
+      "sha256": "1ea131ceee6277157074af8da0b946f42a4949c04410d102f08c1e661007726a"
+    },
+    {
+      "path": "session-20261124-village-soak/sample-end-paused.json",
+      "bytes": 453,
+      "sha256": "e256c1842488a5ed38593b069a7af7f586ace124c63492134fe05d8995cb3648"
+    },
+    {
+      "path": "session-20261124-village-soak/sample-end-running.json",
+      "bytes": 455,
+      "sha256": "7b32140d24c6c7e3dfb96be41bf0635b67476de454850a189fc21dbb95adc0c0"
+    },
+    {
+      "path": "session-20261124-village-soak/sample-initial-paused.json",
+      "bytes": 449,
+      "sha256": "2adf2b60530d6a61a9bd2c48e8eed3d11ba83b5138b35c68dcab6f0a2d0ba56f"
+    },
+    {
+      "path": "session-20261124-village-soak/sample-middle-running.json",
+      "bytes": 458,
+      "sha256": "ef5a174a17e503aeb32a16a6d0f8981fc7bdd6106556ad5415ac4535fd80b5e8"
+    },
+    {
+      "path": "session-20261124-village-soak/sample-start-running.json",
+      "bytes": 449,
+      "sha256": "0b6c8f3f48ce4b38d8739b521706221bdb78037b730b74fdf396b8c778ac52a2"
+    },
+    {
+      "path": "session-20261124-village-soak/server.log",
+      "bytes": 91,
+      "sha256": "8a30a9a80fb68d0a9caa1f3c30b4a80a865f3faa048b6c1937f8216991c36cb8"
+    },
+    {
+      "path": "session-20261124-village-soak/service.exitcode",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "session-20261124-village-soak/source-identity.json",
+      "bytes": 3796,
+      "sha256": "5269203e0021c62dd4241506033dbdf72b2d35c584669b119da27f57cf00bed5"
+    },
+    {
+      "path": "session-20261124-village-soak/start.json",
+      "bytes": 84,
+      "sha256": "8302f8a97c264274830d926a5161fa36bb3e358cdd1e6be62613681e25506a93"
+    },
+    {
+      "path": "session-20261124-village-soak/terminal.json",
+      "bytes": 266,
+      "sha256": "da40044e2a5ac9da6ebf8c06905be9c80d90256cf632df0744cf43cf44c46fb2"
+    },
+    {
+      "path": "session-20261124-village-soak/village.json",
+      "bytes": 4100,
+      "sha256": "08e2bc8f6934b7905e3e7d9bf0596920c38da780830d4c2c9b57b6b9e4c5b24a"
+    },
+    {
+      "path": "session-20261124-village-soak/visual-review.json",
+      "bytes": 1637,
+      "sha256": "92af88c56180d268a53cff0f49967f7d8ffddc51efbadcb5acf5ed1c699491f4"
+    },
+    {
+      "path": "session-20261124-village-soak/watch.py",
+      "bytes": 5706,
+      "sha256": "bf5e90281584a2b5e671ee4075eb388588be9872605331a73599bf89d9baf109"
+    }
+  ]
+}
