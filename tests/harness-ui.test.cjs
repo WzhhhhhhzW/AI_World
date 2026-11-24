@@ -80,6 +80,37 @@ test('archive filters active tasks and text-only skills export valid quoted meta
   assert.match(lines.join('\n'),/无需村务数据/);
 });
 
+test('forge preview matches the downloaded Markdown and preserves each open disclosure on refresh', async () => {
+  const {ui, skill, state, panel, context, doc} = fixture();
+  context.esc = text => String(text).replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
+  skill.instructions = '先看 <img src=x> 与 &lt;原文&gt;\n再核对 "结果"。';
+  state.harness.skills.push({...skill, id:'other'});
+  ui.show('forge');
+  const root = panel.firstElementChild;
+  assert.doesNotMatch(root.innerHTML, /data-skill-(?:card|preview)="plain" open|<img src=x>/);
+  const content = root.innerHTML.match(/<summary>查看 SKILL\.md<\/summary><pre>([\s\S]*?)<\/pre>/)[1];
+  let blob, clicked;
+  Object.assign(context, {Blob, URL:{createObjectURL(data){blob=data; return 'blob:test';}}, setTimeout(){}});
+  doc.body = {append(){}};
+  doc.createElement = () => ({click(){clicked=this.download;}, remove(){}});
+  const button = {dataset:{skillDownload:'plain'},hasAttribute:()=>false};
+  await root.listeners.click({target:{closest:()=>button}});
+  assert.equal(clicked, 'SKILL.md');
+  assert.equal(await blob.text(), ui.skillMarkdown(skill));
+  assert.equal(content, context.esc(await blob.text()));
+  assert.match(content, /&lt;img src=x&gt; 与 &amp;lt;原文&amp;gt;/);
+  root.querySelectorAll = selector => ({
+    '[data-skill-card][open]':[{dataset:{skillCard:'plain'}}, {dataset:{skillCard:'other'}}],
+    '[data-skill-preview][open]':[{dataset:{skillPreview:'plain'}}],
+  })[selector] || [];
+  state.harness.revision++;
+  ui.show('forge');
+  assert.match(root.innerHTML, /data-skill-card="plain" open/);
+  assert.match(root.innerHTML, /data-skill-preview="plain" open/);
+  assert.match(root.innerHTML, /data-skill-card="other" open/);
+  assert.doesNotMatch(root.innerHTML, /data-skill-preview="other" open/);
+});
+
 test('adviser comparison preserves same-revision choices, caps the selection and submits only named IDs', async () => {
   const site = fixture({advisor_ids:['b','c'],reviewer_id:'c',hints:[
     {id:'b1',text:'查原件',reviewer_id:'b'},{id:'b2',text:'看日期',reviewer_id:'b'},

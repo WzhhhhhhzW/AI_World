@@ -44,11 +44,14 @@ const VillageHarness = (() => {
       ${tasks || '<p class="fine-print">田里还没有委托。第一次可以用本地实习盘点村庄。</p>'}`;
   }
 
-  function forge(h) {
+  function forge(h, root) {
     const building = shop();
     const progress = building?.constructing ? '居民正在施工' : '尚待建设';
-    const cards = h.skills.map(s => `<details class="skill-leaf"><summary><strong>${esc(s.name)}</strong><span>${esc(s.description)}</span></summary>
+    const openCards = new Set([...root.querySelectorAll('[data-skill-card][open]')].map(card => card.dataset.skillCard));
+    const openPreviews = new Set([...root.querySelectorAll('[data-skill-preview][open]')].map(preview => preview.dataset.skillPreview));
+    const cards = h.skills.map(s => `<details class="skill-leaf" data-skill-card="${esc(s.id)}"${openCards.has(s.id) ? ' open' : ''}><summary><strong>${esc(s.name)}</strong><span>${esc(s.description)}</span></summary>
       <p class="work-text">${esc(s.instructions)}</p><p class="fine-print">${s.tools.length ? '取材于' + esc(s.tools.map(k => tools[k] || k).join('、')) : '纯文本技艺，材料由委托人提供。'}</p>
+      <details class="skill-preview" data-skill-preview="${esc(s.id)}"${openPreviews.has(s.id) ? ' open' : ''}><summary>查看 SKILL.md</summary><pre>${esc(skillMarkdown(s))}</pre></details>
       <button type="button" class="outline" data-skill-download="${esc(s.id)}">下载 SKILL.md</button></details>`).join('');
     return toolbar(nav('taskBoard','返回委托田')) +
       `<div class="field-actions"><p>把步骤、用途和可查阅的村务材料写成技艺。村民领到委托时会带上你选的那一份。</p>
@@ -442,11 +445,7 @@ const VillageHarness = (() => {
       const identity = state.residents.map(r => [r.id,r.name]);
       const signature = JSON.stringify([h.revision,identity,Boolean(shop()?.built),Boolean(shop()?.constructing),Boolean(garden()?.built),view === 'taskBoard' && Boolean(chatOrder)]);
       if (root.dataset.revision !== signature) {
-        const openSkills = [...root.querySelectorAll('details[open] [data-skill-download]')].map(b => b.dataset.skillDownload);
-        root.innerHTML = view === 'forge' ? forge(h) : board(h, view === 'workArchive');
-        for (const button of root.querySelectorAll('[data-skill-download]')) {
-          if (openSkills.includes(button.dataset.skillDownload)) button.closest('details').open = true;
-        }
+        root.innerHTML = view === 'forge' ? forge(h, root) : board(h, view === 'workArchive');
         root.dataset.revision = signature;
       }
     }

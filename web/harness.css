@@ -66,6 +66,8 @@
 .game-mode .work-sheet h4, .game-mode .work-trace h4 { margin: 0; font-size: 14px; color: #644023; }
 .game-mode .skill-leaf summary, .game-mode .work-trace summary { cursor: pointer; font-size: 14px; color: #603f20; }
 .game-mode .skill-leaf summary span { display: block; padding-left: 15px; color: #755533; font-size: 12px; }
+.game-mode .skill-preview { margin: 10px 0; }
+.game-mode .skill-preview pre { white-space: pre-wrap; overflow-wrap: anywhere; user-select: text; margin: 8px 0; }
 .game-mode .work-trace ol { margin: 8px 0 0; padding-left: 22px; font-size: 13px; }
 .game-mode .work-trace ol li + li { margin-top: 4px; }
 .game-mode .work-form { margin: 10px 0 6px; }
