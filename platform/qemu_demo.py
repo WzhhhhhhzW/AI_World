@@ -150,7 +150,7 @@ def launch(args):
         monitor = work / "monitor.sock"
         network = f"user,id=net0,restrict=on,guestfwd=tcp:{GUEST_HOST}-cmd:{nc} 127.0.0.1 {args.port}"
         command = emulator_command(kernel, disk, work, network=network, cpus=args.cpus,
-                                   memory=args.memory, headless=args.headless, append=args.append)
+                                   memory=args.memory, headless=args.headless, append=args.append, accel=args.accel)
         if args.window_name:
             command.extend(["-name", "guest=" + args.window_name.replace(",", ",,")])
         print(version, "\n" + shlex.join(command), flush=True)
@@ -213,6 +213,7 @@ def main():
     run.add_argument("--port", type=int, default=8766)
     run.add_argument("--cpus", type=int, default=4)
     run.add_argument("--memory", type=int, default=2048, help="演示 VM 内存，单位 MiB")
+    run.add_argument("--accel", choices=("tcg", "kvm"), default="tcg", help="飞腾 AArch64 Linux 可显式选择 kvm")
     run.add_argument("--append", help="沿用当前内核构建的启动参数")
     run.add_argument("--window-name", help="设置 QEMU 窗口的识别名称")
     run.add_argument("--headless", action="store_true", help="仅使用 monitor 读取虚拟显示")

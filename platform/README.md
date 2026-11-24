@@ -43,6 +43,15 @@ python3 server.py --port 8766 --qemu-guest --data "$HOME/.local/share/qilin-vill
 python3 platform/qemu_demo.py launch --port 8766 --headless
 ```
 
+在飞腾 D3000M 银河麒麟笔记本上，可在同一启动命令显式选择 `--accel kvm`。准备好可访问的 `/dev/kvm`、冻结的 Wayland 根盘和 R117 内核后，从仓库根目录运行。带桌面的现场演示保留 QEMU 窗口。KVM 模式使用宿主 CPU，启动失败由 QEMU 报出。
+
+```sh
+python3 platform/qemu_demo.py launch --accel kvm --port 8766 \
+  --kernel /path/to/r117-candidate.bin --rootfs /path/to/wayland.img
+```
+
+这条入口用于村庄演示。在 D3000M 上的实际验收仍待实机。[R117 内核及摘要](https://github.com/WzhhhhhhzW/KernelBridge-Chromium-Support-for-x-kernel/tree/codex/kernel-finals-performance-20261120/work/performance-20261124-finals-r117-heap-floor)
+
 在另一个终端，把下面的路径替换为启动器本次打印的监视器路径。这会用 QEMU monitor 的 `screendump` 直接生成 PNG；输出文件须为新文件。
 
 ```sh
