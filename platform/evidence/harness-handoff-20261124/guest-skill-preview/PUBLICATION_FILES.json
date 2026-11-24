@@ -1,0 +1,170 @@
+{
+  "files": [
+    {
+      "path": "guest_ui.py",
+      "bytes": 14361,
+      "sha256": "e4f56329e169903b4598cc953187fada6bdcf9834efaba898fc4dc3db2cf5057"
+    },
+    {
+      "path": "session-20261124-skill-preview/expected-SKILL.md",
+      "bytes": 539,
+      "sha256": "c7fff8facfdb5bf2aea7000b36cda913ada90f81a6b2425efcb2ca24baec2c80"
+    },
+    {
+      "path": "session-20261124-skill-preview/expected.cjs",
+      "bytes": 652,
+      "sha256": "8383b89ace0c3426624459de4174037524dcb92e71a029ee19ef837cff40b5f6"
+    },
+    {
+      "path": "session-20261124-skill-preview/fixture.py",
+      "bytes": 2675,
+      "sha256": "003d7c0ee5e8122223caa0cf24fd170e4c034041a7cd7adb6799eb1b3ab15776"
+    },
+    {
+      "path": "session-20261124-skill-preview/guest/01-wait/step.json",
+      "bytes": 270,
+      "sha256": "22a1b8d2edd0a9fde105e11089bf1d55be3e38ab37780616f3ee3505234482ab"
+    },
+    {
+      "path": "session-20261124-skill-preview/guest/02-board/step.json",
+      "bytes": 1095,
+      "sha256": "e30f4607b9d94086284826822b762e0c8432c83c783a291393994177eeca4138"
+    },
+    {
+      "path": "session-20261124-skill-preview/guest/03-forge/step.json",
+      "bytes": 1131,
+      "sha256": "f7037ab012b0555c0b0877d888a81f1008a21b9ebe47c4ca376ea8902c7afbc7"
+    },
+    {
+      "path": "session-20261124-skill-preview/guest/04-card/after.png",
+      "bytes": 925287,
+      "sha256": "050dbb394fc82a4eef77f0c55dcc145cf394e8f42ce8bbbc588567ed869d5862"
+    },
+    {
+      "path": "session-20261124-skill-preview/guest/04-card/step.json",
+      "bytes": 1100,
+      "sha256": "c8d9d2d152d610af551c986a6dcb301690c02ef9f33ac2a7b1e8985be604d866"
+    },
+    {
+      "path": "session-20261124-skill-preview/guest/05-preview/after.png",
+      "bytes": 923998,
+      "sha256": "34860866ed3ffe19dbddc8347d3007253dc686ab01de797aba80adc8373cf1cf"
+    },
+    {
+      "path": "session-20261124-skill-preview/guest/05-preview/step.json",
+      "bytes": 1102,
+      "sha256": "5622dca852936f69937ad6b9cfb56ed1c0211cea1283d650d748682366e69913"
+    },
+    {
+      "path": "session-20261124-skill-preview/guest/06-preview-body/step.json",
+      "bytes": 82,
+      "sha256": "6a3997831869ab06c40c4b1a4404962a841dc7d7e36dfc9c536cf8fee8b3a674"
+    },
+    {
+      "path": "session-20261124-skill-preview/guest/07-complete-preview/after.png",
+      "bytes": 903122,
+      "sha256": "7cc0dd9c30ff1e7d842b9c2b63e8f8761450d9147ebc3caae09758c8037fec26"
+    },
+    {
+      "path": "session-20261124-skill-preview/guest/07-complete-preview/step.json",
+      "bytes": 80,
+      "sha256": "7e7c280929e84391f9f973827b5e78bdd5bd599ecfc57ff98af331226011b8e9"
+    },
+    {
+      "path": "session-20261124-skill-preview/guest/99-quit/step.json",
+      "bytes": 131,
+      "sha256": "4e04c51a05b24ac0579c755920361c18d221379d6e96881b4e362d6a57eb4322"
+    },
+    {
+      "path": "session-20261124-skill-preview/guest/before.json",
+      "bytes": 7811,
+      "sha256": "c3776d549aaaa3f9d8e9adad0d79ab8be6dccbb04ba61adbab2f8c7d3c043271"
+    },
+    {
+      "path": "session-20261124-skill-preview/guest/emulator.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "session-20261124-skill-preview/guest/exit.json",
+      "bytes": 22,
+      "sha256": "1e3f6691f455051e8adb15d961e4bf3c7a17e83dd88b2afdd13315cc288250bb"
+    },
+    {
+      "path": "session-20261124-skill-preview/guest/launch.json",
+      "bytes": 2787,
+      "sha256": "706da307fa757b63c5c220babc69ab41e768ee8828b741c787a16e18723e71d0"
+    },
+    {
+      "path": "session-20261124-skill-preview/guest/serial.log",
+      "bytes": 13369,
+      "sha256": "8573c8779d6e43aaedaf892618827e870106b15be21e6bafb1fea978ae76855f"
+    },
+    {
+      "path": "session-20261124-skill-preview/launch.log",
+      "bytes": 162,
+      "sha256": "397a4ef3e9256bf358ed11eb705c56556ffd89b719fc5fe65c019097382bfe6d"
+    },
+    {
+      "path": "session-20261124-skill-preview/MEASURED.md",
+      "bytes": 2261,
+      "sha256": "e8774130c16afb5af5f4f3433aff5378d4fda56b702db51f9cf3e6616974b35f"
+    },
+    {
+      "path": "session-20261124-skill-preview/PLAN.md",
+      "bytes": 1280,
+      "sha256": "dcd575698b42299535c6297f38dd4dbcce0720f1d392c89f13f7da83206070c7"
+    },
+    {
+      "path": "session-20261124-skill-preview/previous-forge-receipt.json",
+      "bytes": 3911,
+      "sha256": "dcffb57f790e6fd162814c285de976877299e60ea32ebe8ee79593c67ba51a62"
+    },
+    {
+      "path": "session-20261124-skill-preview/providers.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "session-20261124-skill-preview/qemu-pid.txt",
+      "bytes": 34,
+      "sha256": "01bcf9614ea95eaf1643507be87a7626e53ab9ef0d8b91098a002ff59d2226c6"
+    },
+    {
+      "path": "session-20261124-skill-preview/run.sh",
+      "bytes": 1270,
+      "sha256": "60b18aef4be0351b3aa2ddb2785ffc2623312857bb83fa5ae28431dccbe61ae0"
+    },
+    {
+      "path": "session-20261124-skill-preview/scroll.py",
+      "bytes": 913,
+      "sha256": "5467c6a3e7de8c8926bb490adb4c2ed77d236e73510256cc5ad9864af9a56c57"
+    },
+    {
+      "path": "session-20261124-skill-preview/server.log",
+      "bytes": 90,
+      "sha256": "993b5e115c5b653b9ec1449914155d7abce7f0d3b0b133ef928b0ed38c5a3e77"
+    },
+    {
+      "path": "session-20261124-skill-preview/state-at-start.json",
+      "bytes": 899,
+      "sha256": "cc688554c4a79f87890c2666e96a32391569a36e8e74f0f8e0facb77b2377403"
+    },
+    {
+      "path": "session-20261124-skill-preview/state-receipt.json",
+      "bytes": 899,
+      "sha256": "cc688554c4a79f87890c2666e96a32391569a36e8e74f0f8e0facb77b2377403"
+    },
+    {
+      "path": "session-20261124-skill-preview/terminal.json",
+      "bytes": 221,
+      "sha256": "0eef932704a8293f10b9bd1fbf146f8e978b936f1e585da3dfa1c20e9c06c2ea"
+    },
+    {
+      "path": "session-20261124-skill-preview/village.json",
+      "bytes": 4643,
+      "sha256": "0c746d9d09c3015926e2679a3df909c01fecb669e8878eba7f795ab1ea56226c"
+    }
+  ],
+  "bytes": 2816199
+}

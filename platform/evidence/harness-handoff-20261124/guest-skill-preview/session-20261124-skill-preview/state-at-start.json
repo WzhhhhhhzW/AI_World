@@ -1,0 +1,19 @@
+{
+  "skill": {
+    "id": "1451e6fe5d95",
+    "name": "r117 forge",
+    "description": "交一份最新的村务盘点单，列出下一步要留意的事项。",
+    "instructions": "# r117 forge\n\n任务备注：交一份最新的村务盘点单，列出下一步要留意的事项。\n取样时刻：村庄时钟 480 分\n物资：木材 60，石料 40，作物 0。\n建筑：议事厅（已建成）、粮仓（已建成）、居民小屋（已建成）、工坊（已建成）、档案馆（待建）、菜园（已建成）",
+    "tools": [
+      "materials",
+      "buildings"
+    ]
+  },
+  "source_saved_live_match": true,
+  "provider_count": 0,
+  "tasks": 0,
+  "ledger_entries": 0,
+  "game_clock": 480,
+  "expected_markdown_sha256": "c7fff8facfdb5bf2aea7000b36cda913ada90f81a6b2425efcb2ca24baec2c80",
+  "comparison": "Expected source bytes. Guest UI observations are recorded separately."
+}

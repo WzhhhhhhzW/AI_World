@@ -1,0 +1,11 @@
+# R117 guest reads the forged SKILL.md
+
+AI_World commit 73db41e931cc0bcbbd6a5014bf7ce5b6cd21f9bf ran in one 4-vCPU, 2048 MiB AArch64 QEMU TCG guest on 2026-11-24. QEMU PID 820 started at 10:02:33 Beijing. guest/launch.json identifies the kernel, base disk, boot command, served application source digests and QMP session.
+
+The seed consisted of a fresh paused village at clock 480, built farm and workshop, two default skills and exactly one extra skill. Its source is new_skill from the prior guest forge receipt, ID 1451e6fe5d95. This launch contained no tasks, provider credentials, provider calls or ledger entries. fixture.py compared the saved skill and live server state before and after the on-screen actions.
+
+Four guest pointer clicks activated the task board, iron shop, skill card and native Markdown preview. The Wayland click receipts and original framebuffer captures are under guest/. 04-card shows the closed disclosure. 05-preview shows the front matter when expanded. One downward scroll followed by one upward scroll positioned the complete preview in a single 1280 by 800 screenshot, 07-complete-preview/after.png.
+
+The final screenshot visibly contains the front-matter delimiters and skill-1451e6fe5d95, the quoted Chinese description, both r117 forge headings (the harvested work itself starts with that heading), the 480-minute village clock, resources 60/40/0, the building list, and the two bullets for materials and construction. The Download button remains visible below it. The original source generated 539 UTF-8 bytes on the host, SHA-256 c7fff8facfdb5bf2aea7000b36cda913ada90f81a6b2425efcb2ca24baec2c80. The guest evidence covers rendered text and layout. It does not measure file export or the final newline. Guest download and Developer Tools settings were left in place.
+
+A deliberate QMP quit ended the guest. terminal.json records guest and supervisor exit 0, the fixture's clean exit and the empty QEMU and fixture PID readback at 10:06:05 Beijing. The early missing server.log message came from the launcher's first readiness poll before the background logger opened the file. It recovered on the next poll. Full originals remain in the run directory; PUBLICATION_FILES.json enumerates the publication subset.
